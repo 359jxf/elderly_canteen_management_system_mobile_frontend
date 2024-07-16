@@ -1,24 +1,17 @@
-# dbsystem_mobile
+# vue3-vite-vant-template
 
-## Project setup
+## 快速启动 | Quick Start
+
 ```
+# 安装依赖
 npm install
-```
 
-### Compiles and hot-reloads for development
-```
+# 启动服务
+npm run dev
+
+# 打包
+npm run build
+
+# 预览打包效果
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
