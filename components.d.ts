@@ -9,7 +9,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     404: typeof import('./src/views/404.vue')['default']
     Home: typeof import('./src/views/Home.vue')['default']
-    HomeView: typeof import('./src/views/HomeView.vue')['default']
     Login: typeof import('./src/views/Login.vue')['default']
     OrderDetail: typeof import('./src/views/OrderDetail.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
