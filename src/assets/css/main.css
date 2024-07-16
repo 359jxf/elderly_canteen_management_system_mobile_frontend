@@ -1,9 +1,0 @@
-@import './base.css';
-
-html {
-  font-size: 160px; /* 基于设计稿的初始值，例如设计稿是基于750px宽度 */
-}
-
-body {
-  font-size: 1rem; /* 确保 body 使用 rem 单位 */
-}
