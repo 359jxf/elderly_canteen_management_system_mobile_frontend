@@ -1,10 +1,12 @@
-import './assets/main.css'
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import 'amfe-flexible'
+
 import App from './App.vue'
 import router from './router'
+import 'normalize.css'
+
+import './assets/css/main.css'
+import 'amfe-flexible'
 
 const app = createApp(App)
 
