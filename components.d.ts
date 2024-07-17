@@ -10,8 +10,11 @@ declare module 'vue' {
     404: typeof import('./src/views/404.vue')['default']
     Home: typeof import('./src/views/Home.vue')['default']
     Login: typeof import('./src/views/Login.vue')['default']
+    OrderDetail: typeof import('./src/views/OrderDetail.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VanButton: typeof import('vant/es')['Button']
+    VanCol: typeof import('vant/es')['Col']
+    VanRow: typeof import('vant/es')['Row']
   }
 }

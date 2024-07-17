@@ -13,5 +13,4 @@ const { user } = useStore()
 const { num } = storeToRefs(user)
 </script>
 
-
 <style lang="less" scoped></style>
