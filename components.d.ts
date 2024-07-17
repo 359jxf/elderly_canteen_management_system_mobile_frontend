@@ -13,6 +13,7 @@ declare module 'vue' {
     OrderDetail: typeof import('./src/views/OrderDetail.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanCol: typeof import('vant/es')['Col']
     VanRow: typeof import('vant/es')['Row']

@@ -1,17 +1,35 @@
-# vue3-vite-vant-template
+# empty
 
-## 快速启动 | Quick Start
+This template should help get you started developing with Vue 3 in Vite.
 
-```
-# 安装依赖
+## Recommended IDE Setup
+
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+
+## Customize configuration
+
+See [Vite Configuration Reference](https://vitejs.dev/config/).
+
+## Project Setup
+
+```sh
 npm install
+```
 
-# 启动服务
+### Compile and Hot-Reload for Development
+
+```sh
 npm run dev
+```
 
-# 打包
+### Compile and Minify for Production
+
+```sh
 npm run build
+```
 
-# 预览打包效果
-npm run serve
+### Lint with [ESLint](https://eslint.org/)
+
+```sh
+npm run lint
 ```

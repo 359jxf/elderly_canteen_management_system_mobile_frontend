@@ -1,6 +1,9 @@
+import { fileURLToPath, URL } from 'node:url'
+
+
+import vueDevTools from 'vite-plugin-vue-devtools'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import path from 'path'
 import postCssPxToRem from 'postcss-pxtorem'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -10,17 +13,11 @@ import {
   VueUseDirectiveResolver
 } from 'unplugin-vue-components/resolvers'
 
+
 export default defineConfig({
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-      assets: '@/assets',
-      utils: '@/utils',
-      api: '@/api'
-    }
-  },
   plugins: [
     vue(),
+    vueDevTools(),
     AutoImport({
       imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
       resolvers: [VantResolver()]
@@ -35,7 +32,6 @@ export default defineConfig({
       ]
     })
   ],
-  // Vite自身已经集成PostCSS，无需再次安装。另外也无需单独创建PostCSS配置文件，已集成到vite.config.js的css选项中
   css: {
     postcss: {
       plugins: [
@@ -46,11 +42,9 @@ export default defineConfig({
       ]
     }
   },
-  server: {
-    proxy: {
-      '/v1': {
-        target: 'http://localhost:8001'
-      }
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   }
 })
