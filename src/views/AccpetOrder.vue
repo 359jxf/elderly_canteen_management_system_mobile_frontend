@@ -103,7 +103,7 @@ const onLoad = () => {
 
 .orders {
   width: 100%;
-  height: 66vh;
+  height: 64vh;
   padding: 20px;
   background-color: rgba(244, 244, 244);
 }
