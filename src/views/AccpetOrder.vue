@@ -1,5 +1,5 @@
 <script setup>
-import OrderCell from '@/components/OrderCell.vue';
+
 
 const list = ref([]);
 const loading = ref(false);
@@ -43,14 +43,14 @@ const onLoad = () => {
     <div class="current-order">
       <div class="current-title">当前订单</div>
 
-      <OrderCell />
+      <OrderToAccept />
     </div>
 
     <div class="orders">
       <div class="order-title">可接订单</div>
       <div class="scroll">
         <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-          <OrderCell v-for="item in list"></OrderCell>
+          <OrderToAccept v-for="item in list"></OrderToAccept>
         </van-list>
       </div>
     </div>
@@ -65,6 +65,12 @@ const onLoad = () => {
   flex-direction: column;
   height: 100vh;
 }
+.top p {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+}
 .top img {
   max-width: 100%;
   max-height: 100%;
@@ -74,6 +80,17 @@ const onLoad = () => {
 
 .top .van-icon {
   margin-left: 10px;
+}
+
+.top {
+  height: 5vh;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+  font-size: large;
+  font-weight: bold;
+  position: relative;
 }
 
 .order-title {
@@ -117,16 +134,7 @@ const onLoad = () => {
 }
 
 
-.top {
-  height: 5vh;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  display: flex;
-  font-size: large;
-  font-weight: bold;
-  position: relative;
-}
+
 
 .current-order {
   width: 100%;

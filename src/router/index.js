@@ -11,7 +11,7 @@ const routes = [
       {
         path: '/home',
         name: 'home',
-        component: () => import('../views/AccpetOrder.vue')
+        component: () => import('../views/MyOrders.vue')
       },
       {
         path: '/login',
