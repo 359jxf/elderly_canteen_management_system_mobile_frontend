@@ -28,48 +28,56 @@ const onLoad = () => {
 
 
 <template>
+  <div class="container">
+    <div class="top">
+      <van-icon name="arrow-left" />
+      <p>志愿接单</p>
+      <img src="../assets/image/oldman.jpg" />
+    </div>
 
-  <div class="top">
-    <van-icon name="arrow-left" />
-    <p>志愿接单</p>
-    <img src="../assets/image/oldman.jpg"/>
-  </div>
+    <van-tabs v-model:active="active" title-active-color="rgb(249, 184, 62)">
+      <van-tab title="待送订单"></van-tab>
+      <van-tab title="已送订单"></van-tab>
+    </van-tabs>
 
-  <van-tabs v-model:active="active" title-active-color="rgb(249, 184, 62)">
-    <van-tab title="待送订单"></van-tab>
-    <van-tab title="已送订单"></van-tab>
-  </van-tabs>
+    <div class="current-order">
+      <div class="current-title">当前订单</div>
 
-  <div class="current-order">
-    <div class="current-title">当前订单</div>
+      <OrderCell />
+    </div>
 
-    <OrderCell/>
-  </div>
-
-  <div class="orders">
-    <div class="order-title">可接订单</div>
-    <div class="scroll">
-      <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-        <OrderCell v-for="item in list"></OrderCell>
-      </van-list>
+    <div class="orders">
+      <div class="order-title">可接订单</div>
+      <div class="scroll">
+        <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+          <OrderCell v-for="item in list"></OrderCell>
+        </van-list>
+      </div>
     </div>
   </div>
+
 
 </template>
 
 <style scoped>
-
-.top img{
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.top img {
   max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    margin-right: 10px; 
+  max-height: 100%;
+  object-fit: contain;
+  margin-right: 10px;
 }
-.top .van-icon{
-  margin-left: 10px; 
+
+.top .van-icon {
+  margin-left: 10px;
 }
-.order-title{
-  font-size:large;
+
+.order-title {
+  font-size: large;
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -78,7 +86,7 @@ const onLoad = () => {
   color: white;
   height: 5vh;
   align-items: center;
-  width:90vw;
+  width: 90vw;
 
   font-size: large;
   font-weight: bold;
@@ -103,7 +111,7 @@ const onLoad = () => {
 
 .orders {
   width: 100%;
-  height: 64vh;
+  flex-grow: 1;
   padding: 20px;
   background-color: rgba(244, 244, 244);
 }
@@ -111,6 +119,7 @@ const onLoad = () => {
 
 .top {
   height: 5vh;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
   display: flex;
@@ -121,12 +130,12 @@ const onLoad = () => {
 
 .current-order {
   width: 100%;
-  height: 24vh;
+  height: 25vh;
   background-color: rgb(249, 184, 62);
   display: flex;
   flex-direction: column;
 
   justify-content: center;
-  align-items:center;
+  align-items: center;
 }
 </style>
