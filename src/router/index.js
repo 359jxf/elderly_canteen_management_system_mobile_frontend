@@ -7,16 +7,31 @@ const routes = [
     path: '/',
     component: App,
     children: [
-      { path: '', redirect: '/home' },
+      { path: '', redirect: '/MyOrders' },
       {
-        path: '/home',
-        name: 'home',
+        path:'/Home',
+        name:'Home',
+        component:()=>import('../views/Home.vue')
+      },
+      {
+        path:'/User',
+        name:'User',
+        component:()=>import('../views/User.vue')
+      },
+      {
+        path: '/MyOrders',
+        name: 'MyOrders',
         component: () => import('../views/MyOrders.vue')
       },
       {
         path: '/login',
         name: 'login',
         component: () => import('../views/Login.vue')
+      },
+      {
+        path:'/AccpetOrder',
+        name:'AccpetOrder',
+        component:()=>import('../views/AccpetOrder.vue')
       },
       {
         // vue-router@4的变化，舍弃*通配符

@@ -3,12 +3,18 @@ const order_number = 11111;
 const order_date = "2024-07-11";
 const order_price = 23.45;
 
+const props = defineProps({
+  order_detail:Object
+})
+
 </script>
 
 <template>
     <div class="order-cell">
         <div class="part1">
-            <img src="../assets/image/waimai.jpg" />
+            <img :src="order_detail.DELIVER_OR_DINING? 
+            '../assets/image/waimai.jpg'
+            :'../assets/image/tangshi.jpg' " />
             <p class="order-number">{{ order_number }}</p>
             <van-icon name="arrow" size="4vw"></van-icon>
         </div>

@@ -1,30 +1,35 @@
 <script setup>
-const active = ref(0);
+const props = defineProps({
+    nowView: {
+        type: String,
+        default: 'home'
+    }
+});
+const active = ref(props.nowView);
 </script>
 
 <template>
     <div class="bottom">
         <van-tabbar v-model="active">
-            <van-tabbar-item>
+            <van-tabbar-item name="home" replace to="/Home">
                 <span>首页</span>
                 <template #icon="home">
                     <van-icon name="home-o" size="30px"></van-icon>
                 </template>
             </van-tabbar-item>
-            <van-tabbar-item>
+            <van-tabbar-item name="orders" replace to="/MyOrders">
                 <span>订单</span>
                 <template #icon="orders">
                     <van-icon name="orders-o" size="30px"></van-icon>
                 </template>
             </van-tabbar-item>
-            <van-tabbar-item>
+            <van-tabbar-item name="user" replace to="/User">
                 <span>我的</span>
                 <template #icon="user">
                     <van-icon name="user-circle-o" size="30px"></van-icon>
                 </template>
             </van-tabbar-item>
         </van-tabbar>
-
     </div>
 </template>
 
@@ -38,6 +43,7 @@ const active = ref(0);
     z-index: 1000;
 
 }
+
 .bottom .van-tabbar-item {
     height: 100%;
     /* 使van-tabbar-item高度适应van-tabbar */

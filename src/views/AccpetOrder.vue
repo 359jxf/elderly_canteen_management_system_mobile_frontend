@@ -1,5 +1,5 @@
 <script setup>
-
+const onClickLeft = () => history.back();
 
 const list = ref([]);
 const loading = ref(false);
@@ -30,7 +30,7 @@ const onLoad = () => {
 <template>
   <div class="container">
     <div class="top">
-      <van-icon name="arrow-left" />
+      <van-icon name="arrow-left" @click="onClickLeft"/>
       <p>志愿接单</p>
       <img src="../assets/image/oldman.jpg" />
     </div>
