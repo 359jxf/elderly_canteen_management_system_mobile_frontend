@@ -1,36 +1,70 @@
 <script setup>
-const onClickLeft = () => history.back();
 
-const list = ref([]);
+import { getAcceptableOrder } from '../api/api';
+const onClickLeft = () => history.back();
+const active = ref('all');
+const listReady = ref(false); // 添加一个布尔变量以确保数据准备好
+const orderList = ref([]);
+const fetchOrders = async () => {
+  try {
+    const response = await getAcceptableOrder();
+    orderList.value = response;
+    listReady.value = true; // 数据准备好
+    onLoad();
+  } catch (error) {
+    console.error('Error fetching orderList:', error);
+  } finally {
+    refreshing.value = false; // 确保在数据获取后重置 refreshing
+  }
+};
+onMounted(fetchOrders);
+
+const list = ref([]);//要传给OrderInList的数据
 const loading = ref(false);
 const finished = ref(false);
+const refreshing = ref(false);
+const pageSize = 10; // 每次加载的数据量
+let currentIndex = 0; // 当前已加载的索引
+
 const onLoad = () => {
-  // 异步更新数据
-  // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-  setTimeout(() => {
-    for (let i = 0; i < 10; i++) {
-      list.value.push(list.value.length + 1);
-    }
+  // 确保数据准备好之后再加载。否则在页面刚打开时，onLoad会先于fetch以空数据加载
+  if (!listReady.value) return;
 
-    // 加载状态结束
-    loading.value = false;
+  console.log("use", orderList.value);
+  loading.value = true;
 
-    // 数据全部加载完成
-    if (list.value.length >= 40) {
+  try {
+    // 获取当前索引到 pageSize 数据
+    const nextData = orderList.value.slice(currentIndex, currentIndex + pageSize);
+    list.value.push(...nextData);
+    currentIndex += pageSize;
+
+    // 检查是否加载完所有数据
+    if (currentIndex >= orderList.value.length) {
       finished.value = true;
     }
-  }, 1000);
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+  } finally {
+    loading.value = false;
+  }
+}
+const onRefresh = () => {
+  // 清空列表数据
+  list.value = [];
+  finished.value = false;
+  refreshing.value = true;
+  currentIndex = 0; // 重置已加载的索引
+  listReady.value = false;//不置false同样会使onLoad先加载一遍。
+  fetchOrders();
 };
-
-
-
 </script>
 
 
 <template>
   <div class="container">
     <div class="top">
-      <van-icon name="arrow-left" @click="onClickLeft"/>
+      <van-icon name="arrow-left" @click="onClickLeft" />
       <p>志愿接单</p>
       <img src="../assets/image/oldman.jpg" />
     </div>
@@ -43,16 +77,19 @@ const onLoad = () => {
     <div class="current-order">
       <div class="current-title">当前订单</div>
 
-      <OrderToAccept />
+      <!-- <OrderToAccept /> -->
     </div>
 
     <div class="orders">
       <div class="order-title">可接订单</div>
-      <div class="scroll">
-        <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-          <OrderToAccept v-for="item in list"></OrderToAccept>
-        </van-list>
-      </div>
+      <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+        <div class="scroll">
+          <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+            <OrderToAccept v-for="item in list" :key="item.ORDER_ID" :order_detail="item"></OrderToAccept>
+          </van-list>
+        </div>
+      </van-pull-refresh>
+
     </div>
   </div>
 
@@ -65,12 +102,14 @@ const onLoad = () => {
   flex-direction: column;
   height: 100vh;
 }
+
 .top p {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
 }
+
 .top img {
   max-width: 100%;
   max-height: 100%;

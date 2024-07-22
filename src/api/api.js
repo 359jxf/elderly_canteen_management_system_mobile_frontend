@@ -4,3 +4,9 @@ export const getOrders=async()=>{
     console.log(res.data.response);
     return res.data.response;
 }
+
+export const getAcceptableOrder=async()=>{
+    const res=await ins.get('/getAcceptableOrder');
+    console.log(res.data.response);
+    return res.data.response;
+}

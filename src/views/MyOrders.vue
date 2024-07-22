@@ -7,10 +7,11 @@
                 <img src="../assets/image/oldman.jpg" />
             </div>
 
-            <van-tabs v-model:active="active" title-active-color="rgb(249, 184, 62)">
-                <van-tab title="全部"></van-tab>
-                <van-tab title="外送"></van-tab>
-                <van-tab title="堂食"></van-tab>
+            <van-tabs v-model:active="active"  swipeable 
+            title-active-color="rgb(249, 184, 62)" @change="onRefresh">
+                <van-tab title="全部" name="all"></van-tab>
+                <van-tab title="外送" name="deliver"></van-tab>
+                <van-tab title="堂食" name="dining"></van-tab>
             </van-tabs>
         </div>
 
@@ -19,7 +20,7 @@
             <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
                 <div class="scroll">
                     <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-                        <OrderInList v-for="item in list" :key="item.ORDER_ID" :order_detail="item"></OrderInList>
+                        <OrderInList v-for="item in filteredList" :key="item.ORDER_ID" :order_detail="item"></OrderInList>
                     </van-list>
                 </div>
             </van-pull-refresh>
@@ -34,7 +35,7 @@ import { getOrders } from '../api/api';
 
 
 const onClickLeft = () => history.back();
-const active = ref(0);
+const active = ref('all');
 const listReady = ref(false); // 添加一个布尔变量以确保数据准备好
 const orderList = ref([]);
 const fetchOrders = async () => {
@@ -58,6 +59,16 @@ const finished = ref(false);
 const refreshing = ref(false);
 const pageSize = 10; // 每次加载的数据量
 let currentIndex = 0; // 当前已加载的索引
+const filteredList = computed(() => {
+  if (active.value === 'all') {
+    return list.value;
+  } else if (active.value === 'deliver') {
+    return list.value.filter(item => item.DELIVER_OR_DINING === true); // 外送
+  } else if (active.value === 'dining') {
+    return list.value.filter(item => item.DELIVER_OR_DINING === false); // 堂食
+  }
+  return list.value;
+});
 const onLoad = () => {
      // 确保数据准备好之后再加载。否则在页面刚打开时，onLoad会先于fetch以空数据加载
     if (!listReady.value) return;

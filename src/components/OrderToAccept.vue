@@ -1,22 +1,32 @@
 <script setup>
-const order_number = 11111;
-const order_date = "2024-07-11";
-const order_address = "上海市";
+const props = defineProps({
+    order_detail: Object
+})
+
+
+const router = useRouter();
+const toDetail=()=>{
+    router.push({ path: '/OrderDetail', query: { detail:JSON.stringify(props.order_detail)} });
+}
 </script>
 
 <template>
-    <div class="order-cell">
+     <div class="order-cell" @click="toDetail">
         <div class="part1">
-            <img src="../assets/image/waimai.jpg" />
-            <p class="order-number">{{ order_number }}</p>
+            <img :src="order_detail.DELIVER_OR_DINING ?
+                'https://z4a.net/images/2024/07/22/waimai.png'
+                : 'https://z4a.net/images/2024/07/22/tangshi.png'" />
+            <p class="order-number">{{ order_detail.ORDER_ID }}</p>
             <van-icon name="arrow" size="4vw"></van-icon>
         </div>
 
-        <div class="order-date">{{ order_date }}</div>
 
-        <div class="address">地址：{{ order_address }}</div>
+        <div class="order-date">{{ order_detail.UPDATED_TIME }}</div>
+
+        <div class="address">地址：{{ order_detail. CUS_ADDRESS}}</div>
 
     </div>
+
 </template>
 
 <style scoped>
@@ -74,7 +84,3 @@ const order_address = "上海市";
     margin-bottom: 10px;
 }
 </style>
-
-<script setup>
-
-</script>

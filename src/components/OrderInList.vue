@@ -1,57 +1,69 @@
 <script setup>
-const order_number = 11111;
-const order_date = "2024-07-11";
-const order_price = 23.45;
-
 const props = defineProps({
-  order_detail:Object
+    order_detail: Object
 })
 
+
+const router = useRouter();
+const toDetail=()=>{
+    router.push({ path: '/OrderDetail', query: { detail:JSON.stringify(props.order_detail)} });
+}
+
+const limitedDishes = computed(() => {
+    const dishes = props.order_detail.orderDishes;
+    return dishes.length > 2 ? dishes.slice(0, 2) : dishes;
+});
 </script>
 
 <template>
-    <div class="order-cell">
+    <div class="order-cell" @click="toDetail">
         <div class="part1">
-            <img :src="order_detail.DELIVER_OR_DINING? 
-            '../assets/image/waimai.jpg'
-            :'../assets/image/tangshi.jpg' " />
-            <p class="order-number">{{ order_number }}</p>
+            <img :src="order_detail.DELIVER_OR_DINING ?
+                'https://z4a.net/images/2024/07/22/waimai.png'
+                : 'https://z4a.net/images/2024/07/22/tangshi.png'" />
+            <p class="order-number">{{ order_detail.ORDER_ID }}</p>
             <van-icon name="arrow" size="4vw"></van-icon>
         </div>
 
 
-        <div class="order-date">{{ order_date }}</div>
+        <div class="order-date">{{ order_detail.UPDATED_TIME }}</div>
 
         <div class="part3">
             <div class="food-imgs">
-                <img src="../assets/image/oldman.jpg"/>
-                <img src="../assets/image/oldman.jpg"/>
+                <div v-for="(dish, index) in limitedDishes" :key="index" class="food-imgs">
+                    <img :src="dish.PICTURE" :alt="dish.DISH_NAME">
+                </div>
             </div>
-            <div class="price">¥{{ order_price }}</div>
+            <div class="price">¥{{ order_detail.MONEY }}</div>
         </div>
 
     </div>
 </template>
 
 <style scoped>
-.food-imgs img{
+.food-imgs img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    margin-right: 2vh;
+    margin-right: 1.5vh;
+    margin-top: 1vh;
 }
-.food-imgs{
+
+.food-imgs {
     height: 7.5vh;
+    display: flex;
+    flex-direction: row;
 }
+
 .price {
-    font-size:2.8vh;
-    font-weight:bold;
+    font-size: 2.8vh;
+    font-weight: bold;
 }
 
 .part3 {
     display: flex;
     justify-content: space-between;
-    align-items:end;
+    align-items: end;
     /* 如果需要垂直居中对齐 */
 }
 
@@ -69,8 +81,8 @@ const props = defineProps({
 }
 
 .part1 img {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 15%;
+    max-height: 15%;
     object-fit: contain;
     margin-right: 5vw;
     /* 保持图片比例并裁剪 */
@@ -94,7 +106,3 @@ const props = defineProps({
     margin-bottom: 15px;
 }
 </style>
-
-<script setup>
-
-</script>
