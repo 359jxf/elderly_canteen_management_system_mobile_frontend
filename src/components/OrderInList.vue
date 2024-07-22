@@ -61,10 +61,10 @@ const limitedDishes = computed(() => {
 }
 
 .part3 {
+    height: 50%;
     display: flex;
     justify-content: space-between;
     align-items: end;
-    /* 如果需要垂直居中对齐 */
 }
 
 .order-date {
@@ -81,16 +81,16 @@ const limitedDishes = computed(() => {
 }
 
 .part1 img {
-    max-width: 15%;
-    max-height: 15%;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
-    margin-right: 5vw;
+    margin-right: 5%;
     /* 保持图片比例并裁剪 */
 }
 
 .part1 {
+    height: 20%;
     display: flex;
-    padding-top: 2.5%;
     align-items: center;
     justify-content: space-between;
 }
@@ -103,6 +103,8 @@ const limitedDishes = computed(() => {
     width: 90vw;
     padding-left: 6vw;
     padding-right: 6vw;
+    padding-top: 1.2vh;
+    padding-bottom: 1.2vh;
     margin-bottom: 15px;
 }
 </style>

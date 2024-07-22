@@ -53,7 +53,7 @@ const fetchOrders = async () => {
 onMounted(fetchOrders);
 
 
-const list = ref([]);//要传给OrderInList的数据
+const list = ref([]);//要传给OrderInList卡片的数据
 const loading = ref(false);
 const finished = ref(false);
 const refreshing = ref(false);

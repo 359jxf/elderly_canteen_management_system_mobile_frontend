@@ -1,12 +1,17 @@
 <script setup>
 const props = defineProps({
-    order_detail: Object
+    order_detail: Object,
+    isAccepted:Boolean
 })
 
 
 const router = useRouter();
 const toDetail=()=>{
     router.push({ path: '/OrderDetail', query: { detail:JSON.stringify(props.order_detail)} });
+}
+
+const accpetOrder=()=>{
+    console.log("接单");
 }
 </script>
 
@@ -23,23 +28,38 @@ const toDetail=()=>{
 
         <div class="order-date">{{ order_detail.UPDATED_TIME }}</div>
 
-        <div class="address">地址：{{ order_detail. CUS_ADDRESS}}</div>
-
+     
+        <div class="part3">
+            <div class="address">地址：{{ order_detail. CUS_ADDRESS}}</div>
+            <van-button @click="accpetOrder"
+            :disabled="isAccepted===true" 
+            :style="{ backgroundColor: 'rgb(249, 184, 62)' }" >接单</van-button> 
+        </div>
     </div>
 
 </template>
 
 <style scoped>
+.part3 .van-button{
+    max-height: 80%;
+    object-fit: contain;
+
+}
 .address {
-    font-size:2vh;
-    flex-grow: 1;
+    font-size:1.8vh;
+    width: 80%;
 
     display: flex;
     align-items: center;
     height: 100%;
-    
-
 }
+.part3 {
+    height: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
 
 .order-date {
     font-size: small;
@@ -58,13 +78,13 @@ const toDetail=()=>{
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    margin-right: 5vw;
+    margin-right: 5%;
     /* 保持图片比例并裁剪 */
 }
 
 .part1 {
+    height: 20%;
     display: flex;
-    padding-top: 2.5%;
     align-items: center;
     justify-content: space-between;
 }
@@ -77,9 +97,9 @@ const toDetail=()=>{
     /* 圆角半径 */
     background-color: white;
     width: 90vw;
-    padding-left: 6vw;
-    padding-right: 6vw;
-    padding-top: 1vh;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    padding-top: 1.2vh;
     padding-bottom: 1.5vh;
     margin-bottom: 10px;
 }
