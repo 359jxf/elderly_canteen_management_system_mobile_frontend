@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     404: typeof import('./src/views/404.vue')['default']
     AccpetOrder: typeof import('./src/views/AccpetOrder.vue')['default']
+    AlertDialog: typeof import('./src/components/AlertDialog.vue')['default']
     BottomTabbar: typeof import('./src/components/BottomTabbar.vue')['default']
     copy: typeof import('./src/views/AccpetOrder copy.vue')['default']
     Home: typeof import('./src/views/Home.vue')['default']
@@ -24,6 +25,7 @@ declare module 'vue' {
     User: typeof import('./src/views/User.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanCol: typeof import('vant/es')['Col']
+    VanDialog: typeof import('vant/es')['Dialog']
     VanIcon: typeof import('vant/es')['Icon']
     VanList: typeof import('vant/es')['List']
     VanPullRefresh: typeof import('vant/es')['PullRefresh']

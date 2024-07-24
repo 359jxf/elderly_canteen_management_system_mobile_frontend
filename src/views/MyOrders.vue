@@ -4,7 +4,7 @@
             <div class="top">
                 <van-icon name="arrow-left" @click="onClickLeft" />
                 <p>我的订单</p>
-                <img src="../assets/image/oldman.jpg" />
+                <img :src="portrait" @click="clickPortrait"/>
             </div>
 
             <van-tabs v-model:active="active"  swipeable 
@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { getOrders } from '../api/api';
+import { getOrders,getPorTrait } from '../api/api';
 
 
 const onClickLeft = () => history.back();
@@ -101,6 +101,22 @@ const onRefresh = () => {
     listReady.value=false;//不置false同样会使onLoad先加载一遍。
     fetchOrders();
 };
+
+
+const router = useRouter();
+const clickPortrait=()=>{
+  router.push({ path: '/User' });
+}
+
+const portrait = ref();
+const loadPortrait=async()=>{
+  const url=await getPorTrait();
+  console.log("url:",url);
+  portrait.value=url;
+  console.log("portrait:",portrait);
+}
+onMounted(loadPortrait);
+
 </script>
 
 <style scoped>

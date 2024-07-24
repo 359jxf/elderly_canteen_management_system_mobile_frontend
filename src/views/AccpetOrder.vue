@@ -1,22 +1,45 @@
 <script setup>
 
-import { getAcceptableOrder, getAcceptedOrder, getFinishedOrder } from '../api/api';
+import { onMounted } from 'vue';
+import {
+  getAcceptableOrder, getAcceptedOrder, getFinishedOrder
+  , postAccpetOrder, getPorTrait
+} from '../api/api';
 
+//头像加载（渲染阶段）、点击跳转用户页
+//#region
+const portrait = ref();
+const loadPortrait=async()=>{
+  const url=await getPorTrait();
+  console.log("url:",url);
+  portrait.value=url;
+  console.log("portrait:",portrait);
+}
+onMounted(loadPortrait);
+
+const router = useRouter();
+const clickPortrait=()=>{
+  router.push({ path: '/User' });
+}
+//#endregion
+
+//标签页-待送订单
+//#region
 const onClickLeft = () => history.back();
-const active = ref('待送订单');
 const listReady = ref(false); // 添加一个布尔变量以确保数据准备好
 const orderList = ref([]);
 const acceptedOrder = ref({});
-const isAccepted=ref();
+const isAccepted = ref();//false表示当前没接单
 const fetchOrders = async () => {
   try {
     const response = await getAcceptableOrder();
     orderList.value = response;
     const response2 = await getAcceptedOrder();
     acceptedOrder.value = response2;
+    console.log("acceptedOrder", acceptedOrder.value);
 
-    isAccepted.value=(acceptedOrder!=null);///////
-
+    isAccepted.value = (Object.keys(acceptedOrder.value).length !== 0);
+    console.log("isAccepted", isAccepted.value);
     listReady.value = true; // 数据准备好
     onLoad();
   } catch (error) {
@@ -59,6 +82,7 @@ const onLoad = () => {
   }
 }
 const onRefresh = () => {
+  console.log("刷新页面");
   // 清空列表数据
   list.value = [];
   finished.value = false;
@@ -67,7 +91,12 @@ const onRefresh = () => {
   listReady.value = false;//不置false同样会使onLoad先加载一遍。
   fetchOrders();
 };
+//#endregion
 
+
+
+//标签页-已送订单
+// #region
 const refreshingFinished = ref(false);
 const listReady2 = ref(false); // 添加一个布尔变量以确保数据准备好
 const orderList2 = ref([]);
@@ -113,6 +142,7 @@ const onLoadFinished = () => {
   }
 }
 const onRefreshFinished = () => {
+  console.log("刷新页面");
   // 清空列表数据
   list2.value = [];
   finished2.value = false;
@@ -121,10 +151,49 @@ const onRefreshFinished = () => {
   listReady2.value = false;//不置false同样会使onLoad先加载一遍。
   fetchFinishedOrders();
 };
+//#endregion
 
+
+//标签页跳转时执行刷新
+const active = ref('待送订单');
 watch(active, (newActive) => {
   newActive == "待送订单" ? onRefresh() : onRefreshFinished();
 });
+
+
+//接单逻辑（发送请求，弹窗，刷新）
+// #region 
+const showAlert = ref(false);
+const alertMessage = ref('');
+
+const accpetOrder = async (accpeted_order) => {
+  console.log("接单");
+  const status = await postAccpetOrder(accpeted_order.ORDER_ID);
+  console.log(status);
+  switch (status) {
+    case 200:
+      alertMessage.value = '接单成功！';
+      break;
+    case 403:
+      alertMessage.value = '订单无法接受！';
+      break;
+    case 500:
+      alertMessage.value = '服务器错误，请稍后再试！';
+      break;
+    default:
+      alertMessage.value = '未知错误，请稍后再试！';
+  }
+  showAlert.value = true;
+  showDialog({ message: alertMessage.value, width: 300 })
+    .then(() => { onRefresh(); });
+
+}
+// #endregion
+
+
+
+
+
 </script>
 
 
@@ -133,7 +202,7 @@ watch(active, (newActive) => {
     <div class="top">
       <van-icon name="arrow-left" @click="onClickLeft" />
       <p>志愿接单</p>
-      <img src="../assets/image/oldman.jpg" />
+      <img :src="portrait" @click="clickPortrait"/>
     </div>
 
     <van-tabs v-model:active="active" title-active-color="rgb(249, 184, 62)">
@@ -153,7 +222,9 @@ watch(active, (newActive) => {
           <div class="order-title">可接订单</div>
           <div class="scroll">
             <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-              <OrderToAccept v-for="item in list" :key="item.ORDER_ID" :order_detail="item" :isAccepted="isAccepted"></OrderToAccept>
+              <OrderToAccept v-for="item in list" :key="item.ORDER_ID" :order_detail="item" :isAccepted="isAccepted"
+                @clickAccept="accpetOrder"></OrderToAccept>
+
             </van-list>
           </div>
         </div>
@@ -180,32 +251,17 @@ watch(active, (newActive) => {
 </template>
 
 <style scoped>
-.acceptable {
-  width: 100%;
-  flex-grow: 1;
-  background-color: rgba(244, 244, 244);
-}
-
-.finishedScroll {
-  height: 85vh;
-  overflow: auto;
-  width: 90vw;
-
-}
-
-.finishedOrders {
-  width: 100%;
-  display: flex;
-  flex-grow: 1;
-  padding: 20px;
-  background-color: rgba(244, 244, 244);
-}
-
-
 .container {
   display: flex;
   flex-direction: column;
   height: 100vh;
+}
+
+
+/*顶部导航栏*/
+/*#region*/
+.van-tab {
+  height: 5vh;
 }
 
 .top p {
@@ -236,11 +292,27 @@ watch(active, (newActive) => {
   font-weight: bold;
   position: relative;
 }
+/*#endregion*/
 
-.order-title {
-  font-size: large;
-  font-weight: bold;
-  margin-bottom: 10px;
+
+/*标签页-待送订单 */
+.acceptable {
+  width: 100%;
+  flex-grow: 1;
+  background-color: rgba(244, 244, 244);
+}
+
+/*当前订单部分*/
+/*#region*/
+.current-order {
+  width: 100%;
+  height: 25vh;
+  background-color: rgb(249, 184, 62);
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
 }
 
 .current-title {
@@ -253,16 +325,16 @@ watch(active, (newActive) => {
   font-weight: bold;
   letter-spacing: 0.2vh;
 }
+/*#endregion*/
 
-.van-tab {
-  height: 5vh;
+/*可接订单部分 */
+/*#region*/
+.order-title {
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-.title {
-  margin-top: 3vh;
-  margin-bottom: 3vh;
-  width: 100%;
-}
 
 .scroll {
   height: 51vh;
@@ -275,18 +347,32 @@ watch(active, (newActive) => {
   flex-grow: 1;
   padding: 20px;
 }
+/*#endregion */
 
 
 
 
-.current-order {
-  width: 100%;
-  height: 25vh;
-  background-color: rgb(249, 184, 62);
-  display: flex;
-  flex-direction: column;
 
-  justify-content: center;
-  align-items: center;
+/*标签页-已送订单 */
+.finishedScroll {
+  height: 85vh;
+  overflow: auto;
+  width: 90vw;
+
 }
+
+.finishedOrders {
+  width: 100%;
+  display: flex;
+  flex-grow: 1;
+  padding: 20px;
+  background-color: rgba(244, 244, 244);
+}
+
+
+
+
+
+
+
 </style>

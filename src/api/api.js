@@ -22,3 +22,21 @@ export const getFinishedOrder=async()=>{
     console.log(res.data.response);
     return res.data.response;
 }
+
+export const postAccpetOrder=async(orderId)=>{
+    try {
+        const response = await ins.post('/acceptOrder', { ORDER_ID: orderId });
+        return response.status;
+      } catch (error) {
+        return error.response;
+      }
+
+}
+
+export const getPorTrait=async()=>{
+
+    const res=await ins.get('/api/account/getPersonInfo');
+    console.log(res.data.response.PORTRAIT);
+    return res.data.response.PORTRAIT;
+
+}

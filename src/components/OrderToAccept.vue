@@ -10,13 +10,16 @@ const toDetail=()=>{
     router.push({ path: '/OrderDetail', query: { detail:JSON.stringify(props.order_detail)} });
 }
 
-const accpetOrder=()=>{
-    console.log("接单");
+const emit = defineEmits(['clickAccept']);
+const clickAccept=()=>{
+    console.log("点击接单按钮");
+    emit('clickAccept',props.order_detail);
 }
 </script>
 
 <template>
-     <div class="order-cell" @click="toDetail">
+    <div v-if="Object.keys(order_detail).length!==0">
+        <div class="order-cell" @click="toDetail">
         <div class="part1">
             <img :src="order_detail.DELIVER_OR_DINING ?
                 'https://z4a.net/images/2024/07/22/waimai.png'
@@ -31,11 +34,13 @@ const accpetOrder=()=>{
      
         <div class="part3">
             <div class="address">地址：{{ order_detail. CUS_ADDRESS}}</div>
-            <van-button @click="accpetOrder"
+            <van-button @click.stop="clickAccept"
             :disabled="isAccepted===true" 
             :style="{ backgroundColor: 'rgb(249, 184, 62)' }" >接单</van-button> 
         </div>
     </div>
+    </div>
+   
 
 </template>
 
