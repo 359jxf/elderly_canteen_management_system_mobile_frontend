@@ -6,10 +6,10 @@
     <div class="payfooter-icon">
       <van-radio-group v-model="checked" shape="dot" direction="horizontal">
         <div class="left">
-          <van-radio name="1"> <van-icon name="wechat-pay" /></van-radio>
+          <van-radio name="1"> &nbsp;&nbsp;<img src="../assets/wechatpay.png" /></van-radio>
         </div>
         <div class="right">
-          <van-radio name="2"><van-icon name="alipay" /></van-radio>
+          <van-radio name="2">&nbsp;&nbsp;<img src="../assets/alipay.png" /></van-radio>
         </div>
       </van-radio-group>
     </div>

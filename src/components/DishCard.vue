@@ -64,7 +64,7 @@
   font-size: small;
 }
 .card-right-bottom .text {
-  font-size: small;
+  font-size: medium;
   font-weight: bold;
 }
 .card-right-bottom .num {
