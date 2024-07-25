@@ -21,6 +21,7 @@ declare module 'vue' {
     OrderToAccept: typeof import('./src/components/OrderToAccept.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Test: typeof import('./src/views/test.vue')['default']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
     User: typeof import('./src/views/User.vue')['default']
     VanButton: typeof import('vant/es')['Button']

@@ -7,7 +7,12 @@ const routes = [
     path: '/',
     component: App,
     children: [
-      { path: '', redirect: '/AccpetOrder' },
+      { path: '', redirect: '/test' },
+      {
+        path:'/test',
+        name:'test',
+        component:()=>import("../views/test.vue")
+      },
       {
         path:'/OrderDetail',
         name:'OrderDetail',
