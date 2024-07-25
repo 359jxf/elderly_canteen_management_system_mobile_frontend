@@ -3,7 +3,7 @@
     <span class="title"> 我的点餐列表 </span>
     <DishCard />
     <DishCard />
-    <DishCard />
+    <hr class="hr-solid" />
     <span class="text">合计￥35.5</span>
   </div>
 </template>
@@ -12,14 +12,18 @@
 
 <style scoped>
 .orderlist {
-  border-radius: 7px;
+  border-radius: 15px;
   margin: 4%;
   padding: 4%;
-  background-color: green;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 .title {
   font-size: 25px;
   font-weight: bold;
+}
+.hr-solid {
+  border: 0;
+  border-top: 1px solid #d0d0d5;
 }
 .text {
   font-size: 20px;

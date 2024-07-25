@@ -25,9 +25,9 @@
 
 <style scoped>
 .dishcard {
-  background-color: pink;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
   margin-top: 4%;
-  border-radius: 7px;
+  border-radius: 15px;
   padding: 4%;
   display: flex;
 }

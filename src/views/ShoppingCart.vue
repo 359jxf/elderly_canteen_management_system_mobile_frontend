@@ -8,6 +8,9 @@
   <div>
     <OrderList />
   </div>
+  <div>
+    <PayFooter />
+  </div>
 </template>
 
 <script setup></script>

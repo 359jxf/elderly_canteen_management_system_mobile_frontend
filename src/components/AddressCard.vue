@@ -11,6 +11,7 @@
         <img src="../assets/voice.png" class="voice-pic" />
       </div>
     </div>
+    <hr class="hr-solid" />
     <span class="text"> 设为默认地址 </span>
   </div>
 </template>
@@ -25,11 +26,11 @@ defineProps({
 .addresscard {
   margin: 4%;
   padding: 4% 8% 4% 8%;
-  background-color: pink;
-  border-radius: 7px;
+  border-radius: 15px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 .title {
-  font-size: 700;
+  font-size: large;
   font-weight: bold;
 }
 .addresscard-body {
@@ -48,6 +49,10 @@ defineProps({
 .voice-pic {
   height: 40px;
   width: 40px;
+}
+.hr-solid {
+  border: 0;
+  border-top: 1px solid #d0d0d5;
 }
 .addresscard .text {
   font-size: small;
