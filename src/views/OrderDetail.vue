@@ -1,116 +1,62 @@
 <template>
-    <div id="header">我是傻逼</div>
-    <div id="body">
-        <div id="address-information-card">
-            <div><span style="font-size: 20px; font-weight: 600;">填写收货地址</span></div>
-            <div style="display: flex; align-items: center;">
-                <div style="width: 80%;"><span style="font-size: 15px;">上海市 嘉定区 曹安公路XXXX</span></div>
-                <div style="width: 20%;"><img src="../assets/voice.png" width="50px" height="50px"></div>
-            </div>
-            <span style="font-size: 10px;">设置为默认地址</span>
-        </div>
-        <div id="dish-list">
-            主播我是人机
-            <van-row :gutter="[20, 20]">
-                <van-col span="24">
-                    <div class="card">
-                        <div class="card-left">
-                            <img src="../assets/beef.png" height="75px">
-                        </div>
-                        <div class="card-right">
-                            <div class="card-right-top">
-                                卤牛肉
-                            </div>
-                            <div class="card-right-bottom">
-                                111
-                            </div>
-                        </div>
-                    </div>
-                </van-col>
-                <van-col span="24">
-                    <div class="card">
-                        <div class="card-left">
-                            <img src="../assets/beef.png" height="75px">
-                        </div>
-                        <div class="card-right">
-                            <div class="card-right-top">
-                                卤牛肉
-                            </div>
-                            <div class="card-right-bottom">
-                                111
-                            </div>
-                        </div>
-                    </div>
-                </van-col>
-                <van-col span="24">
-                    <div class="card">
-                        <div class="card-left">
-                            <img src="../assets/beef.png" height="75px">
-                        </div>
-                        <div class="card-right">
-                            <div class="card-right-top">
-                                卤牛肉
-                            </div>
-                            <div class="card-right-bottom">
-                                111
-                            </div>
-                        </div>
-                    </div>
-                </van-col>
-            </van-row>
-        </div>
+  <div>
+    <NavBar />
+  </div>
+  <div>
+    <SimpleAddressCard />
+  </div>
+  <div>
+    <VolunteerCard />
+  </div>
+  <div>
+    <OrderCard />
+  </div>
+  <div class="footer">
+    <div class="info">
+      <div class="header">
+        <span style="font-weight: bold">用户备注</span>
+      </div>
+      <div class="mid">
+        <span>请放一楼大厅桌子</span>
+      </div>
+      <div>
+        <span style="color: red">投诉电话</span>
+        <span>&nbsp;&nbsp;1234567</span>
+      </div>
     </div>
-    <div id="footer">我是傻逼</div>
+    <hr class="hr-solid" />
+    <div class="buttonpt">
+      <van-button type="primary" class="button">确认取餐</van-button>
+    </div>
+  </div>
 </template>
 
-<script setup>
-</script>
+<script setup></script>
 
-<style>
-#header {
-    background-color: red;
+<style scoped>
+.footer .info {
+  padding-top: 2%;
+  padding-left: 6%;
+  font-size: small;
 }
-#body {
-    margin-top: 15px;
+.footer .info .header {
+  margin-bottom: 2%;
 }
-#address-information-card {
-    padding-top: 15px;
-    padding-left: 20px;
-    padding-bottom: 15px;
-    border-radius: 15px;
-    background-color: blue;
+.footer .info .mid {
+  margin-bottom: 10%;
 }
-#dish-list {
-    background-color: white;
-    border-radius: 15px;
-    padding-top: 15px;
-    padding-left: 20px;
-    padding-left: 20px;
+.hr-solid {
+  border: 0;
+  border-top: 1px solid #d0d0d5;
 }
-.card {
-    height: 75px;
-    background-color: pink;
-    display: flex;
-    border-radius: 15px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    margin-right: 10px;
+.buttonpt {
+  padding-left: 50%;
+  margin-bottom: 1%;
 }
-.card-left {
-    width: 40%;
-    border-radius: 15px;
-    padding-left: 10px;
-}
-.card-right {
-    width: 60%;
-}
-.card-right-top {
-    height: 50%;
-}
-.card-right-bottom {
-    height: 50%;
-}
-#footer {
-    background-color: green;
+.button {
+  width: 90%;
+  background-color: orange;
+  color: black;
+  border: none;
 }
 </style>

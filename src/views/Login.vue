@@ -1,24 +1,15 @@
 <template>
-  <van-row id="header">
-    <van-col span="3" class="search-line-icon"><van-icon name="arrow-left" /></van-col>
-    <van-col span="18" class="search-line-icon"><span id="title">订单详情</span></van-col>
-    <van-col span="3" class="search-line-icon" >
-        <div class="search-line-icon" >
-        <img src="../assets/oldman.jpg" height="40" width="40">
-        </div>
-    </van-col>
-  </van-row>
   <div id="body">
     <div id="address-card">
-      <div style="margin-left:5%;">收货地址</div>
-      <div style="margin-left:5%">xxx</div>
+      <div style="margin-left: 5%">收货地址</div>
+      <div style="margin-left: 5%">xxx</div>
     </div>
     <div id="volunteer-information-card">
       <div id="card-left">
-        <div style="margin-left:10%;margin-bottom: 5%;margin-top: 5%;">
-          <span style="color: grey;font-size: 40px;font-weight: bold;">0123</span>
+        <div style="margin-left: 10%; margin-bottom: 5%; margin-top: 5%">
+          <span style="color: grey; font-size: 40px; font-weight: bold">0123</span>
         </div>
-        <div style="margin-left:10%;margin-bottom: 5%;margin-top: 5%;">
+        <div style="margin-left: 10%; margin-bottom: 5%; margin-top: 5%">
           <span style="color: grey">志愿者:小明</span>
         </div>
       </div>
@@ -28,48 +19,52 @@
     </div>
     <div id="order-card">
       <div id="card-header">
-        <div style="margin-bottom: 5%;"><span style="font-weight: bold; font-size: large;">订单详情</span></div>
+        <div style="margin-bottom: 5%">
+          <span style="font-weight: bold; font-size: large">订单详情</span>
+        </div>
         <van-row :gutter="[0, 10]">
           <van-col span="12">订单号</van-col>
-          <van-col span="12" style="text-align: right;">1234567</van-col>
-          <van-col span="12" >就餐方式</van-col>
-          <van-col span="12" style="text-align: right;">外卖</van-col>
-          <van-col span="12" >补贴消耗</van-col>
-          <van-col span="12" style="text-align: right;">无</van-col>
+          <van-col span="12" style="text-align: right">1234567</van-col>
+          <van-col span="12">就餐方式</van-col>
+          <van-col span="12" style="text-align: right">外卖</van-col>
+          <van-col span="12">补贴消耗</van-col>
+          <van-col span="12" style="text-align: right">无</van-col>
         </van-row>
       </div>
       <div id="card-mid">
-        <div style="margin-bottom: 5%;"><span style="font-weight: bold; font-size: large;">购物车详情</span></div>
+        <div style="margin-bottom: 5%">
+          <span style="font-weight: bold; font-size: large">购物车详情</span>
+        </div>
         <van-row :gutter="[0, 5]">
           <van-col span="8">酸菜鱼</van-col>
-          <van-col span="8"  style="text-align: right;">1份</van-col>
-          <van-col span="8"  style="text-align: right;">2.00</van-col>
+          <van-col span="8" style="text-align: right">1份</van-col>
+          <van-col span="8" style="text-align: right">2.00</van-col>
           <van-col span="8">酸菜鱼</van-col>
-          <van-col span="8"  style="text-align: right;">1份</van-col>
-          <van-col span="8"  style="text-align: right;">2.00</van-col>
+          <van-col span="8" style="text-align: right">1份</van-col>
+          <van-col span="8" style="text-align: right">2.00</van-col>
           <van-col span="8">酸菜鱼</van-col>
-          <van-col span="8"  style="text-align: right;">1份</van-col>
-          <van-col span="8"  style="text-align: right;">2.00</van-col>
-          <van-col span="8" >酸菜鱼</van-col>
-          <van-col span="8"  style="text-align: right;">1份</van-col>
-          <van-col span="8"  style="text-align: right;">2.00</van-col>
+          <van-col span="8" style="text-align: right">1份</van-col>
+          <van-col span="8" style="text-align: right">2.00</van-col>
+          <van-col span="8">酸菜鱼</van-col>
+          <van-col span="8" style="text-align: right">1份</van-col>
+          <van-col span="8" style="text-align: right">2.00</van-col>
         </van-row>
       </div>
       <div id="card-footer">
-          <van-icon name="cash-o" />
-          <span>总计</span>
-          <span>8.00</span>
+        <van-icon name="cash-o" />
+        <span>总计</span>
+        <span>8.00</span>
       </div>
     </div>
   </div>
   <div id="footer">
-    <van-button color="orange" style="width: 150px;"><span style="color: black; font-weight: bold">确认取餐</span></van-button>
+    <van-button color="orange" style="width: 150px"
+      ><span style="color: black; font-weight: bold">确认取餐</span></van-button
+    >
   </div>
 </template>
 
-<script setup>
-
-</script>
+<script setup></script>
 
 <style scoped>
 #search-line {
@@ -91,7 +86,7 @@
   margin: 5%;
 }
 #address-card {
-  background-color: #D4FF79;
+  background-color: #d4ff79;
   border-radius: 10px;
   width: 100%;
 }
