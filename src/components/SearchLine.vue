@@ -14,7 +14,10 @@
   </van-row>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+const value = ref('')
+</script>
 
 <style scoped>
 .search-line-icon {

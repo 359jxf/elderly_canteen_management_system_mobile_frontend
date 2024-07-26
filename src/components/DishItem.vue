@@ -1,10 +1,6 @@
 <template>
   <div class="item">
-    <van-card
-      price="2.00"
-      title="好吃的东西"
-      thumb="https://fastly.jsdelivr.net/npm/@vant/assets/ipad.jpeg"
-    >
+    <van-card :price="price" :title="name" :thumb="img">
       <template #footer>
         <van-button size="small" color="#FFA500" style="border-radius: 50%"
           ><span color="black">+</span></van-button
@@ -13,7 +9,13 @@
     </van-card>
   </div>
 </template>
-<script setup></script>
+<script setup>
+defineProps({
+  img: String,
+  name: String,
+  price: String
+})
+</script>
 <style scoped>
 .item {
   width: 46%;
