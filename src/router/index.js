@@ -7,16 +7,41 @@ const routes = [
     path: '/',
     component: App,
     children: [
-      { path: '', redirect: '/home' },
+      { path: '', redirect: '/login' },
       {
-        path: '/home',
-        name: 'home',
-        component: () => import('../views/Home.vue')
+        path:'/Home',
+        name:'Home',
+        component:()=>import('../views/Home.vue')
       },
       {
-        path: '/login',
-        name: 'login',
+        path:'/User',
+        name:'User',
+        component:()=>import('../views/User.vue')
+      },
+      {
+        path: '/MyOrders',
+        name: 'MyOrders',
+        component: () => import('../views/MyOrders.vue')
+      },
+      {
+        path: '/Login',
+        name: 'Login',
         component: () => import('../views/Login.vue')
+      },
+      {
+        path: '/Authen',
+        name: 'Authen',
+        component: () => import('../views/Authentication.vue')
+      },
+      {
+        path: '/Apply',
+        name: 'Apply',
+        component: () => import('../views/VolunteerApply.vue')
+      },
+      {
+        path: '/Register',
+        name: 'Register',
+        component: () => import('../views/Register.vue')
       },
       {
         // vue-router@4的变化，舍弃*通配符
