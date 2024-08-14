@@ -32,14 +32,21 @@ const acceptedOrder = ref({});
 const isAccepted = ref();//false表示当前没接单
 const fetchOrders = async () => {
   try {
-    const response = await getAcceptableOrder();
+    const response = await getAcceptableOrder();//待送订单
     orderList.value = response;
-    const response2 = await getAcceptedOrder();
+    const response2 = await getAcceptedOrder();//当前订单
     acceptedOrder.value = response2;
     console.log("acceptedOrder", acceptedOrder.value);
 
     isAccepted.value = (Object.keys(acceptedOrder.value).length !== 0);
     console.log("isAccepted", isAccepted.value);
+
+    //订单按新到旧排序
+    orderList.value.sort((a, b) => {
+        // 如果 UPDATED_TIME 是时间字符串（例如 '2023-08-15T10:00:00Z'），可以直接比较它们
+        return new Date(b.UPDATED_TIME) - new Date(a.UPDATED_TIME);
+    });
+
     listReady.value = true; // 数据准备好
     onLoad();
   } catch (error) {
@@ -86,7 +93,7 @@ const onRefresh = () => {
   // 清空列表数据
   list.value = [];
   finished.value = false;
-  refreshing.value = true;
+  refreshing.value = true;//用来控制下拉刷新
   currentIndex = 0; // 重置已加载的索引
   listReady.value = false;//不置false同样会使onLoad先加载一遍。
   fetchOrders();
