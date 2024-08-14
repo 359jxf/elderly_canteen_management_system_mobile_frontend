@@ -4,12 +4,12 @@
         <span class="head">个人信息</span>
         <button class="info-button" @click="alterInformation">🖊</button>
         <div class="space"></div>
-        <div class="row"><span class="label">ID:</span> <span class="value">{{ userData.ACCOUNT_ID }}</span></div>
-        <div class="row"><span class="label">姓名:</span> <span class="value">{{ userData.NAME }}</span></div>
-        <div class="row"><span class="label">联系方式:</span> <span class="value">{{ userData.PHONE_NUM }}</span></div>
-        <div class="row"><span class="label">性别:</span> <span class="value">{{ userData.GENDER }}</span></div>
-        <div class="row"><span class="label">出生日期:</span> <span class="value">{{ userData.BIRTH_DATE }}</span></div>
-        <div class="row"><span class="label">地址:</span> <span class="value">{{ userData.ADDRESS }}</span></div>
+        <div class="row"><span class="label">ID:</span> <span class="value">{{ userData.accountId }}</span></div>
+        <div class="row"><span class="label">姓名:</span> <span class="value">{{ userData.name }}</span></div>
+        <div class="row"><span class="label">联系方式:</span> <span class="value">{{ userData.phoneNum }}</span></div>
+        <div class="row"><span class="label">性别:</span> <span class="value">{{ userData.gender }}</span></div>
+        <div class="row"><span class="label">出生日期:</span> <span class="value">{{ userData.birthDate }}</span></div>
+        <div class="row"><span class="label">地址:</span> <span class="value">{{ userData.address }}</span></div>
       </div>
       <div class="errorContainer" v-else>
         <p>{{ errorMessage }}</p>
@@ -31,15 +31,15 @@
   const getSuccess = ref(false);
   const errorMessage = ref('');
   const userData = ref({
-    ACCOUNT_ID: '',
-    ACCOUNT_NAME: '',
-    PHONE_NUM: '',
-    IDENTITY: '',
-    PORTRAIT:'',
-    GENDER: '',
-    BIRTH_DATE: '',
-    ADDRESS: '',
-    NAME: ''
+    accountId: '',
+    accountName: '',
+    phoneNum: '',
+    identity: '',
+    protrait:'',
+    gender: '',
+    birthDate: '',
+    address: '',
+    name: ''
   });
   
   const fetchData = async () => {
@@ -65,7 +65,7 @@
   });
 
   const alterInformation = () => {
-  router.push({ name: 'Authen' });
+  router.push({ name: 'Alter' });
   };
 
   const authen = () => {
@@ -108,7 +108,7 @@
 
 .info-button{
     border-radius: 50%;
-    background-color: rgb(255, 190, 77);
+    background-color: #ffa822;
     margin-left: 10%;
 }
 
@@ -133,12 +133,12 @@
 
 .buttonType{
     position: relative;
-    font-size: 80%;
+    font-size: 60%;
 
     height: 20%;
     width: 40%;
 
-    background-color: rgb(255, 190, 77);
+    background-color: #ffa822;
     border-radius: 20px ;
     z-index: 10;
 }

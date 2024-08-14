@@ -1,24 +1,35 @@
 <template>
-    <ReturnButton :targetRoute="{ name: 'Login' }" />
+    <ReturnButton :targetRoute="{ name: 'User' }" />
     <div class="background">
-        <div class="headerBox">新用户注册</div>
+        <div class="headerBox">修改信息</div>
         <div class="registerBox">
-            <div class="row"><span class="label">手机号码</span> <input class="inputBox" v-model="PHONE_NUM"/></div>
-            <div class="row"><span class="label">账户名称</span> <input class="inputBox" v-model="ACCOUNT_NAME"/></div>
-            <div class="row"><span class="label">账户密码</span> <input class="inputBox" v-model="PASSWORD"/></div>
-            <div class="row"><span class="label">性    别</span> <input class="inputBox" v-model="GENDER"/></div>
-            <div class="row"><span class="label">验证码</span> <input class="inputBox half" v-model="VERIFY_CODE"/><button class=verifyBtn @click="getCredit">发送</button></div>
-            <button class="getIn" @click="getIn">注册</button>
+            <div class="row"><span class="label">账户名称</span> <input class="inputBox" v-model="accountName"/></div>
+            <div class="row"><span class="label">地址</span> <input class="inputBox" v-model="address"/></div>
+            <div class="row"><span class="label">出生日期</span> <input class="inputBox" type="date" v-model="birthDate"/></div>
+            <div class="row"><span class="label">选择图片</span> <input class="inputBox" type="file" accept="image/*" @change="onImageSelected"/></div>
+            <div v-if="imageUrl"><img :src="imageUrl" alt="Selected Image" class="preview"/></div>
+            <button class="getIn" @click="Ensure">确认修改</button>
         </div>
     </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
+//import axios from 'axios';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
-const getIn = () => {
-router.push({ name: 'Home' });
+const imageUrl = ref(null);
+
+const Ensure = () => {
+router.push({ name: 'User' });
+};
+
+const onImageSelected = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    imageUrl.value = URL.createObjectURL(file);
+  }
 };
 </script>
 
@@ -27,6 +38,7 @@ router.push({ name: 'Home' });
     display: flex;
     position: relative;
     flex-direction: column; /* 使子元素按列布局 */
+    align-items: center; /* 子元素水平居中 */
     top: 0;
 
     height: 100vh;
@@ -38,9 +50,8 @@ router.push({ name: 'Home' });
 .registerBox{
     position: relative;
     height: 70%;
-    top:9%;
+    top:14%;
     width: 80%;
-    left: 10%;
     background-color: white;
     border-radius: 20px ;
 
@@ -51,9 +62,8 @@ router.push({ name: 'Home' });
 .headerBox{
     position: relative;
     height: 5%;
-    top: 10%;
+    top: 15%;
     width: 60%;
-    left: 20%;
     background-color: white;
     font-weight: bold;
     font-size: 80%;
@@ -86,6 +96,7 @@ router.push({ name: 'Home' });
     width: 50%;
     height: 60%;
     border-radius: 10px ;
+    font-size: 60%;
 }
 
 .half{
@@ -109,5 +120,11 @@ router.push({ name: 'Home' });
     top: 10%;
     border-radius: 20px ;
     font-size: 60%;
+}
+
+.preview{
+    position: relative;
+    height: 10%;
+    width: 20%;
 }
 </style>

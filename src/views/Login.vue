@@ -9,13 +9,13 @@
       验证码登录
     </div>
     <div class="loginBox" v-if=isPassword>
-      <input class="input-item" v-model="username" placeholder="输入账号" />
+      <input class="input-item" v-model="phoneNum" placeholder="输入手机号" />
       <input class="input-item" v-model="password" placeholder="输入密码" />
       <button class="loginBtn" @click="loginWithPassword">登录</button>
     </div>
     <div class="loginBox" v-else>
-      <input class="input-item" v-model="username" placeholder="输入手机号" />
-      <input class="input-item half" v-model="password" placeholder="输入验证码" />
+      <input class="input-item" v-model="phoneNum" placeholder="输入手机号" />
+      <input class="input-item half" v-model="verifyCode" placeholder="输入验证码" />
       <button class="getBtn" @click="getCredit">获取验证码</button>
       <button class="loginBtn" @click="loginWithCredit">登录</button>
     </div>
@@ -26,9 +26,14 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+//import axios from 'axios';
 
 const router = useRouter();
 const isPassword = ref(true);
+
+const phoneNum = ref('');
+const password = ref('');
+const verifyCode = ref('');
 
 const selectPassword = () => {
   isPassword.value = true;
@@ -37,6 +42,46 @@ const selectCredit = () => {
   isPassword.value = false;
 };
 
+/*
+const loginWithPassword = async () => {
+  try {
+    const response = await axios.post('YOUR_API_ENDPOINT/password-login', {
+      phoneNum: phoneNum.value,
+      password: password.value,
+    });
+    if (response.data.loginSuccess) {
+      const { token, identity, accountName } = response.data.response;
+      console.log('Login successful:', { token, identity, accountName });
+      router.push({ name: 'Home' });
+    } else {
+      alert('Login failed: ' + response.data.msg);
+    }
+  } catch (error) {
+    console.error('Error logging in with password:', error);
+    alert('An error occurred during login.');
+  }
+};
+*/
+/*
+const loginWithCredit = async () => {
+  try {
+    const response = await axios.post('YOUR_API_ENDPOINT/credit-login', {
+      phoneNum: username.value,
+      verifyCode: verifyCode.value, 
+    });
+    if (response.data.loginSuccess) {
+      const { token, identity, accountName } = response.data.response;
+      console.log('Login successful:', { token, identity, accountName });
+      router.push({ name: 'Home' });
+    } else {
+      alert('Login failed: ' + response.data.msg);
+    }
+  } catch (error) {
+    console.error('Error logging in with credit:', error);
+    alert('An error occurred during login.');
+  }
+};
+*/
 const loginWithPassword = () => {
 router.push({ name: 'Home' });
 };
@@ -46,15 +91,16 @@ router.push({ name: 'Home' });
 const register = () => {
 router.push({ name: 'Register' });
 };
+
 </script>
 
 <style scoped>
 .background{
   height: 100vh;
-  width: 100%;
+  width: 100vw;
 
   position: relative;
-  background-color: rgb(249, 207, 117);
+  background-color: #ffa822;
 }
 
 .loginBox{
@@ -139,15 +185,15 @@ router.push({ name: 'Register' });
   border-radius: 10px ; 
   margin-left: 10%;
   background-color: white;
-  font-size: 0.3rem;
+  font-size: 60%;
 }
 
 .register{
   position: relative;
   top: 35%;
-  left: 25%;
-  width: 50%;
-  height: 10%;
+  left: 30%;
+  width: 40%;
+  height: 8%;
   background-color: white;
   border-radius: 30px ; 
   font-size: 80%;

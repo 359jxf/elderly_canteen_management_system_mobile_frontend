@@ -21,7 +21,7 @@
     height: 100vh;
     width: 100vw;
 
-    background-color: rgb(254, 245, 221) ;
+    background-color: #ffa822 ;
 }
 
 .headImage{

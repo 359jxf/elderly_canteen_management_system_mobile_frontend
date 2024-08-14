@@ -1,18 +1,18 @@
 <template>
   <div class="backgroundC">
     <div class="colorPiece"></div>
-    <img src="../assets/slogan.jpg" alt="背景图" class="slogan" />
+    <img src="../assets/newSlogan.jpg" alt="背景图" class="slogan" />
     <div class="imageContainer">
-      <div class="imageWrapper">
-        <a href="https://example.com/page1" target="_blank">
+      <div class="imageWrapper" @click="resturant">
+        <div>
           <img src="../assets/resturant.png" alt="图片1" class="image" />
-        </a>
+        </div>
         <p class="imageText">食堂就餐</p>
       </div>
-      <div class="imageWrapper">
-        <a href="https://example.com/page2" target="_blank">
+      <div class="imageWrapper" @click="deliver">
+        <div>
           <img src="../assets/deliver.png" alt="图片2" class="image" />
-        </a>
+        </div>
         <p class="imageText">爱心外卖</p>
       </div>
     </div>
@@ -22,8 +22,8 @@
         志愿者服务
       </div>
       <div class="buttonContainer">
-        <a href="https://example.com/page3" class="button button1">志愿接单</a>
-        <a href="https://example.com/page4" class="button button2">志愿信息</a>
+        <div class="button button1" @click="getVolunteerOrder">志愿接单</div>
+        <div class="button button2" @click="getVolunteerInfor">志愿信息</div>
       </div>
       <div class="titleLine line2">
         食堂信息
@@ -46,7 +46,7 @@
   width: 100%;
   height: 100vh; /* 使背景占满整个视口高度 */
   position: relative; /* 使子元素的绝对定位相对于背景容器 */
-  background: rgb(249, 207, 117) ;
+  background: #ffa822;
 }
 
 .colorPiece {
@@ -109,7 +109,7 @@
   height: 0.7rem;
   width: 100%;
 
-  background-color: rgb(255, 226, 164) ;
+  background-color: #ffa822 ;
 
   font-size: 0.5rem;
   padding-left: 10%;
