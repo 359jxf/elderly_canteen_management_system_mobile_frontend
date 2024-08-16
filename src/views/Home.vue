@@ -35,13 +35,18 @@
         <span>查看购物车</span>
       </div>
       <div class="num">
+        <<<<<<< HEAD
         <span>￥{{ menu.totalPrice }}</span>
+        =======
+        <span>￥{{ count }}</span>
+        >>>>>>> 0f67c8ed0dd2e4eb3c4cb55d33bf59324d9f310f
       </div>
     </van-action-bar>
   </div>
 </template>
 
 <script setup>
+<<<<<<< HEAD
 import { useMenuStore } from '@/store/modules/menu'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
@@ -62,21 +67,48 @@ const items = ref([
   { img: 'beef.png', name: '紫烧肉', price: '￥2.00', category: '主食' },
   { img: 'beef.png', name: '白烧肉', price: '￥2.00', category: '炒菜' }
 ])
+=======
+import { useRouter } from 'vue-router'
+import { ref } from 'vue'
+const router = useRouter()
+const count = ref('25.18')
+const buttons = [
+  { id: '1', name: '主食', focus: 'false' },
+  { id: '2', name: '炒菜', focus: 'false' },
+  { id: '3', name: '凉菜', focus: 'false' },
+  { id: '4', name: '粥品', focus: 'false' }
+]
+const items = [
+  { img: '../assets/beef.png', name: '红烧肉', price: '2.00' },
+  { img: '../assets/beef.png', name: '红烧肉', price: '2.00' },
+  { img: '../assets/beef.png', name: '红烧肉', price: '2.00' },
+  { img: '../assets/beef.png', name: '红烧肉', price: '2.00' },
+  { img: '../assets/beef.png', name: '红烧肉', price: '2.00' },
+  { img: '../assets/beef.png', name: '红烧肉', price: '2.00' }
+]
+>>>>>>> 0f67c8ed0dd2e4eb3c4cb55d33bf59324d9f310f
 const onClickIcon = () => {
   router.push({ path: '/ShoppingCart' })
 }
 const onClickMenuButton = (name) => {
+<<<<<<< HEAD
   buttons.value.forEach((button) => {
     if (button.name === name) {
       if (button.focus === true) {
         button.focus = false
         button.active = false
       } else button.focus = true
+=======
+  buttons.forEach((button) => {
+    if (button.name === name) {
+      button.focus = true
+>>>>>>> 0f67c8ed0dd2e4eb3c4cb55d33bf59324d9f310f
     } else {
       button.focus = false
     }
   })
   console.log(name)
+<<<<<<< HEAD
 }
 
 // const filteredItems = computed(() => {
@@ -94,6 +126,10 @@ const filteredItems = computed(() => {
   const searchLower = searchTerm.value.trim().toLowerCase()
   return filteredByCategory.filter((item) => item.name.toLowerCase().includes(searchLower))
 })
+=======
+  // 后续菜单的筛选逻辑在这里
+}
+>>>>>>> 0f67c8ed0dd2e4eb3c4cb55d33bf59324d9f310f
 </script>
 <style scoped>
 .search-line-icon {
@@ -121,7 +157,11 @@ const filteredItems = computed(() => {
   border-radius: 7px;
   font-size: medium;
 }
+<<<<<<< HEAD
 .menu-button.focus {
+=======
+.menu-button:focus {
+>>>>>>> 0f67c8ed0dd2e4eb3c4cb55d33bf59324d9f310f
   background-color: orange;
   color: black;
 }
