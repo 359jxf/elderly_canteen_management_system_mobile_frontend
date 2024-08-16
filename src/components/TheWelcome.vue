@@ -1,12 +1,12 @@
 <template>
   <div class="theHelloContainer">
     <img src="../assets/Yui.jpg" alt="头像" class="helloImage" />
-    你好，平泽唯
+    你好，{{ accountName }}
   </div>
 </template>
 
 <script setup>
-
+const accountName = localStorage.getItem('accountName');
 </script>
 
 <style scoped>
@@ -31,10 +31,10 @@
 }
 .helloImage{
   position: relative; /* 相对定位 */
-  left: -10%;
+  left: -15%;
   top: 20%;
   width: auto;
-  height: 60%;
+  height: 70%;
   border-radius: 50%; /* 将图片设置为圆形 */
   object-fit: cover; /* 确保图片覆盖整个高度 */
 }

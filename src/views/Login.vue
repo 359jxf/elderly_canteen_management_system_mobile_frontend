@@ -26,7 +26,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-//import axios from 'axios';
+import axios from 'axios';
 
 const router = useRouter();
 const isPassword = ref(true);
@@ -42,16 +42,19 @@ const selectCredit = () => {
   isPassword.value = false;
 };
 
-/*
+
 const loginWithPassword = async () => {
   try {
-    const response = await axios.post('YOUR_API_ENDPOINT/password-login', {
+    const response = await axios.post('http://8.136.125.61/api/account/login', {
       phoneNum: phoneNum.value,
       password: password.value,
     });
     if (response.data.loginSuccess) {
       const { token, identity, accountName } = response.data.response;
-      console.log('Login successful:', { token, identity, accountName });
+      localStorage.setItem('token', token);
+      localStorage.setItem('identity', identity);
+      localStorage.setItem('accountName', accountName);
+
       router.push({ name: 'Home' });
     } else {
       alert('Login failed: ' + response.data.msg);
@@ -61,17 +64,18 @@ const loginWithPassword = async () => {
     alert('An error occurred during login.');
   }
 };
-*/
-/*
+
+
 const loginWithCredit = async () => {
   try {
     const response = await axios.post('YOUR_API_ENDPOINT/credit-login', {
-      phoneNum: username.value,
+      phoneNum: phoneNum.value,
       verifyCode: verifyCode.value, 
     });
     if (response.data.loginSuccess) {
       const { token, identity, accountName } = response.data.response;
       console.log('Login successful:', { token, identity, accountName });
+      localStorage.setItem('token', response.data.token);
       router.push({ name: 'Home' });
     } else {
       alert('Login failed: ' + response.data.msg);
@@ -81,13 +85,7 @@ const loginWithCredit = async () => {
     alert('An error occurred during login.');
   }
 };
-*/
-const loginWithPassword = () => {
-router.push({ name: 'Home' });
-};
-const loginWithCredit = () => {
-router.push({ name: 'Home' });
-};
+
 const register = () => {
 router.push({ name: 'Register' });
 };
@@ -171,10 +169,11 @@ router.push({ name: 'Register' });
 .loginBtn{
   position: relative;
   top: 20%;
-  height: 15%;
+  height: 20%;
   width: 40%;
   border-radius: 20px ; 
   background-color: rgb(232, 255, 195);
+  font-size: 70%;
 }
 
 .getBtn{

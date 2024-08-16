@@ -15,14 +15,41 @@
 
 <script setup>
 import { ref } from 'vue';
-//import axios from 'axios';
+import axios from 'axios';
 import { useRouter } from 'vue-router';
-const router = useRouter();
 
+const router = useRouter();
+const token = localStorage.getItem('token');
+
+const accountName = ref(null);
+const address = ref(null);
+const birthDate = ref(null);
 const imageUrl = ref(null);
 
-const Ensure = () => {
-router.push({ name: 'User' });
+const Ensure = async () => {
+  try {
+    const response = await axios.post('http://8.136.125.61/api/Account/alterPersonInfo', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+        accountName: '11',
+        phoneNum:'111',
+        portrait: '111',
+        gender:'female',
+        birthDate: birthDate.value,
+        address: 'address',
+        name:'平泽唯'
+    });
+
+    if (response.data.success) {
+      router.push({ name: 'User' });
+    } else {
+      alert('更新失败: ' + response.data.message);
+    }
+  } catch (error) {
+    console.error('Error updating account:', error);
+    alert('更新失败，请稍后重试');
+  }
 };
 
 const onImageSelected = (event) => {
@@ -31,14 +58,11 @@ const onImageSelected = (event) => {
     imageUrl.value = URL.createObjectURL(file);
   }
 };
-</script>
 
+</script>
 <style>
 .background{
-    display: flex;
     position: relative;
-    flex-direction: column; /* 使子元素按列布局 */
-    align-items: center; /* 子元素水平居中 */
     top: 0;
 
     height: 100vh;
@@ -52,6 +76,7 @@ const onImageSelected = (event) => {
     height: 70%;
     top:14%;
     width: 80%;
+    left: 10%;
     background-color: white;
     border-radius: 20px ;
 
@@ -64,7 +89,9 @@ const onImageSelected = (event) => {
     height: 5%;
     top: 15%;
     width: 60%;
+    left: 20%;
     background-color: white;
+
     font-weight: bold;
     font-size: 80%;
     text-align: center;
@@ -79,7 +106,6 @@ const onImageSelected = (event) => {
     left: 10%;
     position: relative;
     display: flex;
-    flex-direction: row;
     width: 100%;
     height: 12%;
 }
@@ -87,12 +113,12 @@ const onImageSelected = (event) => {
 .label{
     width: 20%;
     font-weight: bold;
-    font-size: 0.4rem;
+    font-size: 70%;
     min-width: 25%;
-    text-align: left;
 }
 
 .inputBox{
+    position: relative;
     width: 50%;
     height: 60%;
     border-radius: 10px ;

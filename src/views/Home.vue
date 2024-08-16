@@ -18,10 +18,10 @@
     </div>
     <TheWelcome />
     <div class="informationContainer">
-      <div class="titleLine">
+      <div class="titleLine" v-if="identity === 'volunteer' || identity === 'administrator'">
         志愿者服务
       </div>
-      <div class="buttonContainer">
+      <div class="buttonContainer" v-if="identity === 'volunteer' || identity === 'administrator'">
         <div class="button button1" @click="getVolunteerOrder">志愿接单</div>
         <div class="button button2" @click="getVolunteerInfor">志愿信息</div>
       </div>
@@ -39,6 +39,7 @@
 </template>
 
 <script setup>
+const identity = localStorage.getItem('identity');
 </script>
 
 <style scoped>

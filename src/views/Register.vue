@@ -77,7 +77,7 @@ router.push({ name: 'Home' });
 .label{
     width: 20%;
     font-weight: bold;
-    font-size: 0.4rem;
+    font-size: 60%;
     min-width: 25%;
     text-align: left;
 }
@@ -99,6 +99,7 @@ router.push({ name: 'Home' });
     height: 50%;
     left: 5%;
     border-radius: 5px ;
+    font-size: 70%;
 }
 
 .getIn{

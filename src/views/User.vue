@@ -43,22 +43,32 @@
   });
   
   const fetchData = async () => {
-    try {
-      const response = await axios.get('http://127.0.0.1:4523/m1/4808550-4462943-default/api/account/getPersonInfo');
-      const data = response.data;
-      if (data.getSuccess == true) {
-        getSuccess.value = true;
-        userData.value = data.response;
-      } else {
-        getSuccess.value = false;
-        errorMessage.value = data.msg;
+  try {
+    // 从 localStorage 中获取保存的 Token
+    const token = localStorage.getItem('token');
+
+    // 使用 axios 发起 GET 请求，附带 Authorization 头
+    const response = await axios.get('http://8.136.125.61/api/account/getPersonInfo', {
+      headers: {
+        Authorization: `Bearer ${token}`  // 将 Token 添加到 Authorization 头中
       }
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    });
+
+    const data = response.data;
+    if (data.getSuccess === true) {
+      getSuccess.value = true;
+      userData.value = data.response;
+    } else {
       getSuccess.value = false;
-      errorMessage.value = 'Failed to fetch data';
+      errorMessage.value = data.msg;
     }
-  };
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    getSuccess.value = false;
+    errorMessage.value = 'Failed to fetch data';
+  }
+};
+
   
   onMounted(() => {
     fetchData();
@@ -88,6 +98,8 @@
 }
 
 .row {
+  left: 0%;
+  top: 0%;
   display: flex;
   flex-direction: row;
   width: 80vw;
@@ -125,7 +137,6 @@
 .buttonContainer{
   display: flex;
   flex-direction: column;
-  align-items: center;
 
   height: 40%;
   width: 100%;
@@ -138,6 +149,7 @@
     height: 20%;
     width: 40%;
 
+    left: 30%;
     background-color: #ffa822;
     border-radius: 20px ;
     z-index: 10;
