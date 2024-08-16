@@ -1,14 +1,8 @@
 import { defineStore } from 'pinia'
-const useUserStore = defineStore('user', {
-  state: () => {
-    return {
-      num: 10
-    }
-  },
-  getters: {
-    Num_del_8(state) {
-      return state.num - 8
-    }
+import { ref } from 'vue'
+export const useUserStore = defineStore('user', () => {
+  const defaultAddr = ref('上海市 嘉定区 曹安公路4800号')
+  return {
+    defaultAddr
   }
 })
-export default useUserStore

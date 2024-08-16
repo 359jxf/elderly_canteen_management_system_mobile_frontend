@@ -5,23 +5,44 @@
     </div>
     <div class="card-right">
       <div class="card-right-top">
-        <span class="text">卤牛肉</span>
+        <span class="text">{{ props.name }}</span>
       </div>
       <div class="card-right-bottom">
         <div class="card-right-bottom-left">
-          <span class="text">￥14.50</span>
+          <span class="text">{{ props.price }}</span>
         </div>
         <div class="card-right-bottom-right">
-          <img src="../assets/plus.png" />
-          <span class="num">&nbsp;1&nbsp;</span>
-          <img src="../assets/plus.png" />
+          <button class="icon-button" @click="decreaseQuantity">
+            <img src="../assets/minus.png" />
+          </button>
+          <span class="num">&nbsp;{{ props.quantity }}&nbsp;</span>
+          <button class="icon-button" @click="increaseQuantity">
+            <img src="../assets/plus.png" />
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { defineProps } from 'vue'
+import { useMenuStore } from '@/store/modules/menu'
+const menu = useMenuStore()
+const props = defineProps({
+  img: String,
+  name: String,
+  price: String,
+  category: String,
+  quantity: String
+})
+const increaseQuantity = () => {
+  menu.addcount(props.name)
+}
+const decreaseQuantity = () => {
+  menu.minuscount(props.name)
+}
+</script>
 
 <style scoped>
 .dishcard {
@@ -69,5 +90,11 @@
 }
 .card-right-bottom .num {
   font-size: small;
+}
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
 </style>

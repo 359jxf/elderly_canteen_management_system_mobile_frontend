@@ -21,20 +21,13 @@
         <span class="title">购物车价格明细</span>
       </div>
       <div class="info">
-        <van-row :gutter="[0, 5]">
-          <van-col span="8">酸菜鱼</van-col>
-          <van-col span="8" style="text-align: right">1份</van-col>
-          <van-col span="8" style="text-align: right">2.00</van-col>
-          <van-col span="8">酸菜鱼</van-col>
-          <van-col span="8" style="text-align: right">1份</van-col>
-          <van-col span="8" style="text-align: right">2.00</van-col>
-          <van-col span="8">酸菜鱼</van-col>
-          <van-col span="8" style="text-align: right">1份</van-col>
-          <van-col span="8" style="text-align: right">2.00</van-col>
-          <van-col span="8">酸菜鱼</van-col>
-          <van-col span="8" style="text-align: right">1份</van-col>
-          <van-col span="8" style="text-align: right">2.00</van-col>
-        </van-row>
+        <ul>
+          <li v-for="(item, index) in menu.items" :key="index" class="item">
+            <span class="name">{{ item.name }}</span>
+            <span class="quantity">{{ item.quantity }}份</span>
+            <span class="price">{{ item.price }}</span>
+          </li>
+        </ul>
       </div>
     </div>
     <hr class="hr-solid" />
@@ -44,13 +37,16 @@
         <span class="text"> 总计</span>
       </div>
       <div class="right">
-        <span class="text"> ￥23.50</span>
+        <span class="text"> ￥{{ menu.totalPrice }}</span>
       </div>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useMenuStore } from '@/store/modules/menu'
+const menu = useMenuStore()
+</script>
 
 <style scoped>
 .orderCard {
@@ -99,5 +95,16 @@
 .card-footer .right .text {
   color: red;
   font-size: medium;
+}
+ul {
+  list-style-type: none; /* 移除默认的列表样式 */
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0; /* 调整垂直间隔 */
 }
 </style>

@@ -1,14 +1,17 @@
 <template>
   <div class="orderlist">
     <span class="title"> 我的点餐列表 </span>
-    <DishCard />
-    <DishCard />
+    <DishCard v-bind="item" v-for="(item, id) in menu.items" :key="id" />
     <hr class="hr-solid" />
-    <span class="text">合计￥35.5</span>
+    <span class="text"> 合计￥{{ menu.totalPrice }} </span>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useMenuStore } from '@/store/modules/menu'
+import DishCard from './DishCard.vue'
+const menu = useMenuStore()
+</script>
 
 <style scoped>
 .orderlist {

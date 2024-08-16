@@ -1,10 +1,10 @@
 <template>
   <div class="navbar">
-    <div class="arrow-left">
+    <button class="arrow-button" @click="goBack">
       <van-icon name="arrow-left" />
-    </div>
+    </button>
     <div class="title">
-      <p class="title-text">我的购物车</p>
+      <p class="title-text">{{ props.title }}</p>
     </div>
     <div class="oldman-icon">
       <img src="../assets/oldman.jpg" height="40px" width="40px" />
@@ -12,13 +12,28 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const goBack = () => {
+  router.back()
+  // 或者
+  // router.go(-1);
+}
+const props = defineProps({
+  title: String
+})
+</script>
 
 <style scoped>
 .navbar {
   width: 100%;
   display: flex;
   height: 50px;
+}
+.arrow-button {
+  background: none;
+  border: none;
 }
 .arrow-left {
   width: 10%;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar />
+    <NavBar title="订单详情" />
   </div>
   <div>
     <SimpleAddressCard />

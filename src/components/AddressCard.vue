@@ -5,7 +5,9 @@
     </div>
     <div class="addresscard-body">
       <div class="address-text">
-        <span class="text"> {{ address }}</span>
+        <div class="text">
+          <input v-model="user.defaultAddr" class="text-input" placeholder="请输入地址" />
+        </div>
       </div>
       <div class="address-pic">
         <img src="../assets/voice.png" class="voice-pic" />
@@ -17,9 +19,8 @@
 </template>
 
 <script setup>
-defineProps({
-  address: String
-})
+import { useUserStore } from '@/store/modules/user'
+const user = useUserStore()
 </script>
 
 <style scoped>
@@ -56,5 +57,9 @@ defineProps({
 }
 .addresscard .text {
   font-size: small;
+}
+.text-input {
+  border: none;
+  width: 100%;
 }
 </style>

@@ -4,7 +4,7 @@
       <van-icon name="arrow-left" />
     </van-col>
     <van-col span="18">
-      <van-search v-model="value" placeholder="请输入搜索关键词" />
+      <van-search v-model="searchValue" placeholder="请输入搜索关键词" />
     </van-col>
     <van-col span="3" class="search-line-icon">
       <div class="search-line-icon">
@@ -14,7 +14,18 @@
   </van-row>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+import { defineEmits } from 'vue'
+import { watch } from 'vue'
+
+const searchValue = ref('')
+const emit = defineEmits(['update:modelValue'])
+
+watch(searchValue, (newValue) => {
+  emit('update:modelValue', newValue)
+})
+</script>
 
 <style scoped>
 .search-line-icon {

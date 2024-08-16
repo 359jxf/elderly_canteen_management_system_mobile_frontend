@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SearchLine />
+    <SearchLine v-model="searchTerm" />
   </div>
   <div>
     <img src="../assets/slogan.jpg" class="slogan" />
@@ -20,7 +20,7 @@
     </van-row>
   </div>
   <div class="item-list">
-    <DishItem v-bind="item" v-for="(item, id) in items" :key="id" />
+    <DishItem v-bind="item" v-for="(item, id) in filteredItems" :key="id" />
   </div>
   <div>
     <router-link to="/login"></router-link>
@@ -35,45 +35,65 @@
         <span>查看购物车</span>
       </div>
       <div class="num">
-        <span>￥{{ count }}</span>
+        <span>￥{{ menu.totalPrice }}</span>
       </div>
     </van-action-bar>
   </div>
 </template>
 
 <script setup>
+import { useMenuStore } from '@/store/modules/menu'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import { computed } from 'vue'
+const menu = useMenuStore()
 const router = useRouter()
-const count = ref('25.18')
-const buttons = [
-  { id: '1', name: '主食', focus: 'false' },
-  { id: '2', name: '炒菜', focus: 'false' },
-  { id: '3', name: '凉菜', focus: 'false' },
-  { id: '4', name: '粥品', focus: 'false' }
-]
-const items = [
-  { img: 'beef.png', name: '红烧肉', price: '2.00' },
-  { img: 'beef.png', name: '红烧肉', price: '2.00' },
-  { img: 'beef.png', name: '红烧肉', price: '2.00' },
-  { img: 'beef.png', name: '红烧肉', price: '2.00' },
-  { img: 'beef.png', name: '红烧肉', price: '2.00' },
-  { img: 'beef.png', name: '红烧肉', price: '2.00' }
-]
+const buttons = ref([
+  { id: '1', name: '主食', focus: false },
+  { id: '2', name: '炒菜', focus: false },
+  { id: '3', name: '凉菜', focus: false },
+  { id: '4', name: '粥品', focus: false }
+])
+const items = ref([
+  { img: 'beef.png', name: '红烧肉', price: '￥2.00', category: '主食' },
+  { img: 'beef.png', name: '黑烧肉', price: '￥2.00', category: '炒菜' },
+  { img: 'beef.png', name: '蓝烧肉', price: '￥2.00', category: '凉菜' },
+  { img: 'beef.png', name: '绿烧肉', price: '￥2.00', category: '粥品' },
+  { img: 'beef.png', name: '紫烧肉', price: '￥2.00', category: '主食' },
+  { img: 'beef.png', name: '白烧肉', price: '￥2.00', category: '炒菜' }
+])
 const onClickIcon = () => {
   router.push({ path: '/ShoppingCart' })
 }
 const onClickMenuButton = (name) => {
-  buttons.forEach((button) => {
+  buttons.value.forEach((button) => {
     if (button.name === name) {
-      button.focus = true
+      if (button.focus === true) {
+        button.focus = false
+        button.active = false
+      } else button.focus = true
     } else {
       button.focus = false
     }
   })
   console.log(name)
-  // 后续菜单的筛选逻辑在这里
 }
+
+// const filteredItems = computed(() => {
+//   const activeButton = buttons.value.find((button) => button.focus === true)
+//   if (!activeButton) return items.value
+//   return items.value.filter((item) => item.category === activeButton.name)
+// })
+const searchTerm = ref('')
+
+const filteredItems = computed(() => {
+  const activeButton = buttons.value.find((button) => button.focus)
+  const filteredByCategory = activeButton
+    ? items.value.filter((item) => item.category === activeButton.name)
+    : items.value
+  const searchLower = searchTerm.value.trim().toLowerCase()
+  return filteredByCategory.filter((item) => item.name.toLowerCase().includes(searchLower))
+})
 </script>
 <style scoped>
 .search-line-icon {
@@ -101,7 +121,7 @@ const onClickMenuButton = (name) => {
   border-radius: 7px;
   font-size: medium;
 }
-.menu-button:focus {
+.menu-button.focus {
   background-color: orange;
   color: black;
 }
