@@ -1,4 +1,4 @@
-import './assets/main.css'
+
 
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -8,11 +8,11 @@ import { createPinia } from 'pinia'
 import 'amfe-flexible'
 // vant
 
-
 const app = createApp(App)
 
 // 路由
 app.use(router)
+
 // veux
 app.use(createPinia())
 
