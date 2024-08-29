@@ -24,9 +24,7 @@ function func() {
   <van-col span="12">span: 12</van-col>
 </van-row>
 
-
-    <BottomTabbar />
-
+<BottomTabbar nowView="home"/>
 </template>
 
 <style></style>

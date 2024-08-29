@@ -8,18 +8,25 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     404: typeof import('./src/views/404.vue')['default']
+    AccpetOrder: typeof import('./src/views/AccpetOrder.vue')['default']
     BottomTabbar: typeof import('./src/components/BottomTabbar.vue')['default']
     Home: typeof import('./src/views/Home.vue')['default']
     Login: typeof import('./src/views/Login.vue')['default']
+    MyOrders: typeof import('./src/views/MyOrders.vue')['default']
     OrderDetail: typeof import('./src/views/OrderDetail.vue')['default']
+    OrderInList: typeof import('./src/components/OrderInList.vue')['default']
+    OrderToAccept: typeof import('./src/components/OrderToAccept.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
+    Test: typeof import('./src/views/test.vue')['default']
+    User: typeof import('./src/views/User.vue')['default']
     VanButton: typeof import('vant/es')['Button']
-    VanCol: typeof import('vant/es')['Col']
     VanIcon: typeof import('vant/es')['Icon']
-    VanRow: typeof import('vant/es')['Row']
+    VanList: typeof import('vant/es')['List']
+    VanPullRefresh: typeof import('vant/es')['PullRefresh']
+    VanTab: typeof import('vant/es')['Tab']
     VanTabbar: typeof import('vant/es')['Tabbar']
     VanTabbarItem: typeof import('vant/es')['TabbarItem']
+    VanTabs: typeof import('vant/es')['Tabs']
   }
 }
