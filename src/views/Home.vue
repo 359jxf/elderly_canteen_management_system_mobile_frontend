@@ -1,146 +1,155 @@
 <template>
-  <div>
-    <SearchLine v-model="searchTerm" />
-  </div>
-  <div>
-    <img src="../assets/slogan.jpg" class="slogan" />
-  </div>
-  <div class="mid">
-    <span class="menu">今日菜单</span>
-    <van-row gutter="0" style="margin: 2%">
-      <van-col span="6" class="menu-line" v-for="button in buttons" :key="button.id">
-        <button
-          class="menu-button"
-          :class="{ focus: button.focus }"
-          @click="onClickMenuButton(button.name)"
-        >
-          {{ button.name }}
-        </button>
-      </van-col>
-    </van-row>
-  </div>
-  <div class="item-list">
-    <DishItem v-bind="item" v-for="(item, id) in filteredItems" :key="id" />
-  </div>
-  <div>
-    <router-link to="/login"></router-link>
-    <router-link to="/OrderDetail"></router-link>
-  </div>
-  <div>
-    <van-action-bar>
-      <div class="cart">
-        <van-action-bar-icon icon="cart-o" text="购物车" @click="onClickIcon"></van-action-bar-icon>
+  <div class="backgroundC">
+    <div class="colorPiece"></div>
+    <img src="../assets/newSlogan.jpg" alt="背景图" class="slogan" />
+    <div class="imageContainer">
+      <div class="imageWrapper" @click="resturant">
+        <div>
+          <img src="../assets/resturant.png" alt="图片1" class="image" />
+        </div>
+        <p class="imageText">食堂就餐</p>
       </div>
-      <div class="text">
-        <span>查看购物车</span>
+      <div class="imageWrapper" @click="deliver">
+        <div>
+          <img src="../assets/deliver.png" alt="图片2" class="image" />
+        </div>
+        <p class="imageText">爱心外卖</p>
       </div>
-      <div class="num">
-        <span>￥{{ menu.totalPrice }}</span>
+    </div>
+    <TheWelcome />
+    <div class="informationContainer">
+      <div class="titleLine" v-if="identity === 'volunteer' || identity === 'administrator'">
+        志愿者服务
       </div>
-    </van-action-bar>
+      <div class="buttonContainer" v-if="identity === 'volunteer' || identity === 'administrator'">
+        <div class="button button1" @click="getVolunteerOrder">志愿接单</div>
+        <div class="button button2" @click="getVolunteerInfor">志愿信息</div>
+      </div>
+      <div class="titleLine line2">
+        食堂信息
+      </div>
+      <div class="informationBox">
+        名称：老人食堂<br>
+        地址：我不知道<br>
+        联系电话：110
+      </div>
+    </div>
+    <BottomTabbar nowView="home" />
   </div>
 </template>
 
 <script setup>
-import { useMenuStore } from '@/store/modules/menu'
-import { useRouter } from 'vue-router'
-import { ref } from 'vue'
-import { computed } from 'vue'
-const menu = useMenuStore()
-const router = useRouter()
-const buttons = ref([
-  { id: '1', name: '主食', focus: false },
-  { id: '2', name: '炒菜', focus: false },
-  { id: '3', name: '凉菜', focus: false },
-  { id: '4', name: '粥品', focus: false }
-])
-const items = ref([
-  { img: 'beef.png', name: '红烧肉', price: '￥2.00', category: '主食' },
-  { img: 'beef.png', name: '黑烧肉', price: '￥2.00', category: '炒菜' },
-  { img: 'beef.png', name: '蓝烧肉', price: '￥2.00', category: '凉菜' },
-  { img: 'beef.png', name: '绿烧肉', price: '￥2.00', category: '粥品' },
-  { img: 'beef.png', name: '紫烧肉', price: '￥2.00', category: '主食' },
-  { img: 'beef.png', name: '白烧肉', price: '￥2.00', category: '炒菜' }
-])
-
-const onClickIcon = () => {
-  router.push({ path: '/ShoppingCart' })
-}
-const onClickMenuButton = (name) => {
-  buttons.value.forEach((button) => {
-    if (button.name === name) {
-      if (button.focus === true) {
-        button.focus = false
-        button.active = false
-      } else button.focus = true
-    }
-  })
-}
-
-const searchTerm = ref('')
-
-const filteredItems = computed(() => {
-  const activeButton = buttons.value.find((button) => button.focus)
-  const filteredByCategory = activeButton
-    ? items.value.filter((item) => item.category === activeButton.name)
-    : items.value
-  const searchLower = searchTerm.value.trim().toLowerCase()
-  return filteredByCategory.filter((item) => item.name.toLowerCase().includes(searchLower))
-})
+const identity = localStorage.getItem('identity');
 </script>
+
 <style scoped>
-.search-line-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.slogan {
+.backgroundC {
   width: 100%;
+  height: 100vh; /* 使背景占满整个视口高度 */
+  position: relative; /* 使子元素的绝对定位相对于背景容器 */
+  background: #ffa822;
 }
-.mid {
-  margin: 3%;
+
+.colorPiece {
+  position: absolute;
+  top: 15%;
+
+  width: 100%;
+  height: 30%;
+  background-color: rgb(239, 255, 250);
 }
-.menu {
-  font-size: 20px;
-  font-weight: 1000;
-  margin: 2%;
-}
-.menu-button {
-  color: #ffa500;
-  height: 35px;
-  width: 70px;
-  border: 1px solid #ffa500;
-  background-color: white;
-  border-radius: 7px;
-  font-size: medium;
-}
-.menu-button.focus {
-  background-color: orange;
-  color: black;
-}
-.menu-line {
+
+.imageContainer {
   display: flex;
+  position: relative;
+  width: 100%;
+  height: 30%;
+  top: 7%;
+  justify-content: space-evenly; /* 图片之间均匀分布 */
+  align-items: center; /* 垂直居中 */
+}
+
+.imageWrapper {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  width: 45%; /* 每个图片容器占据容器宽度的45%，留出间隔 */
 }
-.item-list {
+
+.image {
+  width: 90%; /* 图片占据父容器的宽度 */
+  height: auto; /* 保持图片比例 */
+}
+
+.imageText {
+  text-align: center;
+  font-size: 0.5rem;
+}
+
+.slogan {
+  position: relative;
+  top: 0%;
+  width: 100%;
+  height: auto;
+}
+
+.informationContainer{
+  position: relative;
+  width: 100vw;
+  height: 60%;
+  top: -10%;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+  border-radius: 20px; /* 四角圆滑 */
+  background-color: white;
+}
+
+.titleLine{
+  position: relative;
+  top: 8%;
+
+  height: 0.7rem;
+  width: 100%;
+
+  background-color: #ffa822 ;
+
+  font-size: 0.5rem;
+  padding-left: 10%;
+}
+
+.line2{
+  top:20%
+}
+
+.buttonContainer {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-around; /* 按钮之间的间距 */
+  position: relative;
+
+  width: 100%;
+  top: 12%; /* 按钮容器的位置 */
 }
-.item {
-  width: 46%;
-  margin: 2%;
+
+.button {
+  padding: 10px 20px;
+  border-radius: 0.5rem;
+  text-align: center;
+  color: white;
+  font-size: 0.6rem;
 }
-.cart {
-  margin-right: 5%;
-  margin-left: 5%;
+
+.button1 {
+  background-color: rgb(215, 110, 110); /* 按钮1的背景色 */
 }
-.text {
-  font-size: medium;
-  font-weight: bold;
-  margin-right: 30%;
+
+.button2 {
+  background-color: rgb(199, 228, 134); /* 按钮2的背景色 */
 }
-.num {
-  font-size: large;
-  font-weight: bold;
+
+.informationBox{
+  position: relative;
+  top :25%;
+
+  font-size: 0.4rem;
+  padding-left: 15%;
 }
 </style>
