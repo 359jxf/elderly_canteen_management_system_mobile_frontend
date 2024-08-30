@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <NavBar title="订单详情" /> -->
     <Nav nav_text="订单详情" />
   </div>
   

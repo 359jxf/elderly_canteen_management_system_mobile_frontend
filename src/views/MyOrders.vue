@@ -2,12 +2,7 @@
     <div class="container">
         <!-- 顶部导航栏 -->
         <div class="head">
-            <div class="top">
-                <van-icon name="arrow-left" @click="onClickLeft" />
-                <p>我的订单</p>
-                <img :src="portrait" @click="clickPortrait" />
-            </div>
-
+            <Nav nav_text="我的订单" />
             <van-tabs v-model:active="active" swipeable title-active-color="rgb(249, 184, 62)" @change="onRefresh">
                 <van-tab title="全部" name="all"></van-tab>
                 <van-tab title="外送" name="deliver"></van-tab>
@@ -34,10 +29,9 @@
 </template>
 
 <script setup>
-import { getOrders, getPorTrait } from '../api/api';
+import { getOrders} from '../api/api';
 
 
-const onClickLeft = () => history.back();//顶部返回键逻辑
 const active = ref('all');//默认展示所有订单，可更改为堂食或外送
 const listReady = ref(false); // 添加一个布尔变量以确保数据准备好
 const orderList = ref([]);
@@ -113,18 +107,6 @@ const onRefresh = () => {
 
 
 const router = useRouter();
-const clickPortrait = () => {
-    router.push({ path: '/User' });
-}
-
-const portrait = ref();
-const loadPortrait = async () => {
-    const url = await getPorTrait();
-    console.log("url:", url);
-    portrait.value = url;
-    console.log("portrait:", portrait);
-}
-onMounted(loadPortrait);
 
 </script>
 

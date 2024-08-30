@@ -2,7 +2,6 @@
     <div class="top">
         <van-icon name="arrow-left" @click="onClickLeft" />
         <p>{{ props.nav_text }}</p>
-        <p>{{ portrait }}</p>
         <img :src="portrait" @click="clickPortrait" />
     </div>
 </template>
@@ -16,7 +15,7 @@ const props=defineProps({
 const portrait = ref();
 const loadPortrait = async () => {
     const url = await getPorTrait();
-    console.log("url:", url);
+    console.log("component get url:", url);
     portrait.value = url;
     console.log("portrait:", portrait);
 }
