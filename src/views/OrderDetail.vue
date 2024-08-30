@@ -1,7 +1,9 @@
 <template>
   <div>
-    <NavBar title="订单详情" />
+    <!-- <NavBar title="订单详情" /> -->
+    <Nav nav_text="订单详情" />
   </div>
+  
   <div>
     <SimpleAddressCard :order_address="order_detail.CUS_ADDRESS" />
   </div>
@@ -42,6 +44,36 @@ const order_detail = computed(() => {
 </script>
 
 <style scoped>
+.top p {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-weight: bold;
+}
+
+.top img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    margin-right: 10px;
+}
+
+.top .van-icon {
+    margin-left: 10px;
+}
+
+.top {
+    height: 5vh;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    font-size: large;
+    font-weight: bold;
+    /* position: relative; */
+
+}
 .footer .info {
   padding-top: 2%;
   padding-left: 6%;

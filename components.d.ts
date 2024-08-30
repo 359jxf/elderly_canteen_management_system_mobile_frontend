@@ -18,6 +18,7 @@ declare module 'vue' {
     Home: typeof import('./src/views/Home.vue')['default']
     Login: typeof import('./src/views/Login.vue')['default']
     MyOrders: typeof import('./src/views/MyOrders.vue')['default']
+    Nav: typeof import('./src/components/Nav.vue')['default']
     NavBar: typeof import('./src/components/NavBar.vue')['default']
     OrderCard: typeof import('./src/components/OrderCard.vue')['default']
     OrderDetail: typeof import('./src/views/OrderDetail.vue')['default']
