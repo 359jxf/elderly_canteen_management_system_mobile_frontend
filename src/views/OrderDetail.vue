@@ -17,7 +17,7 @@
         <span style="font-weight: bold">用户备注</span>
       </div>
       <div class="mid">
-        <span>请放一楼大厅桌子</span>
+        <span>{{ remark.remark }}</span>
       </div>
       <div>
         <span style="color: red">投诉电话</span>
@@ -31,7 +31,10 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useRemarkstore } from '@/store/modules/remark'
+const remark = useRemarkstore()
+</script>
 
 <style scoped>
 .footer .info {

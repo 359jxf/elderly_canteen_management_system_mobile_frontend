@@ -45,10 +45,12 @@
 </template>
 
 <script setup>
+import 'vant/es/toast/style'
 import { useMenuStore } from '@/store/modules/menu'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { computed } from 'vue'
+import { showToast } from 'vant'
 const menu = useMenuStore()
 const router = useRouter()
 const buttons = ref([
@@ -59,15 +61,19 @@ const buttons = ref([
 ])
 const items = ref([
   { img: 'beef.png', name: '红烧肉', price: '￥2.00', category: '主食', discount: 1 },
-  { img: 'beef.png', name: '黑烧肉', price: '￥2.00', category: '炒菜', discount: 0.8 },
+  { img: 'beef.png', name: '黑烧肉', price: '￥2.00', category: '炒菜', discount: 0.5 },
   { img: 'beef.png', name: '蓝烧肉', price: '￥2.00', category: '凉菜', discount: 0.8 },
-  { img: 'beef.png', name: '绿烧肉', price: '￥2.00', category: '粥品', discount: 0.8 },
+  { img: 'beef.png', name: '绿烧肉', price: '￥2.00', category: '粥品', discount: 0.7 },
   { img: 'beef.png', name: '紫烧肉', price: '￥2.00', category: '主食', discount: 0.8 },
-  { img: 'beef.png', name: '白烧肉', price: '￥2.00', category: '炒菜', discount: 0.8 }
+  { img: 'beef.png', name: '白烧肉', price: '￥2.00', category: '炒菜', discount: 0.9 },
+  { img: 'beef.png', name: '绿烧肉', price: '￥2.00', category: '凉菜', discount: 0.8 },
+  { img: 'beef.png', name: '粉烧肉', price: '￥2.00', category: '粥品', discount: 0.6 }
 ])
 
 const onClickIcon = () => {
-  router.push({ path: '/ShoppingCart' })
+  if (menu.totalPrice == 0) showToast('购物车为空！')
+  //showDialog({ message: '购物车为空' })
+  else router.push({ path: '/ShoppingCart' })
 }
 const onClickMenuButton = (name) => {
   buttons.value.forEach((button) => {
@@ -156,10 +162,5 @@ const filteredItems = computed(() => {
   height: 50px; /* 设置行的高度 */
   width: 100%; /* 宽度占满父容器 */
   background-color: transparent; /* 背景色透明 */
-}
-.DishItem {
-  width: calc(50% - 16px); /* 每个菜品项宽度，减去间距的一半 */
-  margin-bottom: 16px; /* 菜品项之间的间距 */
-  box-sizing: border-box; /* 确保内边距和边框不会影响宽度 */
 }
 </style>
