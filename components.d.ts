@@ -18,6 +18,7 @@ declare module 'vue' {
     OrderCard: typeof import('./src/components/OrderCard.vue')['default']
     OrderDetail: typeof import('./src/views/OrderDetail.vue')['default']
     OrderList: typeof import('./src/components/OrderList.vue')['default']
+    OrderPage: typeof import('./src/views/OrderPage.vue')['default']
     Pay: typeof import('./src/components/PayFooter.vue')['default']
     PayFooter: typeof import('./src/components/PayFooter.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

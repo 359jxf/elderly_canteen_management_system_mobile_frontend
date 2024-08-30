@@ -11,7 +11,7 @@ const routes = [
       {
         path: '/home',
         name: 'home',
-        component: () => import('../views/Home.vue')
+        component: () => import('../views/OrderPage.vue')
       },
       {
         path: '/OrderDetail',
@@ -22,6 +22,11 @@ const routes = [
         path: '/ShoppingCart',
         name: 'ShoppingCart',
         component: () => import('../views/ShoppingCart.vue')
+      },
+      {
+        path: '/OrderPage',
+        name: 'OrderPage',
+        component: () => import('../views/OrderPage.vue')
       },
       {
         // vue-router@4的变化，舍弃*通配符
