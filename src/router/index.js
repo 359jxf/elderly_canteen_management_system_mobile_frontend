@@ -1,7 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import App from '../App.vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
-import App from '../App.vue'
+
 
 // 路由规则
 // 路由规则
@@ -10,7 +9,7 @@ const routes = [
     path: '/',
     component: App,
     children: [
-      { path: '', redirect: '/AccpetOrder' },
+      { path: '', redirect: '/Home' },
       {
         path:'/test',
         name:'test',
@@ -97,9 +96,6 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
-  // vueRouter@3版本的mode改成了history，hash模式配置createWebHashHistory，history模式配置createWebHistory
-  history: createWebHashHistory(),
-  routes
-})
+
 
 export default router
