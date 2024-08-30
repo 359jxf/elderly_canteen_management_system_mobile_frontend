@@ -33,6 +33,6 @@ const handleClick = () => {
 
     z-index: 1000;
     font-size: 100%;
-    background-color: #ffa822;
+    background-color: wheat;
 }
 </style>
