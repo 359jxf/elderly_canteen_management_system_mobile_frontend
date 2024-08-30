@@ -7,7 +7,11 @@
           <span>{{ name }}</span>
         </div>
         <div class="price">
-          <span>{{ price }}</span>
+          <span v-if="props.discount < 1" class="original-price"
+            >￥{{ originalPrice.toFixed(2) }}</span
+          >
+          <span v-if="props.discount < 1" class="discount-price">￥{{ discountPrice }}</span>
+          <span v-else>￥{{ originalPrice.toFixed(2) }}</span>
         </div>
       </div>
       <div class="button">
@@ -18,12 +22,14 @@
 </template>
 <script setup>
 import { useMenuStore } from '@/store/modules/menu'
+import { computed } from 'vue'
 const menu = useMenuStore()
 const props = defineProps({
   img: String,
   name: String,
   price: String,
-  category: String
+  category: String,
+  discount: Number
 })
 const addItem = () => {
   const item = {
@@ -31,12 +37,17 @@ const addItem = () => {
     price: props.price,
     category: props.category,
     img: props.img,
+    discount: props.discount,
     quantity: 1
   }
   // 将菜品添加到菜单中
   menu.addItem(item)
   console.log(menu.items)
 }
+const originalPrice = parseFloat(props.price.replace('￥', '')) // 移除人民币符号并转换为数字
+const discountPrice = computed(() => {
+  return props.discount < 1 ? (originalPrice * props.discount).toFixed(2) : originalPrice.toFixed(2)
+})
 </script>
 <style scoped>
 .item {
@@ -97,5 +108,14 @@ const addItem = () => {
   transition:
     background-color 0.3s,
     box-shadow 0.3s;
+}
+.original-price {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.discount-price {
+  color: red;
+  font-weight: bold;
 }
 </style>

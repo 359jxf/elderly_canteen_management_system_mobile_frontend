@@ -9,7 +9,11 @@ export const useMenuStore = defineStore('menu', () => {
   // Getter: 计算总价格
   const totalPrice = computed(() => {
     return items.value
-      .reduce((total, item) => total + parseFloat(item.price.replace('￥', '')) * item.quantity, 0)
+      .reduce(
+        (total, item) =>
+          total + parseFloat(item.price.replace('￥', '')) * item.quantity * item.discount,
+        0
+      )
       .toFixed(2)
   })
 

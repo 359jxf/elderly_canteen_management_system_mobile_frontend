@@ -58,12 +58,12 @@ const buttons = ref([
   { id: '4', name: '粥品', focus: false }
 ])
 const items = ref([
-  { img: 'beef.png', name: '红烧肉', price: '￥2.00', category: '主食' },
-  { img: 'beef.png', name: '黑烧肉', price: '￥2.00', category: '炒菜' },
-  { img: 'beef.png', name: '蓝烧肉', price: '￥2.00', category: '凉菜' },
-  { img: 'beef.png', name: '绿烧肉', price: '￥2.00', category: '粥品' },
-  { img: 'beef.png', name: '紫烧肉', price: '￥2.00', category: '主食' },
-  { img: 'beef.png', name: '白烧肉', price: '￥2.00', category: '炒菜' }
+  { img: 'beef.png', name: '红烧肉', price: '￥2.00', category: '主食', discount: 1 },
+  { img: 'beef.png', name: '黑烧肉', price: '￥2.00', category: '炒菜', discount: 0.8 },
+  { img: 'beef.png', name: '蓝烧肉', price: '￥2.00', category: '凉菜', discount: 0.8 },
+  { img: 'beef.png', name: '绿烧肉', price: '￥2.00', category: '粥品', discount: 0.8 },
+  { img: 'beef.png', name: '紫烧肉', price: '￥2.00', category: '主食', discount: 0.8 },
+  { img: 'beef.png', name: '白烧肉', price: '￥2.00', category: '炒菜', discount: 0.8 }
 ])
 
 const onClickIcon = () => {
