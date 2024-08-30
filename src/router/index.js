@@ -1,22 +1,89 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import App from '../App.vue'
 
+
+// 路由规则
 // 路由规则
 const routes = [
   {
     path: '/',
     component: App,
     children: [
-      { path: '', redirect: '/home' },
+      { path: '', redirect: '/Login' },
       {
-        path: '/home',
-        name: 'home',
-        component: () => import('../views/Home.vue')
+        path:'/test',
+        name:'test',
+        component:()=>import("../views/test.vue")
       },
       {
-        path: '/login',
-        name: 'login',
+        path:'/OrderDetail',
+        name:'OrderDetail',
+        component:()=>import("../views/OrderDetail.vue")
+      },
+      {
+        path:'/Home',
+        name:'Home',
+        component:()=>import('../views/Home.vue')
+      },
+      {
+        path:'/User',
+        name:'User',
+        component:()=>import('../views/User.vue')
+      },
+      {
+        path: '/Login',
+        name: 'Login',
         component: () => import('../views/Login.vue')
+      },
+      {
+        path: '/MyOrders',
+        name: 'MyOrders',
+        component: () => import('../views/MyOrders.vue')
+      },
+      {
+        path: '/Authen',
+        name: 'Authen',
+        component: () => import('../views/Authentication.vue')
+      },
+      {
+        path: '/Apply',
+        name: 'Apply',
+        component: () => import('../views/VolunteerApply.vue')
+      },
+      {
+        path: '/OrderDetail',
+        name: 'OrderDetail',
+        component: () => import('../views/OrderDetail.vue')
+      },
+      {
+        path: '/ShoppingCart',
+        name: 'ShoppingCart',
+        component: () => import('../views/ShoppingCart.vue')
+      },
+      {
+        path:'/AccpetOrder',
+        name:'AccpetOrder',
+        component:()=>import('../views/AccpetOrder.vue')
+      },
+      {
+        path: '/Register',
+        name: 'Register',
+        component: () => import('../views/Register.vue')
+      },
+      {
+        path: '/Alter',
+        name: 'Alter',
+        component: () => import('../views/AlterInfor.vue')
+      },
+      {
+        path: '/OrderPage',
+        name: 'OrderPage',
+        component: () => import('../views/OrderPage.vue')
+      },
+      {
+        path: '/AlterPassword',
+        name: 'AlterPassword',
+        component: () => import('../views/AlterPassword.vue')
       },
       {
         // vue-router@4的变化，舍弃*通配符
@@ -34,5 +101,6 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
+
 
 export default router

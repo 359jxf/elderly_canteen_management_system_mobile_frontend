@@ -1,32 +1,178 @@
-<script setup>
-import useStore from '../store'
-const { user } = useStore()
-const { num } = storeToRefs(user)
-let a = ref(0)
-function func() {
-  a.value = user.Num_del_8
-}
-</script>
-
 <template>
-  <div>home</div>
-  <p>{{ a }}</p>
-  <div><van-button type="success">成功按钮</van-button></div>
-  <button @click="func">+1111111</button>
-  <p>{{ num }}</p>
-  <p>{{ user.num }}</p>
-  <div><router-link to="/login">tiao</router-link></div>
-  <Login>组件自动引用测试</Login>
-  <van-row :gutter="[20, 20]">
-  <van-col span="12">span: 12</van-col>
-  <van-col span="12">span: 12</van-col>
-  <van-col span="12">span: 12</van-col>
-  <van-col span="12">span: 12</van-col>
-</van-row>
-
-
-    <BottomTabbar />
-
+  <div class="backgroundC">
+    <div class="colorPiece"></div>
+    <img src="../assets/newSlogan.jpg" alt="背景图" class="slogan" />
+    <div class="imageContainer">
+      <div class="imageWrapper" @click="resturant">
+        <div>
+          <img src="../assets/resturant.png" alt="图片1" class="image" />
+        </div>
+        <p class="imageText">食堂就餐</p>
+      </div>
+      <div class="imageWrapper" @click="deliver">
+        <div>
+          <img src="../assets/deliver.png" alt="图片2" class="image" />
+        </div>
+        <p class="imageText">爱心外卖</p>
+      </div>
+    </div>
+    <TheWelcome />
+    <div class="informationContainer">
+      <div class="titleLine" v-if="identity === 'volunteer' || identity === 'admin'">
+        志愿者服务
+      </div>
+      <div class="buttonContainer" v-if="identity === 'volunteer' || identity === 'admin'">
+        <div class="button button1" @click="getVolunteerOrder">志愿接单</div>
+        <div class="button button2" @click="getVolunteerInfor">志愿信息</div>
+      </div>
+      <div class="titleLine line2">
+        食堂信息
+      </div>
+      <div class="informationBox">
+        名称：老人食堂<br>
+        地址：我不知道<br>
+        联系电话：110
+      </div>
+    </div>
+    <BottomTabbar nowView="home" />
+  </div>
 </template>
 
-<style></style>
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+
+const identity = localStorage.getItem('identity');
+const router = useRouter();
+
+const getVolunteerOrder = () => {
+router.push({ name: 'AccpetOrder' });
+};
+
+const getVolunteerInfor = () => {
+router.push({ name: 'MyOrders' });
+};
+
+const resturant = () => {
+router.push({ name: 'OrderPage' });
+};
+
+const deliver = () => {
+router.push({ name: 'OrderPage' });
+};
+</script>
+
+<style scoped>
+.backgroundC {
+  width: 100%;
+  height: 100vh; /* 使背景占满整个视口高度 */
+  position: relative; /* 使子元素的绝对定位相对于背景容器 */
+  background: #ffa822;
+}
+
+.colorPiece {
+  position: absolute;
+  top: 15%;
+
+  width: 100%;
+  height: 30%;
+  background-color: rgb(239, 255, 250);
+}
+
+.imageContainer {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 30%;
+  top: 7%;
+  justify-content: space-evenly; /* 图片之间均匀分布 */
+  align-items: center; /* 垂直居中 */
+}
+
+.imageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 45%; /* 每个图片容器占据容器宽度的45%，留出间隔 */
+}
+
+.image {
+  width: 90%; /* 图片占据父容器的宽度 */
+  height: auto; /* 保持图片比例 */
+}
+
+.imageText {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  font-size: 0.5rem;
+}
+
+.slogan {
+  position: relative;
+  top: 0%;
+  width: 100%;
+  height: auto;
+}
+
+.informationContainer{
+  position: relative;
+  width: 100vw;
+  height: 40%;
+  top: -10%;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+  border-radius: 20px; /* 四角圆滑 */
+  background-color: white;
+}
+
+.titleLine{
+  position: relative;
+  top: 8%;
+
+  height: 0.7rem;
+  width: 100%;
+
+  background-color: wheat ;
+
+  font-size: 0.5rem;
+  padding-left: 10%;
+}
+
+.line2{
+  top:20%
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-around; /* 按钮之间的间距 */
+  position: relative;
+
+  width: 100%;
+  top: 12%; /* 按钮容器的位置 */
+}
+
+.button {
+  padding: 10px 20px;
+  border-radius: 0.5rem;
+  text-align: center;
+  color: white;
+  font-size: 0.6rem;
+}
+
+.button1 {
+  background-color: rgb(215, 110, 110); /* 按钮1的背景色 */
+}
+
+.button2 {
+  background-color: rgb(199, 228, 134); /* 按钮2的背景色 */
+}
+
+.informationBox{
+  position: relative;
+  top :25%;
+
+  font-size: 0.4rem;
+  padding-left: 15%;
+}
+</style>
