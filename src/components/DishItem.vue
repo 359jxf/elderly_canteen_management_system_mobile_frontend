@@ -40,26 +40,27 @@ const addItem = () => {
 </script>
 <style scoped>
 .item {
+  width: 100%;
   border-radius: 10px;
-  width: 44%;
   margin: 3%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
+  display: flex;
 }
 .pic {
-  margin-top: 5%;
-  margin-left: 12%;
+  margin: 3%;
 }
 .pic img {
   border-radius: 10px;
 }
 .bottom {
-  display: flex;
+  width: 80%;
 }
 .text {
-  width: 46%;
+  margin-top: 15%;
+  width: 100%;
   margin-left: 4%;
 }
 .name {
@@ -77,7 +78,7 @@ const addItem = () => {
   font-weight: bold;
 }
 .button {
-  margin-left: 15%;
+  margin-left: 60%;
   width: 35%;
 }
 .plus-button {

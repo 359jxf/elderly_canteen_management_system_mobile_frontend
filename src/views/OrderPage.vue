@@ -1,24 +1,24 @@
 <template>
+  <div>
+    <SearchLine v-model="searchTerm" />
+  </div>
+  <div>
+    <img src="../assets/slogan.jpg" class="slogan" />
+  </div>
+  <div>
+    <span class="menu">今日菜单</span>
+  </div>
   <div class="container">
-    <div>
-      <SearchLine v-model="searchTerm" />
-    </div>
-    <div>
-      <img src="../assets/slogan.jpg" class="slogan" />
-    </div>
-    <div class="mid">
-      <span class="menu">今日菜单</span>
-      <van-row gutter="0" style="margin: 2%">
-        <van-col span="6" class="menu-line" v-for="button in buttons" :key="button.id">
-          <button
-            class="menu-button"
-            :class="{ focus: button.focus }"
-            @click="onClickMenuButton(button.name)"
-          >
-            {{ button.name }}
-          </button>
-        </van-col>
-      </van-row>
+    <div class="button-list">
+      <button
+        class="menu-button"
+        :class="{ focus: button.focus }"
+        v-for="button in buttons"
+        :key="button.id"
+        @click="onClickMenuButton(button.name)"
+      >
+        {{ button.name }}
+      </button>
     </div>
     <div class="item-list">
       <DishItem v-bind="item" v-for="(item, id) in filteredItems" :key="id" />
@@ -27,24 +27,20 @@
       <router-link to="/login"></router-link>
       <router-link to="/OrderDetail"></router-link>
     </div>
-    <div class="blank"></div>
-    <div>
-      <van-action-bar>
-        <div class="cart">
-          <van-action-bar-icon
-            icon="cart-o"
-            text="购物车"
-            @click="onClickIcon"
-          ></van-action-bar-icon>
-        </div>
-        <div class="text">
-          <span>查看购物车</span>
-        </div>
-        <div class="num">
-          <span>￥{{ menu.totalPrice }}</span>
-        </div>
-      </van-action-bar>
-    </div>
+  </div>
+  <div class="blank"></div>
+  <div>
+    <van-action-bar>
+      <div class="cart">
+        <van-action-bar-icon icon="cart-o" text="购物车" @click="onClickIcon"></van-action-bar-icon>
+      </div>
+      <div class="text">
+        <span>查看购物车</span>
+      </div>
+      <div class="num">
+        <span>￥{{ menu.totalPrice }}</span>
+      </div>
+    </van-action-bar>
   </div>
 </template>
 
@@ -103,22 +99,29 @@ const filteredItems = computed(() => {
 .slogan {
   width: 100%;
 }
-.mid {
-  margin: 3%;
+.container {
+  display: flex;
+}
+.button-list {
+  width: 20%; /* 根据需要调整宽度 */
+  padding: 1%;
 }
 .menu {
   font-size: 20px;
   font-weight: 1000;
   margin: 2%;
+  text-align: center;
 }
 .menu-button {
-  color: #ffa500;
-  height: 35px;
-  width: 70px;
-  border: 1px solid #ffa500;
-  background-color: white;
-  border-radius: 7px;
-  font-size: medium;
+  flex: 1; /* 平分按钮区域 */
+  border: none; /* 取消按钮边框 */
+  background-color: white; /* 背景色 */
+  color: #ffa500; /* 按钮文字颜色 */
+  padding: 10px; /* 内边距 */
+  margin-bottom: 10px; /* 按钮之间的间距 */
+  font-size: medium; /* 按钮文字大小 */
+  text-align: center; /* 使按钮文字居中 */
+  border-radius: 7px; /* 圆角 */
 }
 .menu-button.focus {
   background-color: orange;
@@ -129,12 +132,12 @@ const filteredItems = computed(() => {
   align-items: center;
 }
 .item-list {
+  max-height: 450px;
+  width: 100%; /* 菜品区域宽度，确保占据父容器的 80% */
+  overflow-y: auto; /* 启用垂直滚动 */
+  padding: 1%;
   display: flex;
-  flex-wrap: wrap;
-}
-.item {
-  width: 46%;
-  margin: 2%;
+  flex-wrap: wrap; /* 允许菜品项换行 */
 }
 .cart {
   margin-right: 5%;
@@ -153,5 +156,10 @@ const filteredItems = computed(() => {
   height: 50px; /* 设置行的高度 */
   width: 100%; /* 宽度占满父容器 */
   background-color: transparent; /* 背景色透明 */
+}
+.DishItem {
+  width: calc(50% - 16px); /* 每个菜品项宽度，减去间距的一半 */
+  margin-bottom: 16px; /* 菜品项之间的间距 */
+  box-sizing: border-box; /* 确保内边距和边框不会影响宽度 */
 }
 </style>
