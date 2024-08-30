@@ -25,21 +25,22 @@
         <div class="button button1" @click="getVolunteerOrder">志愿接单</div>
         <div class="button button2" @click="getVolunteerInfor">志愿信息</div>
       </div>
-      <div class="titleLine line2">
-        食堂信息
-      </div>
+      <div class="titleLine line2">食堂信息</div>
       <div class="informationBox">
-        名称：老人食堂<br>
-        地址：我不知道<br>
+        名称：老人食堂<br />
+        地址：我不知道<br />
         联系电话：110
       </div>
     </div>
     <BottomTabbar nowView="home" />
+    <router-link to="/OrderPage"></router-link>
+    <router-link to="/login"></router-link>
+    <router-link to="/OrderDetail"></router-link>
   </div>
 </template>
 
 <script setup>
-const identity = localStorage.getItem('identity');
+const identity = localStorage.getItem('identity')
 </script>
 
 <style scoped>
@@ -93,7 +94,7 @@ const identity = localStorage.getItem('identity');
   height: auto;
 }
 
-.informationContainer{
+.informationContainer {
   position: relative;
   width: 100vw;
   height: 60%;
@@ -103,21 +104,21 @@ const identity = localStorage.getItem('identity');
   background-color: white;
 }
 
-.titleLine{
+.titleLine {
   position: relative;
   top: 8%;
 
   height: 0.7rem;
   width: 100%;
 
-  background-color: #ffa822 ;
+  background-color: #ffa822;
 
   font-size: 0.5rem;
   padding-left: 10%;
 }
 
-.line2{
-  top:20%
+.line2 {
+  top: 20%;
 }
 
 .buttonContainer {
@@ -145,9 +146,9 @@ const identity = localStorage.getItem('identity');
   background-color: rgb(199, 228, 134); /* 按钮2的背景色 */
 }
 
-.informationBox{
+.informationBox {
   position: relative;
-  top :25%;
+  top: 25%;
 
   font-size: 0.4rem;
   padding-left: 15%;

@@ -23,10 +23,7 @@
     <div class="item-list">
       <DishItem v-bind="item" v-for="(item, id) in filteredItems" :key="id" />
     </div>
-    <div>
-      <router-link to="/login"></router-link>
-      <router-link to="/OrderDetail"></router-link>
-    </div>
+    <div></div>
   </div>
   <div class="blank"></div>
   <div>
@@ -36,9 +33,6 @@
       </div>
       <div class="text">
         <span>查看购物车</span>
-      </div>
-      <div class="num">
-        <span>￥{{ menu.totalPrice }}</span>
       </div>
     </van-action-bar>
   </div>
@@ -60,18 +54,66 @@ const buttons = ref([
   { id: '4', name: '粥品', focus: false }
 ])
 const items = ref([
-  { img: 'beef.png', name: '红烧肉', price: '￥2.00', category: '主食', discount: 1 },
-  { img: 'beef.png', name: '黑烧肉', price: '￥2.00', category: '炒菜', discount: 0.5 },
-  { img: 'beef.png', name: '蓝烧肉', price: '￥2.00', category: '凉菜', discount: 0.8 },
-  { img: 'beef.png', name: '绿烧肉', price: '￥2.00', category: '粥品', discount: 0.7 },
-  { img: 'beef.png', name: '紫烧肉', price: '￥2.00', category: '主食', discount: 0.8 },
-  { img: 'beef.png', name: '白烧肉', price: '￥2.00', category: '炒菜', discount: 0.9 },
-  { img: 'beef.png', name: '绿烧肉', price: '￥2.00', category: '凉菜', discount: 0.8 },
-  { img: 'beef.png', name: '粉烧肉', price: '￥2.00', category: '粥品', discount: 0.6 }
+  {
+    img: 'beef.png',
+    name: '红烧肉',
+    price: '￥2.00',
+    category: '主食',
+    discount: 1
+  },
+  {
+    img: 'beef.png',
+    name: '黑烧肉',
+    price: '￥2.00',
+    category: '炒菜',
+    discount: 0.5
+  },
+  {
+    img: 'beef.png',
+    name: '蓝烧肉',
+    price: '￥2.00',
+    category: '凉菜',
+    discount: 0.8
+  },
+  {
+    img: 'beef.png',
+    name: '绿烧肉',
+    price: '￥2.00',
+    category: '粥品',
+    discount: 0.7
+  },
+  {
+    img: 'beef.png',
+    name: '紫烧肉',
+    price: '￥2.00',
+    category: '主食',
+    discount: 0.8
+  },
+  {
+    img: 'beef.png',
+    name: '白烧肉',
+    price: '￥2.00',
+    category: '炒菜',
+    discount: 0.9
+  },
+  {
+    img: 'beef.png',
+    name: '绿烧肉',
+    price: '￥2.00',
+    category: '凉菜',
+    discount: 0.8
+  },
+  {
+    img: 'beef.png',
+    name: '粉烧肉',
+    price: '￥2.00',
+    category: '粥品',
+    discount: 0.6
+  }
 ])
 
 const onClickIcon = () => {
-  if (menu.totalPrice == 0) showToast('购物车为空！')
+  if (menu.totalPrice == 0) showToast('购物车为空,请先选购！')
   //showDialog({ message: '购物车为空' })
   else router.push({ path: '/ShoppingCart' })
 }
@@ -110,7 +152,7 @@ const filteredItems = computed(() => {
 }
 .button-list {
   width: 20%; /* 根据需要调整宽度 */
-  padding: 1%;
+  border-right: 1px;
 }
 .menu {
   font-size: 20px;
@@ -152,7 +194,7 @@ const filteredItems = computed(() => {
 .text {
   font-size: medium;
   font-weight: bold;
-  margin-right: 30%;
+  margin-left: 15%;
 }
 .num {
   font-size: large;

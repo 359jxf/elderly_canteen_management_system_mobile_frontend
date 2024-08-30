@@ -61,6 +61,13 @@ export const useMenuStore = defineStore('menu', () => {
     items.value = [] // 清空所有菜品
   }
 
+  const getItemCount = (name) => {
+    const itemIndex = items.value.findIndex((item) => item.name === name)
+    if (itemIndex !== -1) {
+      const item = items.value[itemIndex]
+      return item.quantity
+    }
+  }
   return {
     items,
     totalPrice,
@@ -68,6 +75,7 @@ export const useMenuStore = defineStore('menu', () => {
     removeItem,
     addcount,
     minuscount,
-    clearItems
+    clearItems,
+    getItemCount
   }
 })
