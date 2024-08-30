@@ -7,9 +7,11 @@
       <div class="info">
         <van-row :gutter="[0, 10]">
           <van-col span="12">订单号</van-col>
-          <van-col span="12" style="text-align: right">1234567</van-col>
+          <van-col span="12" style="text-align: right">{{ props.order_detail.ORDER_ID }}</van-col>
           <van-col span="12">就餐方式</van-col>
-          <van-col span="12" style="text-align: right">外卖</van-col>
+          <van-col span="12" style="text-align: right">
+            {{ props.order_detail.DELIVER_OR_DINING ? '外送' : '堂食' }}
+          </van-col>
           <van-col span="12">补贴消耗</van-col>
           <van-col span="12" style="text-align: right">无</van-col>
         </van-row>
@@ -45,7 +47,10 @@
 
 <script setup>
 import { useMenuStore } from '@/store/modules/menu'
-const menu = useMenuStore()
+const menu = useMenuStore();
+const props=defineProps({
+  order_detail:Object
+})
 </script>
 
 <style scoped>

@@ -1,11 +1,15 @@
 <template>
   <div class="simpleAddressCard">
     <div class="title">收货地址</div>
-    <div class="address">上海市 嘉定区 曹安公路4800号</div>
+    <div class="address">{{ props.order_address }}</div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps({
+    order_address: String
+})
+</script>
 
 <style scoped>
 .simpleAddressCard {

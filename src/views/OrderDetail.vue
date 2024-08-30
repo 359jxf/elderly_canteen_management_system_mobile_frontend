@@ -3,13 +3,13 @@
     <NavBar title="订单详情" />
   </div>
   <div>
-    <SimpleAddressCard />
+    <SimpleAddressCard :order_address="order_detail.CUS_ADDRESS" />
   </div>
   <div>
     <VolunteerCard />
   </div>
   <div>
-    <OrderCard />
+    <OrderCard :order_detail="order_detail"/>
   </div>
   <div class="footer">
     <div class="info">
@@ -33,7 +33,12 @@
 
 <script setup>
 import { useRemarkstore } from '@/store/modules/remark'
-const remark = useRemarkstore()
+const remark = useRemarkstore();
+
+const route = useRoute();
+const order_detail = computed(() => {
+    return route.query.detail ? JSON.parse(route.query.detail) : {};
+});
 </script>
 
 <style scoped>
