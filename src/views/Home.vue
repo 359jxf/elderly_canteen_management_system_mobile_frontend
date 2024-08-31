@@ -66,7 +66,7 @@ router.push({ name: 'OrderPage' });
 
 <style scoped>
 .backgroundC {
-  width: 100%;
+  width: 100vw;
   height: 100vh; /* 使背景占满整个视口高度 */
   position: relative; /* 使子元素的绝对定位相对于背景容器 */
   background: #ffa822;
@@ -185,7 +185,7 @@ router.push({ name: 'OrderPage' });
   align-items: center; /* 垂直居中对齐 */
   justify-content: center; /* 保持内容的水平对齐 */
   height: 5%;
-  width: 100%;
+  width: 90%;
   font-size: 80%;
 }
 </style>

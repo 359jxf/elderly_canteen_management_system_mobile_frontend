@@ -157,7 +157,7 @@ router.push({ name: 'Register' });
 
   text-align: center;
   font-weight: bold;
-  font-size: 80%;
+  font-size: 60%;
   background-color: white;
   border-radius: 10%;
 }
@@ -188,7 +188,7 @@ router.push({ name: 'Register' });
 
   margin-top: 5%;
   border-radius: 10px;
-  font-size: 80%;
+  font-size: 60%;
 
   
 }
@@ -204,7 +204,7 @@ router.push({ name: 'Register' });
   width: 60%;
   border-radius: 20px ; 
   background-color: rgb(232, 255, 195);
-  font-size: 90%;
+  font-size: 70%;
   border: none;
   color: white;
   font-weight: bold;
@@ -220,7 +220,7 @@ router.push({ name: 'Register' });
   border-radius: 10px ; 
   margin-left: 10%;
   background-color: white;
-  font-size: 60%;
+  font-size: 40%;
 }
 
 .register{
@@ -230,18 +230,18 @@ router.push({ name: 'Register' });
   width: 40%;
   height: 8%;
   border-radius: 30px ; 
-  font-size: 80%;
+  font-size: 60%;
   border: none;
   color: white;
   font-weight: bold;
   background-color: #ffa822;
-  letter-spacing: 0.1rem;
+  letter-spacing: 0.05rem;
 }
 
 .forgetPassword{
   position: relative;
   font-weight: bold;
   top: 20%;
-  font-size: 70%;
+  font-size: 60%;
 }
 </style>
