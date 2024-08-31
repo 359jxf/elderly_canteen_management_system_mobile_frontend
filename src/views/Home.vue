@@ -18,6 +18,7 @@
     </div>
     <TheWelcome />
     <div class="informationContainer">
+      <div class="tip">⬆</div>
       <div class="tip">请选择就餐方式</div>
       <div class="titleLine" v-if="identity === 'volunteer' || identity === 'admin'">
         志愿者服务
@@ -31,8 +32,8 @@
       </div>
       <div class="informationBox">
         名称：老人食堂<br>
-        地址：我不知道<br>
-        联系电话：110
+        地址：上海市嘉定区曹安公路xxx号y栋<br>
+        联系电话：123-4567-8910
       </div>
     </div>
     <BottomTabbar nowView="home" />
@@ -74,7 +75,7 @@ router.push({ name: 'OrderPage' });
 
 .colorPiece {
   position: absolute;
-  top: 15%;
+  top: 12%;
 
   width: 100%;
   height: 30%;
@@ -120,7 +121,7 @@ router.push({ name: 'OrderPage' });
 .informationContainer{
   position: relative;
   width: 100vw;
-  height: 60%;
+  height: 50%;
   top: -10%;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
   border-radius: 20px; /* 四角圆滑 */
@@ -129,19 +130,24 @@ router.push({ name: 'OrderPage' });
 
 .titleLine{
   position: relative;
-  top: 8%;
+  top: 10%;
 
-  height: 0.7rem;
+  height: 0.8rem;
   width: 100%;
 
   background-color: wheat ;
 
   font-size: 0.5rem;
   padding-left: 10%;
+
+  color: #ffa822;
+  font-weight: bold;
+
+  letter-spacing: 0.15rem;
 }
 
 .line2{
-  top:20%
+  top:14%
 }
 
 .buttonContainer {
@@ -171,21 +177,26 @@ router.push({ name: 'OrderPage' });
 
 .informationBox{
   position: relative;
-  top :25%;
+  top :15%;
 
   font-size: 0.4rem;
   padding-left: 15%;
+
+  color: brown;
+
+  line-height: 0.8rem;
 }
 
 .tip{
   position: relative;
-  left: 0%;
-  top: 5%;
+  left: 4%;
+  top: 3%;
   display: flex;
   align-items: center; /* 垂直居中对齐 */
   justify-content: center; /* 保持内容的水平对齐 */
-  height: 5%;
+  height: 4%;
   width: 90%;
-  font-size: 80%;
+  font-size: 60%;
+  line-height: 5%; /* 确保行高与容器高度一致 */
 }
 </style>
