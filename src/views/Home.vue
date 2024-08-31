@@ -18,10 +18,10 @@
     </div>
     <TheWelcome />
     <div class="informationContainer">
-      <div class="titleLine" v-if="identity === 'volunteer' || identity === 'administrator'">
+      <div class="titleLine" v-if="identity === 'volunteer' || identity === 'admin'">
         志愿者服务
       </div>
-      <div class="buttonContainer" v-if="identity === 'volunteer' || identity === 'administrator'">
+      <div class="buttonContainer" v-if="identity === 'volunteer' || identity === 'admin'">
         <div class="button button1" @click="getVolunteerOrder">志愿接单</div>
         <div class="button button2" @click="getVolunteerInfor">志愿信息</div>
       </div>
@@ -39,7 +39,28 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+
 const identity = localStorage.getItem('identity');
+const router = useRouter();
+
+const getVolunteerOrder = () => {
+router.push({ name: 'AccpetOrder' });
+};
+
+const getVolunteerInfor = () => {
+router.push({ name: 'MyOrders' });
+};
+
+const resturant = () => {
+router.push({ name: 'OrderPage' });
+};
+
+const deliver = () => {
+router.push({ name: 'OrderPage' });
+};
 </script>
 
 <style scoped>
@@ -82,6 +103,8 @@ const identity = localStorage.getItem('identity');
 }
 
 .imageText {
+  color: white;
+  font-weight: bold;
   text-align: center;
   font-size: 0.5rem;
 }
@@ -96,7 +119,7 @@ const identity = localStorage.getItem('identity');
 .informationContainer{
   position: relative;
   width: 100vw;
-  height: 60%;
+  height: 40%;
   top: -10%;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
   border-radius: 20px; /* 四角圆滑 */
@@ -110,7 +133,7 @@ const identity = localStorage.getItem('identity');
   height: 0.7rem;
   width: 100%;
 
-  background-color: #ffa822 ;
+  background-color: wheat ;
 
   font-size: 0.5rem;
   padding-left: 10%;

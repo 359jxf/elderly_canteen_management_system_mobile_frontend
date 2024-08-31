@@ -1,6 +1,9 @@
 <template>
   <div class="item">
-    <div class="pic"><img :src="`/src/assets/${img}`" height="100px" width="130px" /></div>
+    <div class="pic">
+      <img :src="`/src/assets/${img}`" height="100px" width="130px" />
+      <div v-if="badgeCount > 0" class="badge">{{ badgeCount }}</div>
+    </div>
     <div class="bottom">
       <div class="text">
         <div class="name">
@@ -15,7 +18,7 @@
         </div>
       </div>
       <div class="button">
-        <button class="plus-button" @click="addItem">+</button>
+        <button class="plus-button" @click="addItem">＋</button>
       </div>
     </div>
   </div>
@@ -24,6 +27,9 @@
 import { useMenuStore } from '@/store/modules/menu'
 import { computed } from 'vue'
 const menu = useMenuStore()
+const badgeCount = computed(() => {
+  return menu.getItemCount(props.name)
+})
 const props = defineProps({
   img: String,
   name: String,
@@ -59,12 +65,28 @@ const discountPrice = computed(() => {
     transform 0.3s ease,
     box-shadow 0.3s ease;
   display: flex;
+  position: relative; /* 使标记定位正确 */
 }
 .pic {
   margin: 3%;
+  position: relative;
 }
 .pic img {
   border-radius: 10px;
+}
+.badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
 }
 .bottom {
   width: 80%;
@@ -90,7 +112,6 @@ const discountPrice = computed(() => {
 }
 .button {
   margin-left: 60%;
-  width: 35%;
 }
 .plus-button {
   background-color: orange;
@@ -101,9 +122,8 @@ const discountPrice = computed(() => {
   height: 25px;
   font-size: 24px;
   display: flex;
-  margin-top: 30%;
-  margin-left: 40%;
-  cursor: pointer;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition:
     background-color 0.3s,
@@ -113,7 +133,6 @@ const discountPrice = computed(() => {
   text-decoration: line-through;
   color: gray;
 }
-
 .discount-price {
   color: red;
   font-weight: bold;

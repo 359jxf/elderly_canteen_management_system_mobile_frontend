@@ -3,19 +3,28 @@
     <div class="background">
         <div class="headerBox">新用户注册</div>
         <div class="registerBox">
-            <div class="row"><span class="label">手机号码</span> <input class="inputBox" v-model="PHONE_NUM"/></div>
-            <div class="row"><span class="label">账户名称</span> <input class="inputBox" v-model="ACCOUNT_NAME"/></div>
-            <div class="row"><span class="label">账户密码</span> <input class="inputBox" v-model="PASSWORD"/></div>
-            <div class="row"><span class="label">性    别</span> <input class="inputBox" v-model="GENDER"/></div>
-            <div class="row"><span class="label">验证码</span> <input class="inputBox half" v-model="VERIFY_CODE"/><button class=verifyBtn @click="getCredit">发送</button></div>
+            <div class="row"><span class="label">手机号码</span> <input class="inputBox" v-model="phone"/></div>
+            <div class="row"><span class="label">账户名称</span> <input class="inputBox" v-model="userName"/></div>
+            <div class="row"><span class="label">账户密码</span> <input class="inputBox" v-model="password"/></div>
+            <div class="row"><span class="label">性    别</span> <input class="inputBox" v-model="gender"/></div>
+            <div class="row"><span class="label">验证码</span> <input class="inputBox half" v-model="verificationCode"/><button class=verifyBtn @click="getCredit">发送</button></div>
             <button class="getIn" @click="getIn">注册</button>
         </div>
     </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+//import axios from 'axios';
+
 const router = useRouter();
+
+const phone = ref('');
+const userName = ref('');
+const password = ref('');
+const gender = ref('');
+const verificationCode = ref('');
 
 const getIn = () => {
 router.push({ name: 'Home' });

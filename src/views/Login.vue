@@ -12,12 +12,14 @@
       <input class="input-item" v-model="phoneNum" placeholder="输入手机号" />
       <input class="input-item" v-model="password" placeholder="输入密码" />
       <button class="loginBtn" @click="loginWithPassword">登录</button>
+      <p class="forgetPassword" @click="forgetPassword">忘记密码？</p>
     </div>
     <div class="loginBox" v-else>
       <input class="input-item" v-model="phoneNum" placeholder="输入手机号" />
       <input class="input-item half" v-model="verifyCode" placeholder="输入验证码" />
       <button class="getBtn" @click="getCredit">获取验证码</button>
       <button class="loginBtn" @click="loginWithCredit">登录</button>
+
     </div>
     <button class="register" @click="register">新用户注册</button>
   </div>
@@ -68,14 +70,16 @@ const loginWithPassword = async () => {
 
 const loginWithCredit = async () => {
   try {
-    const response = await axios.post('YOUR_API_ENDPOINT/credit-login', {
+    const response = await axios.post('http://8.136.125.61/api/Account/sendOTP', {
       phoneNum: phoneNum.value,
       verifyCode: verifyCode.value, 
     });
     if (response.data.loginSuccess) {
-      const { token, identity, accountName } = response.data.response;
-      console.log('Login successful:', { token, identity, accountName });
+
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('identity', response.data.identity);
+      console(response.data)
+
       router.push({ name: 'Home' });
     } else {
       alert('Login failed: ' + response.data.msg);
@@ -83,6 +87,31 @@ const loginWithCredit = async () => {
   } catch (error) {
     console.error('Error logging in with credit:', error);
     alert('An error occurred during login.');
+  }
+};
+
+const getCredit = async ()=> {
+  const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value);
+  if (!isValidPhoneNumber) {
+    alert('手机号无效。必须是11位数字。')
+    return;
+  }
+  try {
+    const response = await axios.post('http://8.136.125.61/api/Account/sendOTP', {
+      phone: phoneNum.value,
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if(response.value.success){
+      alert('发送成功')
+    } else{
+      alert('发送失败')
+    }
+  } catch (error) {
+    console.error('请求失败:', error);
   }
 };
 
@@ -106,7 +135,7 @@ router.push({ name: 'Register' });
   top: 30%;
   left: 10%;
 
-  height: 30%;
+  height: 40%;
   width: 80%;
 
   background-color: white;
@@ -154,7 +183,7 @@ router.push({ name: 'Register' });
   top: 10%;
 
   width: 80%;
-  height: 20%;;
+  height: 15%;;
   z-index: 6;
 
   margin-top: 5%;
@@ -168,7 +197,7 @@ router.push({ name: 'Register' });
 
 .loginBtn{
   position: relative;
-  top: 20%;
+  top: 15%;
   height: 20%;
   width: 40%;
   border-radius: 20px ; 
@@ -196,5 +225,12 @@ router.push({ name: 'Register' });
   background-color: white;
   border-radius: 30px ; 
   font-size: 80%;
+}
+
+.forgetPassword{
+  position: relative;
+  font-weight: bold;
+  top: 20%;
+  font-size: 70%;
 }
 </style>

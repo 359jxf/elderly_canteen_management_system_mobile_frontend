@@ -1,16 +1,17 @@
 <template>
-    <ReturnButton :targetRoute="{ name: 'User' }" />
-    <div class="background">
-        <div class="headerBox">修改信息</div>
-        <div class="registerBox">
-            <div class="row"><span class="label">账户名称</span> <input class="inputBox" v-model="accountName"/></div>
-            <div class="row"><span class="label">地址</span> <input class="inputBox" v-model="address"/></div>
-            <div class="row"><span class="label">出生日期</span> <input class="inputBox" type="date" v-model="birthDate"/></div>
-            <div class="row"><span class="label">选择图片</span> <input class="inputBox" type="file" accept="image/*" @change="onImageSelected"/></div>
-            <div v-if="imageUrl"><img :src="imageUrl" alt="Selected Image" class="preview"/></div>
-            <button class="getIn" @click="Ensure">确认修改</button>
-        </div>
-    </div>
+  <ReturnButton :targetRoute="{ name: 'User' }" />
+  <div class="background">
+      <div class="headerBox">修改信息</div>
+      <div class="registerBox">
+          <div class="row"><span class="label">账户名称</span> <input class="inputBox" v-model="accountName"/></div>
+          <div class="row"><span class="label">地址</span> <input class="inputBox" v-model="address"/></div>
+          <div class="row"><span class="label">性别</span> <input class="inputBox" v-model="gender"/></div>
+          <div class="row"><span class="label">出生日期</span> <input class="inputBox" type="date" v-model="birthDate"/></div>
+          <div class="row"><span class="label">选择图片</span> <input class="inputBox" type="file" accept="image/*" @change="onImageSelected"/></div>
+          <div v-if="imageUrl"><img :src="imageUrl" alt="Selected Image" class="preview"/></div>
+          <button class="getIn" @click="Ensure">确认修改</button>
+      </div>
+  </div>
 </template>
 
 <script setup>
@@ -19,32 +20,50 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const token = localStorage.getItem('token');
 
-const accountName = ref(null);
-const address = ref(null);
-const birthDate = ref(null);
-const imageUrl = ref(null);
+const accountName = ref('');
+const address = ref('');
+const gender = ref('');
+const birthDate = ref('');
+const selectedImage = ref(null); // 初始化为null而不是空字符串
+const imageUrl = ref('');
 
 const Ensure = async () => {
+  const token = localStorage.getItem('token');
   try {
-    const response = await axios.post('http://8.136.125.61/api/Account/alterPersonInfo', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-        accountName: '11',
-        phoneNum:'111',
-        portrait: '111',
-        gender:'female',
-        birthDate: birthDate.value,
-        address: 'address',
-        name:'平泽唯'
-    });
+    const formData = new FormData();
+    formData.append('accountName', accountName.value);
+    formData.append('portrait', selectedImage.value);
+    formData.append('gender', gender.value);
+    formData.append('birthDate', birthDate.value);
+    formData.append('address', address.value);
 
-    if (response.data.success) {
+    const response = await axios.post(
+      'http://8.136.125.61/api/Account/alterPersonInfo',
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    if (response.data.alterSuccess) {
+      if (accountName.value !== '') {
+        localStorage.setItem('accountName', accountName.value);
+      }
+      
+      if (selectedImage.value) {
+        const imagePreviewUrl = URL.createObjectURL(selectedImage.value);
+        localStorage.setItem('portrait', imagePreviewUrl);
+      }
+
+      console.log(accountName.value); // 调试用
+      console.log(selectedImage.value); // 调试用
       router.push({ name: 'User' });
     } else {
-      alert('更新失败: ' + response.data.message);
+      alert('更新失败: ' + response.data.msg);
     }
   } catch (error) {
     console.error('Error updating account:', error);
@@ -55,11 +74,13 @@ const Ensure = async () => {
 const onImageSelected = (event) => {
   const file = event.target.files[0];
   if (file) {
-    imageUrl.value = URL.createObjectURL(file);
+    selectedImage.value = file; // 保存所选的图片文件
+    imageUrl.value = URL.createObjectURL(file); // 生成本地 URL 用于预览
   }
 };
-
 </script>
+
+
 <style>
 .background{
     position: relative;

@@ -21,14 +21,14 @@
     height: 100vh;
     width: 100vw;
 
-    background-color: #ffa822 ;
+    background-color: wheat ;
 }
 
 .headImage{
     position: relative;
     top: 15%;
 
-    height: 20%;
+    height: 15%;
     width: auto;
 
     border-radius: 50%; /* 将图片设置为圆形 */
