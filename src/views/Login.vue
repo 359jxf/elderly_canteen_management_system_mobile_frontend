@@ -11,14 +11,14 @@
     <div class="loginBox" v-if=isPassword>
       <input class="input-item" v-model="phoneNum" placeholder="输入手机号" />
       <input class="input-item" v-model="password" placeholder="输入密码" />
-      <button class="loginBtn" @click="loginWithPassword">登录</button>
+      <button class="loginBtn" @click="loginWithPassword">登 录</button>
       <p class="forgetPassword" @click="forgetPassword">忘记密码？</p>
     </div>
     <div class="loginBox" v-else>
       <input class="input-item" v-model="phoneNum" placeholder="输入手机号" />
       <input class="input-item half" v-model="verifyCode" placeholder="输入验证码" />
       <button class="getBtn" @click="getCredit">获取验证码</button>
-      <button class="loginBtn" @click="loginWithCredit">登录</button>
+      <button class="loginBtn" @click="loginWithCredit">登 录</button>
 
     </div>
     <button class="register" @click="register">新用户注册</button>
@@ -127,7 +127,7 @@ router.push({ name: 'Register' });
   width: 100vw;
 
   position: relative;
-  background-color: #ffa822;
+  background-color: wheat;
 }
 
 .loginBox{
@@ -189,6 +189,8 @@ router.push({ name: 'Register' });
   margin-top: 5%;
   border-radius: 10px;
   font-size: 80%;
+
+  
 }
 
 .half{
@@ -199,10 +201,15 @@ router.push({ name: 'Register' });
   position: relative;
   top: 15%;
   height: 20%;
-  width: 40%;
+  width: 60%;
   border-radius: 20px ; 
   background-color: rgb(232, 255, 195);
-  font-size: 70%;
+  font-size: 90%;
+  border: none;
+  color: white;
+  font-weight: bold;
+  background-color: #ffa822;
+  letter-spacing: 0.2rem;
 }
 
 .getBtn{
@@ -222,9 +229,13 @@ router.push({ name: 'Register' });
   left: 30%;
   width: 40%;
   height: 8%;
-  background-color: white;
   border-radius: 30px ; 
   font-size: 80%;
+  border: none;
+  color: white;
+  font-weight: bold;
+  background-color: #ffa822;
+  letter-spacing: 0.1rem;
 }
 
 .forgetPassword{
