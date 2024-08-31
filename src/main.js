@@ -7,7 +7,6 @@ import { createPinia } from 'pinia'
 // 计算设置rem的基准值，即html的font-size
 import 'amfe-flexible'
 // vant
-
 const app = createApp(App)
 
 // 路由

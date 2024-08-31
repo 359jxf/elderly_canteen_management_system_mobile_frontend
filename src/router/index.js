@@ -3,9 +3,6 @@ import App from '../App.vue'
 
 
 // 路由规则
-
-// 路由规则
-// 路由规则
 const routes = [
   {
     path: '/',
@@ -28,13 +25,6 @@ const routes = [
         component:()=>import('../views/Home.vue')
       },
       {
-        path:'/User',
-        name:'User',
-        component:()=>import('../views/User.vue')
-      },
-      {
-        path: '/Login',
-        name: 'Login',
         path:'/User',
         name:'User',
         component:()=>import('../views/User.vue')
