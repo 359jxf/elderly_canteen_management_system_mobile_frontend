@@ -36,7 +36,7 @@ export const postAccpetOrder=async(orderId)=>{
 export const getPorTrait=async()=>{
 
     const res=await ins.get('/api/account/getPersonInfo');
-    console.log("getPortrait url:",res.data.response.portrait);
+    console.log("api:getPortrait url:",res.data.response.portrait);
     return res.data.response.portrait;
 
 }
