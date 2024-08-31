@@ -1,7 +1,9 @@
 <template>
   <van-row>
     <van-col span="3" class="search-line-icon">
-      <van-icon name="arrow-left" />
+      <button class="arrow-button" @click="goBack">
+        <van-icon name="arrow-left" />
+      </button>
     </van-col>
     <van-col span="18">
       <van-search v-model="searchValue" placeholder="请输入搜索关键词" />
@@ -19,9 +21,16 @@ import { ref } from 'vue'
 
 import { defineEmits } from 'vue'
 import { watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 const searchValue = ref('')
 const emit = defineEmits(['update:modelValue'])
+const router = useRoute()
+const goBack = () => {
+  router.back()
+  // 或者
+  // router.go(-1);
+}
 
 watch(searchValue, (newValue) => {
   emit('update:modelValue', newValue)
@@ -29,6 +38,10 @@ watch(searchValue, (newValue) => {
 </script>
 
 <style scoped>
+.arrow-button {
+  background: none;
+  border: none;
+}
 .search-line-icon {
   display: flex;
   align-items: center;

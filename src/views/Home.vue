@@ -18,34 +18,54 @@
     </div>
     <TheWelcome />
     <div class="informationContainer">
-      <div class="titleLine" v-if="identity === 'volunteer' || identity === 'administrator'">
+      <div class="tip">⬆</div>
+      <div class="tip">请选择就餐方式</div>
+      <div class="titleLine" v-if="identity === 'volunteer' || identity === 'admin'">
         志愿者服务
       </div>
-      <div class="buttonContainer" v-if="identity === 'volunteer' || identity === 'administrator'">
+      <div class="buttonContainer" v-if="identity === 'volunteer' || identity === 'admin'">
         <div class="button button1" @click="getVolunteerOrder">志愿接单</div>
         <div class="button button2" @click="getVolunteerInfor">志愿信息</div>
       </div>
       <div class="titleLine line2">食堂信息</div>
       <div class="informationBox">
         名称：老人食堂<br />
-        地址：我不知道<br />
-        联系电话：110
+        地址：上海市嘉定区曹安公路xxx号y栋<br />
+        联系电话：123-4567-8910
       </div>
     </div>
     <BottomTabbar nowView="home" />
-    <router-link to="/OrderPage"></router-link>
-    <router-link to="/login"></router-link>
-    <router-link to="/OrderDetail"></router-link>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
+
 const identity = localStorage.getItem('identity')
+const router = useRouter()
+
+const getVolunteerOrder = () => {
+  router.push({ name: 'AccpetOrder' })
+}
+
+const getVolunteerInfor = () => {
+  router.push({ name: 'MyOrders' })
+}
+
+const resturant = () => {
+  router.push({ name: 'OrderPage' })
+}
+
+const deliver = () => {
+  router.push({ name: 'OrderPage' })
+}
 </script>
 
 <style scoped>
 .backgroundC {
-  width: 100%;
+  width: 100vw;
   height: 100vh; /* 使背景占满整个视口高度 */
   position: relative; /* 使子元素的绝对定位相对于背景容器 */
   background: #ffa822;
@@ -53,7 +73,7 @@ const identity = localStorage.getItem('identity')
 
 .colorPiece {
   position: absolute;
-  top: 15%;
+  top: 12%;
 
   width: 100%;
   height: 30%;
@@ -83,6 +103,8 @@ const identity = localStorage.getItem('identity')
 }
 
 .imageText {
+  color: white;
+  font-weight: bold;
   text-align: center;
   font-size: 0.5rem;
 }
@@ -97,7 +119,7 @@ const identity = localStorage.getItem('identity')
 .informationContainer {
   position: relative;
   width: 100vw;
-  height: 60%;
+  height: 50%;
   top: -10%;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
   border-radius: 20px; /* 四角圆滑 */
@@ -106,19 +128,24 @@ const identity = localStorage.getItem('identity')
 
 .titleLine {
   position: relative;
-  top: 8%;
+  top: 10%;
 
-  height: 0.7rem;
+  height: 0.8rem;
   width: 100%;
 
-  background-color: #ffa822;
+  background-color: wheat;
 
   font-size: 0.5rem;
   padding-left: 10%;
+
+  color: #ffa822;
+  font-weight: bold;
+
+  letter-spacing: 0.15rem;
 }
 
 .line2 {
-  top: 20%;
+  top: 14%;
 }
 
 .buttonContainer {
@@ -148,9 +175,26 @@ const identity = localStorage.getItem('identity')
 
 .informationBox {
   position: relative;
-  top: 25%;
+  top: 15%;
 
   font-size: 0.4rem;
   padding-left: 15%;
+
+  color: brown;
+
+  line-height: 0.8rem;
+}
+
+.tip {
+  position: relative;
+  left: 4%;
+  top: 3%;
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
+  justify-content: center; /* 保持内容的水平对齐 */
+  height: 4%;
+  width: 90%;
+  font-size: 60%;
+  line-height: 5%; /* 确保行高与容器高度一致 */
 }
 </style>

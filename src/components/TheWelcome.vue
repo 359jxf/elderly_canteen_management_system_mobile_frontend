@@ -6,11 +6,11 @@
 </template>
 
 <script setup>
-const accountName = localStorage.getItem('accountName');
+const accountName = localStorage.getItem('accountName')
 </script>
 
 <style scoped>
-.theHelloContainer{
+.theHelloContainer {
   width: 80%;
   height: 12%;
 
@@ -18,6 +18,7 @@ const accountName = localStorage.getItem('accountName');
   position: relative;
 
   justify-content: center; /* 内容水平居中 */
+  align-items: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
   border-radius: 15px; /* 四角圆滑 */
 
@@ -29,10 +30,11 @@ const accountName = localStorage.getItem('accountName');
 
   background-color: white;
 }
-.helloImage{
+
+.helloImage {
   position: relative; /* 相对定位 */
   left: -15%;
-  top: 20%;
+  top: 0%;
   width: auto;
   height: 70%;
   border-radius: 50%; /* 将图片设置为圆形 */

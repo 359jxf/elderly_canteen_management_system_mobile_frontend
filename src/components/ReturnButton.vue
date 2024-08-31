@@ -1,38 +1,38 @@
 <template>
-    <div class="back" @click="handleClick">&lt;</div>
+  <div class="back" @click="handleClick">&lt;</div>
 </template>
-  
+
 <script setup>
-import { useRouter } from 'vue-router';
-import { defineProps } from 'vue';
+import { useRouter } from 'vue-router'
+import { defineProps } from 'vue'
 
 const props = defineProps({
-    targetRoute: {
-        type: Object,
-        required: true
-    }
-});
-const router = useRouter();
+  targetRoute: {
+    type: Object,
+    required: true
+  }
+})
+const router = useRouter()
 
 const handleClick = () => {
-    router.push(props.targetRoute);
-};
+  router.push(props.targetRoute)
+}
 </script>
-  
+
 <style scoped>
-.back{
-    position: fixed;
+.back {
+  position: fixed;
 
-    top: 5%;
-    left: 5%;
+  top: 5%;
+  left: 5%;
 
-    height: 5vh;
-    width: 5vh;
+  height: 5vh;
+  width: 5vh;
 
-    padding-left: 1vh;
+  padding-left: 1vh;
 
-    z-index: 1000;
-    font-size: 100%;
-    background-color: #ffa822;
+  z-index: 1000;
+  font-size: 100%;
+  background-color: wheat;
 }
 </style>
