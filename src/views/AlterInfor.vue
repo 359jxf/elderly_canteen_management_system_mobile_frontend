@@ -89,7 +89,7 @@ const onImageSelected = (event) => {
     height: 100vh;
     width: 100vw;
 
-    background-color: #ffa822 ;
+    background-color: wheat ;
 }
 
 .registerBox{

@@ -18,6 +18,7 @@
     </div>
     <TheWelcome />
     <div class="informationContainer">
+      <div class="tip">请选择就餐方式</div>
       <div class="titleLine" v-if="identity === 'volunteer' || identity === 'admin'">
         志愿者服务
       </div>
@@ -65,7 +66,7 @@ router.push({ name: 'OrderPage' });
 
 <style scoped>
 .backgroundC {
-  width: 100%;
+  width: 100vw;
   height: 100vh; /* 使背景占满整个视口高度 */
   position: relative; /* 使子元素的绝对定位相对于背景容器 */
   background: #ffa822;
@@ -119,7 +120,7 @@ router.push({ name: 'OrderPage' });
 .informationContainer{
   position: relative;
   width: 100vw;
-  height: 40%;
+  height: 60%;
   top: -10%;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
   border-radius: 20px; /* 四角圆滑 */
@@ -174,5 +175,17 @@ router.push({ name: 'OrderPage' });
 
   font-size: 0.4rem;
   padding-left: 15%;
+}
+
+.tip{
+  position: relative;
+  left: 0%;
+  top: 5%;
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
+  justify-content: center; /* 保持内容的水平对齐 */
+  height: 5%;
+  width: 90%;
+  font-size: 80%;
 }
 </style>
