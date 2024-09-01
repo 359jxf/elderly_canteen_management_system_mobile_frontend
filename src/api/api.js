@@ -40,3 +40,4 @@ export const getPorTrait=async()=>{
     return res.data.response.portrait;
 
 }
+
