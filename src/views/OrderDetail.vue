@@ -4,11 +4,15 @@
       <Nav nav_text="订单详情" />
     </div>
     <div class="order_content">
-      <div>
+      <div v-if="orderDetail.DELIVER_OR_DINING===true">
         <SimpleAddressCard :order_address="orderDetail.CUS_ADDRESS" />
       </div>
       <div>
-        <VolunteerCard />
+        <VolunteerCard :orderId="orderDetail.ORDER_ID" 
+        :orderStatus="orderDetail.STATUS"
+        :deliverOrDining="orderDetail.DELIVER_OR_DINING"
+        :deliverStatus="orderDetail.DELIVER_STATUS"
+        />
       </div>
       <div>
         <OrderCard :order_detail="orderDetail" />

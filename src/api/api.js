@@ -1,4 +1,6 @@
 import ins from  '../utils/axiosInstance.js'
+
+
 export const getOrders=async()=>{
     const res=await ins.get('/getPastOrder');
     console.log(res.data.response);
@@ -40,3 +42,17 @@ export const getPorTrait=async()=>{
     return res.data.response.portrait;
 
 }
+
+
+export const getOrderDeliverMsg = async (orderId) => {
+    try {
+        const res = await ins.get('/getOrderDeliverMsg', {
+            params: { OrderId: orderId }
+        });
+        console.log(res.data.response);
+        return res.data.response[0];
+    } catch (error) {
+        console.error('Error fetching delivery message:', error);
+        throw error;
+    }
+};
