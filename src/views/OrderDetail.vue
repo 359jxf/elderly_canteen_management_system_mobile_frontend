@@ -1,18 +1,15 @@
 <template>
   <div class="container">
-    <div>
+    <div class="head">
       <Nav nav_text="订单详情" />
     </div>
     <div class="order_content">
-      <div v-if="orderDetail.DELIVER_OR_DINING===true">
+      <div v-if="orderDetail.DELIVER_OR_DINING === true">
         <SimpleAddressCard :order_address="orderDetail.CUS_ADDRESS" />
       </div>
       <div>
-        <VolunteerCard :orderId="orderDetail.ORDER_ID" 
-        :orderStatus="orderDetail.STATUS"
-        :deliverOrDining="orderDetail.DELIVER_OR_DINING"
-        :deliverStatus="orderDetail.DELIVER_STATUS"
-        />
+        <VolunteerCard :orderId="orderDetail.ORDER_ID" :orderStatus="orderDetail.STATUS"
+          :deliverOrDining="orderDetail.DELIVER_OR_DINING" :deliverStatus="orderDetail.DELIVER_STATUS" />
       </div>
       <div>
         <OrderCard :order_detail="orderDetail" />
@@ -53,8 +50,7 @@
           {{ buttonText }}</van-button>
 
         <!-- ref="commentDialog"：获取子组件的引用。在 setup 中，你可以使用commentDialog.value.showDialog();来访问子组件 -->
-        <CommentDialog @confirm="handleCommentConfirm" @cancel="handleCommentCancel" 
-        ref="commentDialog" />
+        <CommentDialog @confirm="handleCommentConfirm" @cancel="handleCommentCancel" ref="commentDialog" />
       </div>
     </div>
   </div>
@@ -185,14 +181,14 @@ const handleCommentCancel = () => {
 // #endregion
 
 // 确认取餐
-const confirmOrder=()=>{
+const confirmOrder = () => {
 
 }
 
 
 // 确认送达
-const confirmDelivered=()=>{
-  
+const confirmDelivered = () => {
+
 }
 
 const buttonEvent = () => {
@@ -217,6 +213,15 @@ const buttonEvent = () => {
 </script>
 
 <style scoped>
+.head {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+  width: 100%;
+}
+
+
 .container {
   height: 100vh;
   display: flex;
@@ -228,6 +233,8 @@ const buttonEvent = () => {
   /* 占据剩余空间 */
   overflow-y: auto;
   /* 允许垂直滚动 */
+
+  margin-top: 5vh;
 }
 
 .remark {
@@ -243,8 +250,11 @@ const buttonEvent = () => {
 }
 
 .footer {
-  margin-top: auto;
-  margin-bottom: 1vh;
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+  background-color: white;
+  width: 100%;
 }
 
 .footer .info {
@@ -272,7 +282,7 @@ const buttonEvent = () => {
 
 .buttonpt {
   padding-left: 42.67%;
-  margin-bottom: 1%;
+  margin-bottom: 3%;
 }
 
 .button {
