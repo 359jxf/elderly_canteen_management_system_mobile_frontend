@@ -1,12 +1,13 @@
 <template>
   <div class="theHelloContainer">
-    <img src="../assets/Yui.jpg" alt="头像" class="helloImage" />
+    <img :src="portrait" alt="头像" class="helloImage" />
     你好，{{ accountName }}
   </div>
 </template>
 
 <script setup>
 const accountName = localStorage.getItem('accountName');
+const portrait = localStorage.getItem('portrait');
 </script>
 
 <style scoped>

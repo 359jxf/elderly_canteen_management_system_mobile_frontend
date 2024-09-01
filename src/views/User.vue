@@ -63,8 +63,9 @@ try {
     console.log(response.data.response); // 调试用
     getSuccess.value = true;
     userData.value = response.data.response;
-    preview.value = userData.value.portrait ? `http://8.136.125.61/images/${userData.value.portrait}` : defaultPic;
+    preview.value = userData.value.portrait ? `http://8.136.125.61${userData.value.portrait}` : defaultPic;
 
+    localStorage.setItem('portrait', preview.value);
     localStorage.setItem('name', userData.value.name);
   } else {
     getSuccess.value = false;

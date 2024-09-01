@@ -85,54 +85,14 @@ const routes = [
         component: () => import('../views/AlterPassword.vue')
       },
       {
-        path: '/MyOrders',
-        name: 'MyOrders',
-        component: () => import('../views/MyOrders.vue')
+        path: '/ChangePassword',
+        name: 'ChangePassword',
+        component: () => import('../views/ChangePassword.vue')
       },
       {
-        path: '/Authen',
-        name: 'Authen',
-        component: () => import('../views/Authentication.vue')
-      },
-      {
-        path: '/Apply',
-        name: 'Apply',
-        component: () => import('../views/VolunteerApply.vue')
-      },
-      {
-        path: '/OrderDetail',
-        name: 'OrderDetail',
-        component: () => import('../views/OrderDetail.vue')
-      },
-      {
-        path: '/ShoppingCart',
-        name: 'ShoppingCart',
-        component: () => import('../views/ShoppingCart.vue')
-      },
-      {
-        path:'/AccpetOrder',
-        name:'AccpetOrder',
-        component:()=>import('../views/AccpetOrder.vue')
-      },
-      {
-        path: '/Register',
-        name: 'Register',
-        component: () => import('../views/Register.vue')
-      },
-      {
-        path: '/Alter',
-        name: 'Alter',
-        component: () => import('../views/AlterInfor.vue')
-      },
-      {
-        path: '/OrderPage',
-        name: 'OrderPage',
-        component: () => import('../views/OrderPage.vue')
-      },
-      {
-        path: '/AlterPassword',
-        name: 'AlterPassword',
-        component: () => import('../views/AlterPassword.vue')
+        path: '/Rebind',
+        name: 'Rebind',
+        component: () => import('../views/Rebind.vue')
       },
       {
         // vue-router@4的变化，舍弃*通配符
