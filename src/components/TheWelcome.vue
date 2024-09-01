@@ -1,12 +1,13 @@
 <template>
   <div class="theHelloContainer">
-    <img src="../assets/Yui.jpg" alt="头像" class="helloImage" />
+    <img :src="portrait" alt="头像" class="helloImage" />
     你好，{{ accountName }}
   </div>
 </template>
 
 <script setup>
 const accountName = localStorage.getItem('accountName');
+const portrait = localStorage.getItem('portrait');
 </script>
 
 <style scoped>
@@ -18,6 +19,7 @@ const accountName = localStorage.getItem('accountName');
   position: relative;
 
   justify-content: center; /* 内容水平居中 */
+  align-items: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
   border-radius: 15px; /* 四角圆滑 */
 
@@ -29,10 +31,11 @@ const accountName = localStorage.getItem('accountName');
 
   background-color: white;
 }
+
 .helloImage{
   position: relative; /* 相对定位 */
   left: -15%;
-  top: 20%;
+  top: 0%;
   width: auto;
   height: 70%;
   border-radius: 50%; /* 将图片设置为圆形 */
