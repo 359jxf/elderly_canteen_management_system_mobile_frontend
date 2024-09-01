@@ -48,8 +48,8 @@
 <script setup>
 import { useMenuStore } from '@/store/modules/menu'
 const menu = useMenuStore();
-const props=defineProps({
-  order_detail:Object
+const props = defineProps({
+  order_detail: Object
 })
 </script>
 
@@ -60,49 +60,67 @@ const props=defineProps({
   border-radius: 15px;
   padding: 3% 6%;
 }
+
 .card-header .text {
   margin-bottom: 5%;
 }
+
 .card-header .text .title {
   font-weight: bold;
-  font-size: large;
+  font-size: 20px;
+  letter-spacing: 3px;
 }
+
 .card-header .info {
   font-size: small;
+  margin-left: 8px;
 }
+
 .hr-solid {
   border: 0;
   border-top: 1px solid #d0d0d5;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
+
 .card-mid .text {
   margin-bottom: 5%;
 }
+
 .card-mid .text .title {
   font-weight: bold;
   font-size: small;
 }
+
 .card-mid .info {
   font-size: small;
 }
+
 .card-footer {
   display: flex;
 }
+
 .card-footer .left {
   width: 80%;
 }
+
 .card-footer .left .text {
   font-weight: bold;
   font-size: medium;
 }
+
 .card-footer .right {
   width: 20%;
 }
+
 .card-footer .right .text {
   color: red;
   font-size: medium;
 }
+
 ul {
-  list-style-type: none; /* 移除默认的列表样式 */
+  list-style-type: none;
+  /* 移除默认的列表样式 */
   padding: 0;
   margin: 0;
 }
@@ -110,6 +128,7 @@ ul {
 .item {
   display: flex;
   justify-content: space-between;
-  padding: 5px 0; /* 调整垂直间隔 */
+  padding: 5px 0;
+  /* 调整垂直间隔 */
 }
 </style>

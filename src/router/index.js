@@ -8,7 +8,7 @@ const routes = [
     path: '/',
     component: App,
     children: [
-      { path: '', redirect: '/Home' },
+      { path: '', redirect: '/Login' },
       {
         path:'/test',
         name:'test',

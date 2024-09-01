@@ -39,6 +39,7 @@ const fetchOrders = async () => {
     console.log("acceptedOrder", acceptedOrder.value);
 
     isAccepted.value = (Object.keys(acceptedOrder.value).length !== 0);
+    isAccepted.value =false;
     console.log("isAccepted", isAccepted.value);
 
     //订单按新到旧排序
@@ -188,7 +189,7 @@ const accpetOrder = async (accpeted_order) => {
       alertMessage.value = '服务器错误，请稍后再试！';
       break;
     default:
-      alertMessage.value = '未知错误，请稍后再试！';
+      alertMessage.value = '未知错误，错误代码'+status+',请稍后再试！';
   }
   showAlert.value = true;
   showDialog({ message: alertMessage.value, width: 300 })
