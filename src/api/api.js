@@ -1,4 +1,6 @@
 import ins from  '../utils/axiosInstance.js'
+
+
 export const getOrders=async()=>{
     const res=await ins.get('/getPastOrder');
     console.log(res.data.response);
@@ -34,9 +36,56 @@ export const postAccpetOrder=async(orderId)=>{
 }
 
 export const getPorTrait=async()=>{
-
     const res=await ins.get('/api/account/getPersonInfo');
-    console.log("getPortrait url:",res.data.response.portrait);
+    console.log("api:getPortrait url:",res.data.response.portrait);
     return res.data.response.portrait;
+
+}
+
+export const getOrderMsg = async (orderId) => {
+    try {
+        const res = await ins.get('/getOrderMsg', {
+            params: { OrderId: orderId }
+        });
+        console.log(res.data.response);
+        return res.data.response;
+    } catch (error) {
+        console.error('Error fetching order message:', error);
+        throw error;
+    }
+};
+
+export const getOrderDeliverMsg = async (orderId) => {
+    try {
+        const res = await ins.get('/getOrderDeliverMsg', {
+            params: { OrderId: orderId }
+        });
+        console.log(res.data.response);
+        return res.data.response;
+    } catch (error) {
+        console.error('Error fetching delivery message:', error);
+        throw error;
+    }
+};
+
+export const postConfirmOrder=async(orderId)=>{
+    try {
+        const res = await ins.post('/postConfirmOrder', { OrderId: orderId });
+        console.log('postConfirmOrder success:',res.data.success)
+        return res.status;
+      } catch (error) {
+        return error.response;
+      }
+
+}
+
+export const postConfirmDelivered =async(orderId)=>{
+    try {
+        const res = await ins.post('/postConfirmDelivered', { OrderId: orderId });
+        console.log('postConfirmDelivered success:',res.data.success)
+        return res.status;
+      } catch (error) {
+        return error.response;
+      }
 
 }

@@ -1,33 +1,35 @@
 <template>
-  <div class="payfooter">
-    <div class="payfooter-text">
-      <span class="text">请选择支付方式</span>
+  <div class="pay-footer">
+    <div class="pay-footer-header">
+      <span class="header-text">请选择支付方式</span>
     </div>
-    <div class="payfooter-icon">
+    <div class="pay-footer-icons">
       <van-radio-group v-model="checked" shape="dot" direction="horizontal">
-        <div class="left">
-          <van-radio name="1"> &nbsp;&nbsp;<img src="../assets/wechatpay.png" /></van-radio>
+        <div class="payment-option">
+          <van-radio name="1">
+            <img src="../assets/wechatpay.png" alt="微信支付" class="payment-icon" />
+          </van-radio>
+          <span class="payment-label">微信支付</span>
         </div>
-        <div class="right">
-          <van-radio name="2">&nbsp;&nbsp;<img src="../assets/alipay.png" /></van-radio>
+        <div class="payment-option">
+          <van-radio name="2">
+            <img src="../assets/alipay.png" alt="支付宝" class="payment-icon" />
+          </van-radio>
+          <span class="payment-label">支付宝</span>
         </div>
       </van-radio-group>
     </div>
-    <hr class="hr-solid" />
-    <div class="payfooter-button"></div>
-    <div class="paybutton">
-      <div class="left">
-        <van-button type="primary" class="button-left" @click="myClear">清空</van-button>
-      </div>
-      <div class="right">
-        <van-button
-          type="primary"
-          class="button-right"
-          :class="{ disabled: menu.items.length === 0 }"
-          @click="jump"
-          >立即下单</van-button
-        >
-      </div>
+    <hr class="divider" />
+    <div class="pay-footer-buttons">
+      <van-button type="default" class="clear-button" @click="myClear">清空</van-button>
+      <van-button
+        type="primary"
+        class="order-button"
+        :class="{ disabled: menu.items.length === 0 }"
+        @click="jump"
+      >
+        立即下单
+      </van-button>
     </div>
   </div>
 </template>
@@ -36,9 +38,11 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMenuStore } from '@/store/modules/menu'
+
 const menu = useMenuStore()
 const checked = ref('1')
 const router = useRouter()
+
 const jump = () => {
   if (menu.items.length > 0) {
     router.push({ path: '/OrderDetail' })
@@ -46,62 +50,83 @@ const jump = () => {
     console.log('菜单为空，无法跳转') // 或者使用其他方式提示用户
   }
 }
+
 const myClear = () => {
   menu.clearItems()
 }
 </script>
 
 <style scoped>
-.payfooter {
+.pay-footer {
   width: 100%;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #e0e0e0;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
 }
-.payfooter-text {
-  padding: 0% 8% 0% 8%;
-  margin-bottom: 2%;
+
+.pay-footer-header {
+  margin-bottom: 16px;
 }
-.payfooter .text {
+
+.header-text {
   font-size: 18px;
+  font-weight: 600;
+  color: #333;
 }
-.payfooter-icon {
-  padding: 0% 8% 0% 8%;
+
+.pay-footer-icons {
+  display: flex;
+  justify-content: space-between; /* Adjusts spacing between items */
+  margin-bottom: 16px;
 }
-.payfooter-icon .right {
-  width: 47%;
-  padding-left: 3%;
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  margin: 0 12px; /* Adds space between the payment options */
 }
-.payfooter-icon .left {
-  width: 47%;
-  padding-left: 3%;
+
+.payment-icon {
+  height: 24px;
+  width: 24px;
+  margin-right: 8px;
 }
-.hr-solid {
+
+.payment-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.divider {
   border: 0;
   border-top: 1px solid #d0d0d5;
+  margin: 16px 0;
 }
-.paybutton {
-  padding: 0% 3% 2% 5%;
+
+.pay-footer-buttons {
   display: flex;
+  justify-content: space-between;
 }
-.paybutton .left {
-  width: 50%;
+
+.clear-button {
+  flex: 1;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+  margin-right: 8px;
 }
-.paybutton .right {
-  width: 50%;
-}
-.button-left {
-  background-color: white;
-  color: black;
-  border: 1px solid grey;
-  width: 60%;
-}
-.button-right {
-  width: 90%;
+
+.order-button {
+  flex: 1;
+  background-color: #ff9f00;
+  color: #fff;
   border: none;
-  background-color: orange;
-  color: black;
 }
-.button-right.disabled {
-  background-color: gray; /* 禁用时的背景色 */
-  color: white; /* 禁用时的字体颜色 */
-  cursor: not-allowed; /* 禁用时的鼠标指针样式 */
+
+.order-button.disabled {
+  background-color: #d0d0d5;
+  color: #666;
+  cursor: not-allowed;
 }
 </style>

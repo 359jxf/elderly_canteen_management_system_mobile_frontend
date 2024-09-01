@@ -10,6 +10,10 @@
           <div class="row"><span class="label">选择图片</span> <input class="inputBox" type="file" accept="image/*" @change="onImageSelected"/></div>
           <div v-if="imageUrl"><img :src="imageUrl" alt="Selected Image" class="preview"/></div>
           <button class="getIn" @click="Ensure">确认修改</button>
+          <div class="actions">
+              <span @click="changePassword">修改密码</span>
+              <span @click="rebindPhone">改绑手机</span>
+          </div>
       </div>
   </div>
 </template>
@@ -53,11 +57,6 @@ const Ensure = async () => {
       if (accountName.value !== '') {
         localStorage.setItem('accountName', accountName.value);
       }
-      
-      if (selectedImage.value) {
-        const imagePreviewUrl = URL.createObjectURL(selectedImage.value);
-        localStorage.setItem('portrait', imagePreviewUrl);
-      }
 
       console.log(accountName.value); // 调试用
       console.log(selectedImage.value); // 调试用
@@ -77,6 +76,14 @@ const onImageSelected = (event) => {
     selectedImage.value = file; // 保存所选的图片文件
     imageUrl.value = URL.createObjectURL(file); // 生成本地 URL 用于预览
   }
+};
+
+const changePassword = () => {
+router.push({ name: 'ChangePassword' });
+};
+
+const rebindPhone = () => {
+router.push({ name: 'Rebind' });
 };
 </script>
 
@@ -134,7 +141,7 @@ const onImageSelected = (event) => {
 .label{
     width: 20%;
     font-weight: bold;
-    font-size: 70%;
+    font-size: 60%;
     min-width: 25%;
 }
 
@@ -167,11 +174,39 @@ const onImageSelected = (event) => {
     top: 10%;
     border-radius: 20px ;
     font-size: 60%;
+    border: none;
+      color: white;
+      font-weight: bold;
+      background-color: #ffa822;
 }
 
 .preview{
     position: relative;
-    height: 10%;
+    height: 20%;
     width: 20%;
+
+    top: 5vh;
+    left: 40%;
+
+    border-radius:50%;
 }
+
+.actions {
+  position: absolute;
+  top: 90%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.actions span {
+  cursor: pointer;
+  color: #007bff;
+  text-decoration: underline;
+  font-size: 60%;
+  margin-left: 10vw; /* 设置左边距 */
+  margin-right: 12vw; /* 设置右边距 */
+}
+
+
 </style>

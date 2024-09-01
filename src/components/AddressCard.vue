@@ -1,65 +1,93 @@
 <template>
-  <div class="addresscard">
-    <div>
-      <span class="title">填写收货地址</span>
+  <div class="address-card">
+    <div class="header">
+      <span class="title">填写取餐地址</span>
     </div>
-    <div class="addresscard-body">
-      <div class="address-text">
-        <div class="text">
-          <input v-model="user.defaultAddr" class="text-input" placeholder="请输入地址" />
-        </div>
+    <div class="body">
+      <div class="address-input">
+        <input v-model="defaultaddr" class="text-input" placeholder="请输入地址" />
       </div>
-      <div class="address-pic">
-        <img src="../assets/voice.png" class="voice-pic" />
+      <div class="voice-icon">
+        <img src="../assets/voice.png" alt="语音输入" class="voice-pic" />
       </div>
     </div>
-    <hr class="hr-solid" />
-    <span class="text"> 设为默认地址 </span>
+    <hr class="divider" />
+    <div class="footer">
+      <van-checkbox v-model="checked">
+        <span class="checkbox-text">设为默认地址</span>
+      </van-checkbox>
+    </div>
   </div>
 </template>
-
 <script setup>
+import { ref } from 'vue'
 import { useUserStore } from '@/store/modules/user'
-const user = useUserStore()
-</script>
 
+const checked = ref(false)
+const user = useUserStore()
+const defaultaddr = ref(user.defaultaddr ? user.defaultaddr : '')
+</script>
 <style scoped>
-.addresscard {
+.address-card {
   margin: 4%;
-  padding: 4% 8% 4% 8%;
-  border-radius: 15px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
+
+.header {
+  margin-bottom: 12px;
+}
+
 .title {
-  font-size: large;
-  font-weight: bold;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
 }
-.addresscard-body {
+
+.body {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.address-input {
+  flex: 1;
+  margin-right: 8px;
+}
+
+.text-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.voice-icon {
   display: flex;
   align-items: center;
 }
-.address-text {
-  width: 80%;
-}
-.addresscard .addresscard-body .address-text .text {
-  font-size: 15px;
-}
-.address-pic {
-  width: 20%;
-}
+
 .voice-pic {
-  height: 40px;
-  width: 40px;
+  height: 24px;
+  width: 24px;
 }
-.hr-solid {
+
+.divider {
   border: 0;
-  border-top: 1px solid #d0d0d5;
+  border-top: 1px solid #ddd;
+  margin: 12px 0;
 }
-.addresscard .text {
-  font-size: small;
+
+.footer {
+  display: flex;
+  align-items: center;
 }
-.text-input {
-  border: none;
-  width: 100%;
+
+.checkbox-text {
+  font-size: 14px;
+  color: #666;
 }
 </style>

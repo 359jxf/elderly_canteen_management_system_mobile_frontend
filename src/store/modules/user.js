@@ -1,15 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-const useUserStore = defineStore('user', {
-  state: () => {
-    return {
-      num: 10
-    }
-  },
-  getters: {
-    Num_del_8(state) {
-      return state.num - 8
-    }
+export const useUserStore = defineStore('user', () => {
+  const defaultaddr = ref('')
+  return {
+    defaultaddr
   }
 })
-export default useUserStore

@@ -1,16 +1,17 @@
 <template>
   <div class="theHelloContainer">
-    <img src="../assets/Yui.jpg" alt="头像" class="helloImage" />
+    <img :src="portrait" alt="头像" class="helloImage" />
     你好，{{ accountName }}
   </div>
 </template>
 
 <script setup>
 const accountName = localStorage.getItem('accountName');
+const portrait = localStorage.getItem('portrait');
 </script>
 
 <style scoped>
-.theHelloContainer{
+.theHelloContainer {
   width: 80%;
   height: 12%;
 
@@ -31,7 +32,7 @@ const accountName = localStorage.getItem('accountName');
   background-color: white;
 }
 
-.helloImage{
+.helloImage {
   position: relative; /* 相对定位 */
   left: -15%;
   top: 0%;
