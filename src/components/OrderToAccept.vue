@@ -49,7 +49,7 @@ const clickAccept=()=>{
 .part3 .van-button{
     max-height: 80%;
     object-fit: contain;
-
+    border-radius: 8px;
 }
 .address {
     font-size:1.8vh;
