@@ -1,26 +1,26 @@
 <template>
-    <ReturnButton :targetRoute="{ name: 'Login' }" />
+    <ReturnButton :targetRoute="{ name: 'Alter' }" />
     <div class="background">
-        <div class="headerBox">找回密码</div>
+        <div class="headerBox">修改密码</div>
         <div class="registerBox">
-            <div class="row"><span class="label">手机号码</span> <input class="inputBox" v-model="phoneNum"/></div>
-            <div class="row"><span class="label">新密码</span> <input class="inputBox" v-model="numPassword"/></div>
+            <div class="row"><span class="label">旧密码</span> <input class="inputBox" v-model="oldPassword"/></div>
+            <div class="row"><span class="label">新密码</span> <input class="inputBox" v-model="newPassword"/></div>
             <div class="row"><span class="label">重新输入</span> <input class="inputBox" v-model="rePassword"/></div>
-            <div class="row"><span class="label">验证码</span> <input class="inputBox half" v-model="verificationCode"/><button class=verifyBtn @click="getCredit">发送</button></div>
             <button class="getIn" @click="Ensure">确认修改</button>
+            <div class="forget" @click="forget">忘记密码？</div>
         </div>
     </div>
   </template>
   
   <script setup>
-  import { ref } from 'vue';
+import { ref } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const phoneNum=ref('');
 const newPassword=ref('');
 const rePassword=ref('');
+const oldPassword=ref('');
 
 const Ensure = async () => {
 const token = localStorage.getItem('token');
@@ -29,11 +29,12 @@ if (newPassword.value!==rePassword.value){
 }
 try {
   const data = {
+    oldPassword:oldPassword.value,
     newPassword:newPassword.value,
   };
 
   const response = await axios.post(
-    'http://8.136.125.61/api/Account/changePassword',
+    'http://8.136.125.61/api/Account/alterPassword',
     data,
     {
       headers: {
@@ -54,29 +55,8 @@ try {
 }
 };
 
-const getCredit = async ()=> {
-  const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value);
-  if (!isValidPhoneNumber) {
-    alert('手机号无效。必须是11位数字。')
-    return;
-  }
-  try {
-    const response = await axios.post('http://8.136.125.61/api/Account/sendOTP', {
-      phone: phoneNum.value,
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if(response.value.success){
-      alert('发送成功')
-    } else{
-      alert('发送失败')
-    }
-  } catch (error) {
-    console.error('请求失败:', error);
-  }
+const forget = () => {
+router.push({ name: 'AlterPassword' });
 };
 </script>
   
@@ -160,19 +140,19 @@ const getCredit = async ()=> {
       border-radius: 20px ;
       font-size: 60%;
       border: none;
-  color: white;
-  font-weight: bold;
-  background-color: #ffa822;
-  }
-  
-  .verifyBtn{
+      color: white;
+      font-weight: bold;
+      background-color: #ffa822;
+      }
+.forget{
+    top: 30%;
+    left: 35%;
+    height: 5%;
+    width: 30%;
     position: relative;
-    width: 20%;
-    height: 50%;
-    left: 5%;
-    border-radius: 5px ;
-    font-size: 70%;
-    
+    color: #007bff;
+    text-decoration: underline;
+    font-size: 60%;
 }
   </style>
   

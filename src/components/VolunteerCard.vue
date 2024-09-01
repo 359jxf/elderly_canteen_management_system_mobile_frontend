@@ -18,6 +18,7 @@
 .volunteercard {
   padding: 3% 5% 5% 12%;
   display: flex;
+  align-items: center;     /* 垂直居中 */
 }
 .card-left {
   width: 60%;
@@ -26,10 +27,13 @@
   font-size: 50px;
   color: grey;
   font-weight: bold;
+  letter-spacing: 2px;
 }
 .name {
   color: grey;
   font-weight: bold;
+  font-size: medium;
+  letter-spacing: 3px;
 }
 .card-right {
   padding-top: 3%;

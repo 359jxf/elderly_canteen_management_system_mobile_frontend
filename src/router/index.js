@@ -2,7 +2,6 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import App from '../App.vue'
 
 // 路由规则
-// 路由规则
 const routes = [
   {
     path: '/',
@@ -83,6 +82,16 @@ const routes = [
         path: '/AlterPassword',
         name: 'AlterPassword',
         component: () => import('../views/AlterPassword.vue')
+      },
+      {
+        path: '/ChangePassword',
+        name: 'ChangePassword',
+        component: () => import('../views/ChangePassword.vue')
+      },
+      {
+        path: '/Rebind',
+        name: 'Rebind',
+        component: () => import('../views/Rebind.vue')
       },
       {
         // vue-router@4的变化，舍弃*通配符

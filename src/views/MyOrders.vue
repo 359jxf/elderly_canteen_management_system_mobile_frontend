@@ -121,38 +121,16 @@ const router = useRouter()
   height: 100vh;
 }
 
+.head {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+  width: 100%;
+}
+
 .van-tabs {
   height: 5vh;
-}
-
-.top p {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
-  font-weight: bold;
-}
-
-.top img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  margin-right: 10px;
-}
-
-.top .van-icon {
-  margin-left: 10px;
-}
-
-.top {
-  height: 5vh;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  display: flex;
-  font-size: large;
-  font-weight: bold;
-  /* position: relative; */
 }
 
 .scroll {
@@ -167,5 +145,8 @@ const router = useRouter()
   flex-grow: 1;
   padding: 20px;
   background-color: rgba(244, 244, 244);
+  margin-top: calc(
+    5vh + 5vh
+  ); /*使用 position: fixed 的head被从文档流中移除了，导致 orders 容器向上移动 */
 }
 </style>

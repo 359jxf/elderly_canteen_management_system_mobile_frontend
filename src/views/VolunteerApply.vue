@@ -44,6 +44,7 @@ const sendApplication = async () => {
     alert('更新失败，请稍后重试')
   }
 }
+};
 </script>
 
 <style scoped>

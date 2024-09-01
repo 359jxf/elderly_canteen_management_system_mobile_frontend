@@ -84,10 +84,19 @@ const fetchData = async () => {
       getSuccess.value = false
       errorMessage.value = response.data.msg
     }
-  } catch (error) {
-    console.error('Error fetching data:', error)
-    getSuccess.value = false
-    errorMessage.value = 'Failed to fetch data'
+  });
+
+  if (response.data.getSuccess === true) {
+    console.log(response.data.response); // 调试用
+    getSuccess.value = true;
+    userData.value = response.data.response;
+    preview.value = userData.value.portrait ? `http://8.136.125.61${userData.value.portrait}` : defaultPic;
+
+    localStorage.setItem('portrait', preview.value);
+    localStorage.setItem('name', userData.value.name);
+  } else {
+    getSuccess.value = false;
+    errorMessage.value = response.data.msg;
   }
 }
 

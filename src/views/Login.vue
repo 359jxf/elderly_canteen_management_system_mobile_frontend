@@ -55,6 +55,7 @@ const loginWithPassword = async () => {
       phoneNum: phoneNum.value,
       password: password.value
     })
+    console.log('1', response.data)
     if (response.data.loginSuccess) {
       const { token, identity, accountName } = response.data.response
       localStorage.setItem('token', token)
@@ -73,14 +74,15 @@ const loginWithPassword = async () => {
 
 const loginWithCredit = async () => {
   try {
-    const response = await axios.post('http://8.136.125.61/api/Account/sendOTP', {
+    const response = await axios.post('http://8.136.125.61/api/Account/verifiationCodeLogin', {
       phoneNum: phoneNum.value,
       verifyCode: verifyCode.value
     })
     if (response.data.loginSuccess) {
-      localStorage.setItem('token', response.data.token)
-      localStorage.setItem('identity', response.data.identity)
-      console(response.data)
+      const { token, identity, accountName } = response.data.response
+      localStorage.setItem('token', token)
+      localStorage.setItem('identity', identity)
+      localStorage.setItem('accountName', accountName)
 
       router.push({ name: 'Home' })
     } else {
@@ -119,6 +121,10 @@ const getCredit = async () => {
   } catch (error) {
     console.error('请求失败:', error)
   }
+}
+
+const forgetPassword = () => {
+  router.push({ name: 'AlterPassword' })
 }
 
 const register = () => {
