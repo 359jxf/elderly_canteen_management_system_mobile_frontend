@@ -1,11 +1,9 @@
 <template>
-  <div>
+  <div class="header">
     <SearchLine v-model="searchTerm" />
-  </div>
-  <div>
     <img src="../assets/slogan.jpg" class="slogan" />
   </div>
-  <div>
+  <div class="title">
     <span class="menu">今日菜单</span>
   </div>
   <div class="container">
@@ -21,11 +19,11 @@
       </button>
     </div>
     <div class="item-list">
-      <DishItem v-bind="item" v-for="(item, id) in filteredItems" :key="id" />
+      <DishItem v-bind="item" v-for="(item, id) in filteredItems" :key="id" class="dish-item" />
+      <div class="blank"></div>
     </div>
     <div></div>
   </div>
-  <div class="blank"></div>
   <div>
     <van-popup v-model:show="showBottom" position="bottom" class="popup-container">
       <div class="popup-header">
@@ -47,7 +45,11 @@
                   >-</van-button
                 >
                 <span class="item-quantity">x {{ item.quantity }}</span>
-                <van-button size="small" type="primary" @click="increaseQuantity(index)"
+                <van-button
+                  size="small"
+                  type="primary"
+                  @click="increaseQuantity(index)"
+                  class="plus-button"
                   >+</van-button
                 >
               </div>
@@ -198,6 +200,9 @@ const handleCheckout = () => {
 }
 </script>
 <style scoped>
+.header {
+  height: 25vh;
+}
 .search-line-icon {
   display: flex;
   align-items: center;
@@ -206,8 +211,12 @@ const handleCheckout = () => {
 .slogan {
   width: 100%;
 }
+.title {
+  height: 5vh;
+}
 .container {
   display: flex;
+  height: 70vh;
 }
 .button-list {
   width: 20%; /* 根据需要调整宽度 */
@@ -220,6 +229,7 @@ const handleCheckout = () => {
   text-align: center;
 }
 .menu-button {
+  width: 100%;
   flex: 1; /* 平分按钮区域 */
   border: none; /* 取消按钮边框 */
   background-color: white; /* 背景色 */
@@ -239,12 +249,14 @@ const handleCheckout = () => {
   align-items: center;
 }
 .item-list {
-  max-height: 450px;
-  width: 100%; /* 菜品区域宽度，确保占据父容器的 80% */
-  overflow-y: auto; /* 启用垂直滚动 */
-  padding: 1%;
-  display: flex;
-  flex-wrap: wrap; /* 允许菜品项换行 */
+  max-height: 70vh;
+  width: 80%;
+  overflow-y: auto;
+  flex-wrap: wrap;
+}
+.dish-item {
+  width: 90%;
+  box-sizing: border-box;
 }
 .cart {
   margin-right: 5%;
@@ -358,5 +370,11 @@ const handleCheckout = () => {
 
 .checkout-button {
   width: 120px;
+  background-color: #ffa500;
+  border-color: #ffa500;
+}
+.plus-button {
+  background-color: #ffa500;
+  border-color: #ffa500;
 }
 </style>
