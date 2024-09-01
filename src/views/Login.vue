@@ -51,6 +51,7 @@ const loginWithPassword = async () => {
       phoneNum: phoneNum.value,
       password: password.value,
     });
+    console.log('1',response.data);
     if (response.data.loginSuccess) {
       const { token, identity, accountName } = response.data.response;
       localStorage.setItem('token', token);

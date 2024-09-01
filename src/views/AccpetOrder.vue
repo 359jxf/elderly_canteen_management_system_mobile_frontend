@@ -39,7 +39,6 @@ const fetchOrders = async () => {
     console.log("acceptedOrder", acceptedOrder.value);
 
     isAccepted.value = (Object.keys(acceptedOrder.value).length !== 0);
-    isAccepted.value =false;
     console.log("isAccepted", isAccepted.value);
 
     //订单按新到旧排序
