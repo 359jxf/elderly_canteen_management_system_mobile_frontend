@@ -24,141 +24,117 @@
     </div>
     <div></div>
   </div>
-  <div>
-    <van-popup v-model:show="showBottom" position="bottom" class="popup-container">
-      <div class="popup-header">
-        <span class="header-title">购物车</span>
-        <van-icon name="cross" class="close-icon" @click="showBottom = false" />
-      </div>
-      <div class="popup-content">
-        <div v-if="cartItems.length === 0" class="empty-cart">购物车为空</div>
-        <div v-else>
-          <div v-for="(item, index) in cartItems" :key="index" class="cart-item">
-            <img :src="item.img" alt="" class="cart-item-img" />
-            <div class="cart-item-info">
-              <span class="item-name">{{ item.name }}</span>
-              <span class="item-price">{{
-                (parseFloat(item.price.replace('￥', '')) * item.discount).toFixed(2)
-              }}</span>
-              <div class="item-quantity-control">
-                <van-button size="small" type="default" @click="decreaseQuantity(index)"
-                  >-</van-button
-                >
-                <span class="item-quantity">x {{ item.quantity }}</span>
-                <van-button
-                  size="small"
-                  type="primary"
-                  @click="increaseQuantity(index)"
-                  class="plus-button"
-                  >+</van-button
-                >
-              </div>
+  <van-popup v-model:show="showBottom" position="bottom" class="popup-container">
+    <div class="popup-header">
+      <span class="header-title">购物车</span>
+      <van-button class="clear-cart-button" type="danger" @click="clearCart">清空购物车</van-button>
+    </div>
+    <div class="popup-content">
+      <div v-if="cartItems.length === 0" class="empty-cart">购物车为空</div>
+      <div v-else>
+        <div v-for="(item, index) in cartItems" :key="index" class="cart-item">
+          <img :src="item.imageUrl" alt="" class="cart-item-img" />
+          <div class="cart-item-info">
+            <span class="item-name">{{ item.dishName }}</span>
+            <div class="item-price-info">
+              <span v-if="item.dishPrice > item.discountPrice" class="original-price">
+                ￥{{ item.dishPrice }}
+              </span>
+              <span class="discount-price"> ￥{{ item.discountPrice }} </span>
+            </div>
+            <div class="item-quantity-control">
+              <van-button size="small" type="default" @click="decreaseQuantity(index)"
+                >-</van-button
+              >
+              <span class="item-quantity">x {{ item.quantity }}</span>
+              <van-button
+                size="small"
+                type="primary"
+                @click="increaseQuantity(index)"
+                class="plus-button"
+                >+</van-button
+              >
             </div>
           </div>
         </div>
       </div>
-      <div class="popup-footer">
-        <span class="total-price">总价：{{ menu.totalPrice }}</span>
-        <van-button class="checkout-button" type="primary" @click="handleCheckout"
-          >去结算</van-button
-        >
-      </div>
-    </van-popup>
+    </div>
+    <div class="popup-footer">
+      <span class="total-price">总价：￥{{ totalPrice }}</span>
+      <van-button class="checkout-button" type="primary" @click="handleCheckout">去结算</van-button>
+    </div>
+  </van-popup>
 
-    <van-action-bar>
-      <div class="cart">
-        <van-action-bar-icon icon="cart-o" text="购物车" @click="onClickIcon"></van-action-bar-icon>
-      </div>
-      <div class="text" @click="onClickIcon">
-        <span>查看购物车</span>
-      </div>
-    </van-action-bar>
-  </div>
+  <van-action-bar>
+    <div class="cart">
+      <van-action-bar-icon
+        icon="cart-o"
+        text="购物车"
+        @click="onClickIcon"
+        :badge="menu.totalNum > 0 ? menu.totalNum : ''"
+      ></van-action-bar-icon>
+    </div>
+    <div class="text" @click="onClickIcon">
+      <span>查看购物车</span>
+    </div>
+  </van-action-bar>
 </template>
 
 <script setup>
 import 'vant/es/toast/style'
 import { useMenuStore } from '@/store/modules/menu'
-//import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { computed } from 'vue'
 import { showToast } from 'vant'
 import router from '@/router'
+import { createCart, getCartItem, getMenuToday, updateCartItem } from '@/api/api'
+import { onMounted } from 'vue'
 const menu = useMenuStore()
-//const router = useRouter()
-const cartItems = computed(() => {
-  return menu.items.filter((item) => item.quantity >= 1)
+const cartId = ref('')
+const cartItems = ref([])
+const items = ref([])
+const totalPrice = computed(() => {
+  return cartItems.value.reduce((total, item) => total + item.discountPrice * item.quantity, 0)
+})
+const getItems = async () => {
+  try {
+    items.value = await getMenuToday()
+  } catch (error) {
+    console.error('获取当日菜品失败：', error)
+    showToast('获取当日菜品失败，请稍后再试')
+  }
+}
+const getCartId = async () => {
+  try {
+    cartId.value = await createCart()
+  } catch (error) {
+    console.error('生成购物车失败：', error)
+    showToast('生成购物车失败，请稍后再试')
+  }
+}
+onMounted(async () => {
+  await getItems()
+  await getCartId()
 })
 const showBottom = ref(false)
 const buttons = ref([
-  { id: '1', name: '主食', focus: false },
-  { id: '2', name: '炒菜', focus: false },
-  { id: '3', name: '凉菜', focus: false },
-  { id: '4', name: '粥品', focus: false }
+  { name: '主食', focus: false },
+  { name: '炒菜', focus: false },
+  { name: '凉菜', focus: false },
+  { name: '粥品', focus: false }
 ])
-const items = ref([
-  {
-    img: 'beef.png',
-    name: '红烧肉',
-    price: '￥2.00',
-    category: '主食',
-    discount: 1
-  },
-  {
-    img: 'beef.png',
-    name: '黑烧肉',
-    price: '￥2.00',
-    category: '炒菜',
-    discount: 0.5
-  },
-  {
-    img: 'beef.png',
-    name: '蓝烧肉',
-    price: '￥2.00',
-    category: '凉菜',
-    discount: 0.8
-  },
-  {
-    img: 'beef.png',
-    name: '绿烧肉',
-    price: '￥2.00',
-    category: '粥品',
-    discount: 0.7
-  },
-  {
-    img: 'beef.png',
-    name: '紫烧肉',
-    price: '￥2.00',
-    category: '主食',
-    discount: 0.8
-  },
-  {
-    img: 'beef.png',
-    name: '白烧肉',
-    price: '￥2.00',
-    category: '炒菜',
-    discount: 0.9
-  },
-  {
-    img: 'beef.png',
-    name: '绿烧肉',
-    price: '￥2.00',
-    category: '凉菜',
-    discount: 0.8
-  },
-  {
-    img: 'beef.png',
-    name: '粉烧肉',
-    price: '￥2.00',
-    category: '粥品',
-    discount: 0.6
+const onClickIcon = async () => {
+  if (menu.totalNum == 0) {
+    showToast('购物车为空，请先选购！')
+  } else {
+    try {
+      cartItems.value = await getCartItem()
+      showBottom.value = true
+    } catch (error) {
+      console.error('获取购物车菜品失败:', error)
+      showToast('获取购物车菜品失败，请稍后再试。')
+    }
   }
-])
-
-const onClickIcon = () => {
-  if (menu.totalPrice == 0) showToast('购物车为空,请先选购！')
-  //showDialog({ message: '购物车为空' })
-  else showBottom.value = true
 }
 const onClickMenuButton = (name) => {
   buttons.value.forEach((button) => {
@@ -171,32 +147,39 @@ const onClickMenuButton = (name) => {
 }
 
 const searchTerm = ref('')
-
 const filteredItems = computed(() => {
   const activeButton = buttons.value.find((button) => button.focus)
   const filteredByCategory = activeButton
     ? items.value.filter((item) => item.category === activeButton.name)
     : items.value
   const searchLower = searchTerm.value.trim().toLowerCase()
-  return filteredByCategory.filter((item) => item.name.toLowerCase().includes(searchLower))
+  return filteredByCategory.filter((item) => item.dishName.toLowerCase().includes(searchLower))
 })
-
-const increaseQuantity = (index) => {
+const increaseQuantity = async (index) => {
   const item = cartItems.value[index]
-  if (item) {
-    menu.addcount(item.name) // 调用 store 中的 addcount 方法
-  }
+  item.quantity++
+  menu.addItem(item)
+  await updateCartItem(cartId, item.dishId, 1)
 }
-
-const decreaseQuantity = (index) => {
+const decreaseQuantity = async (index) => {
   const item = cartItems.value[index]
-  if (item) {
-    menu.minuscount(item.name) // 调用 store 中的 minuscount 方法
-  }
+  item.quantity--
+  if (item.quantity === 0) cartItems.value.splice(index, 1)
+  menu.minusItem(item)
+  await updateCartItem(cartId, item.dishId, -1)
 }
-
 const handleCheckout = () => {
   router.push('/ShoppingCart')
+}
+const clearCart = async () => {
+  try {
+    await clearCart()
+    cartItems.value = [] // 清空本地购物车数据
+    menu.clear()
+  } catch (error) {
+    console.error('清空购物车失败:', error)
+    showToast('清空购物车失败，请稍后再试。')
+  }
 }
 </script>
 <style scoped>
@@ -335,9 +318,21 @@ const handleCheckout = () => {
   font-weight: 500;
 }
 
-.item-price {
-  font-size: 16px;
+.item-price-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 14px;
+}
+
+.discount-price {
   color: #ff5722;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .item-quantity {
@@ -375,6 +370,10 @@ const handleCheckout = () => {
 }
 .plus-button {
   background-color: #ffa500;
+  border-color: #ffa500;
+}
+.footer {
+  border-radius: 15px;
   border-color: #ffa500;
 }
 </style>

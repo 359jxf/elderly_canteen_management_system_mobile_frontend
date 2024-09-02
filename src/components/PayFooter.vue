@@ -21,7 +21,6 @@
     </div>
     <hr class="divider" />
     <div class="pay-footer-buttons">
-      <van-button type="default" class="clear-button" @click="myClear">清空</van-button>
       <van-button
         type="primary"
         class="order-button"
@@ -118,10 +117,11 @@ const myClear = () => {
 }
 
 .order-button {
-  flex: 1;
   background-color: #ff9f00;
   color: #fff;
   border: none;
+  width: 35%;
+  margin-left: 60%;
 }
 
 .order-button.disabled {

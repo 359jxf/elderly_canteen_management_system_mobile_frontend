@@ -2,16 +2,16 @@
   <div class="orderlist">
     <span class="title"> 我的点餐列表 </span>
     <!-- 显示“购物车为空”消息 -->
-    <div v-if="menu.items.length === 0" class="empty-cart-message">购物车为空</div>
+    <div v-if="cartItems.length === 0" class="empty-cart-message">购物车为空</div>
     <!-- 否则，显示点餐列表 -->
     <div v-else>
       <!-- 仅显示一盘菜 -->
-      <DishCard v-bind="menu.items[0]" v-if="menu.items.length > 0" />
+      <DishCard v-bind="cartItems[0]" v-if="!showMore" />
       <!-- 如果菜品超过一盘，显示更多按钮 -->
-      <div v-if="menu.items.length > 1">
+      <div v-if="cartItems.length > 1">
         <!-- 显示剩余菜品 -->
         <div v-show="showMore" class="more-items">
-          <DishCard v-bind="item" v-for="(item, id) in menu.items.slice(1)" :key="id" />
+          <DishCard v-for="(item, index) in cartItems" :key="index" v-bind="item" />
         </div>
         <!-- 下拉箭头 -->
         <div class="show-more" @click="toggleShowMore">
@@ -21,18 +21,28 @@
           <van-icon name="arrow-up" v-if="showMore" />
         </div>
       </div>
+      <div v-else>
+        <DishCard v-bind="cartItems[0]" v-if="cartItems.length > 0" />
+      </div>
       <hr class="hr-solid" />
-      <span class="text"> 合计￥{{ menu.totalPrice }} </span>
+      <span class="text"> 合计￥{{ totalPrice }} </span>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useMenuStore } from '@/store/modules/menu'
 import DishCard from './DishCard.vue'
-
-const menu = useMenuStore()
+import { getCartItem } from '@/api/api'
+import { onMounted } from 'vue'
+import { computed } from 'vue'
+import { ref } from 'vue'
+const cartItems = ref([])
+const totalPrice = computed(() => {
+  return cartItems.value.reduce((total, item) => total + item.discountPrice * item.quantity, 0)
+})
+onMounted(async () => {
+  cartItems.value = await getCartItem()
+})
 const showMore = ref(false)
 
 const toggleShowMore = () => {
