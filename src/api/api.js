@@ -89,3 +89,30 @@ export const postConfirmDelivered =async(orderId)=>{
       }
 
 }
+
+
+export const postComment =async(orderId,deliverRate,deliverComment,falvorRate,flavorComment)=>{
+    try {
+        const res = await ins.post('/postConfirmDelivered', 
+            { OrderId: orderId,CStars:falvorRate, CReviewText:flavorComment,
+                DStars:deliverRate,DReviewText:deliverComment});
+        console.log('postComment success:',res.data.success)
+        return res.status;
+      } catch (error) {
+        return error.response;
+      }
+
+}
+
+export const getComment = async (orderId) => {
+    try {
+        const res = await ins.get('/getComment', {
+            params: { OrderId: orderId }
+        });
+        console.log(res.data.response);
+        return res.data.response;
+    } catch (error) {
+        console.error('Error fetching comment message:', error);
+        throw error;
+    }
+};

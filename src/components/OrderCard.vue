@@ -13,25 +13,31 @@
             {{ props.order_detail.DELIVER_OR_DINING ? '外送' : '堂食' }}
           </van-col>
           <van-col span="12">补贴消耗</van-col>
-          <van-col span="12" style="text-align: right">无</van-col>
+          <van-col span="12" style="text-align: right">{{ props.order_detail.subsidy }}</van-col>
         </van-row>
       </div>
     </div>
     <hr class="hr-solid" />
+
+
     <div class="card-mid">
       <div class="text">
         <span class="title">菜品价格明细</span>
       </div>
       <div class="info">
         <ul>
-          <li v-for="(item, index) in menu.items" :key="index" class="item">
-            <span class="name">{{ item.name }}</span>
-            <span class="quantity">{{ item.quantity }}份</span>
-            <span class="price">{{ item.price }}</span>
+          <li v-for="(item, index) in order_detail.orderDishes" :key="index" class="item">
+            <van-row>
+              <van-col span="12">{{ item.DISH_NAME }}</van-col>
+              <van-col span="6">x{{ item.QUANTITY }}</van-col>
+              <van-col span="6">￥{{ item.PRICE }}</van-col>
+            </van-row>
           </li>
         </ul>
       </div>
     </div>
+
+
     <hr class="hr-solid" />
     <div class="card-footer">
       <div class="left">
@@ -39,7 +45,7 @@
         <span class="text"> 总计</span>
       </div>
       <div class="right">
-        <span class="text"> ￥{{ menu.totalPrice }}</span>
+        <span class="text"> ￥{{ order_detail.MONEY }}</span>
       </div>
     </div>
   </div>
@@ -98,20 +104,21 @@ const props = defineProps({
 
 .card-footer {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card-footer .left {
-  width: 80%;
+  display: flex;
+  align-items: center;
 }
 
 .card-footer .left .text {
   font-weight: bold;
   font-size: medium;
+  margin-left: 6px;
 }
 
-.card-footer .right {
-  width: 20%;
-}
 
 .card-footer .right .text {
   color: red;
@@ -125,10 +132,8 @@ ul {
   margin: 0;
 }
 
-.item {
-  display: flex;
-  justify-content: space-between;
-  padding: 5px 0;
-  /* 调整垂直间隔 */
+li{
+  padding-bottom: 8px;
+  padding-left: 6px;
 }
 </style>

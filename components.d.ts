@@ -16,6 +16,7 @@ declare module 'vue' {
     BottomTabbar: typeof import('./src/components/BottomTabbar.vue')['default']
     ChangePassword: typeof import('./src/views/ChangePassword.vue')['default']
     CommentDialog: typeof import('./src/components/CommentDialog.vue')['default']
+    copy: typeof import('./src/components./src/components/viewCommentDialog.vue
     DishCard: typeof import('./src/components/DishCard.vue')['default']
     DishItem: typeof import('./src/components/DishItem.vue')['default']
     Home: typeof import('./src/views/Home.vue')['default']
@@ -58,6 +59,7 @@ declare module 'vue' {
     VanTabbar: typeof import('vant/es')['Tabbar']
     VanTabbarItem: typeof import('vant/es')['TabbarItem']
     VanTabs: typeof import('vant/es')['Tabs']
+    ViewCommentDialog: typeof import('./src/components/ViewCommentDialog.vue')['default']
     VolunteerApply: typeof import('./src/views/VolunteerApply.vue')['default']
     VolunteerCard: typeof import('./src/components/VolunteerCard.vue')['default']
   }
