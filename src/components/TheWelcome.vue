@@ -40,5 +40,7 @@ const portrait = localStorage.getItem('portrait');
   height: 70%;
   border-radius: 50%; /* 将图片设置为圆形 */
   object-fit: cover; /* 确保图片覆盖整个高度 */
+  margin-left: 15%;
+  margin-right: -5%;
 }
 </style>

@@ -33,7 +33,7 @@ const data = {
 };
 
 const response = await axios.post(
-  'http://8.136.125.61/api/Account/changePassword',
+  `http://8.136.125.61/api/Account/changePassword?pswd=${this.newPassword}`,
   data,
   {
     headers: {
@@ -61,15 +61,15 @@ if (!isValidPhoneNumber) {
   return;
 }
 try {
-  const response = await axios.post('http://8.136.125.61/api/Account/sendOTP', {
-    phone: phoneNum.value,
+  const response = await axios.post("http://8.136.125.61/api/Account/sendOTP", {
+    PhoneNum: phoneNum.value,
   }, {
     headers: {
       'Content-Type': 'application/json'
     }
   });
 
-  if(response.value.success){
+  if(response.data.success){
     alert('发送成功')
   } else{
     alert('发送失败')

@@ -28,7 +28,7 @@ try {
   };
 
   const response = await axios.post(
-    'http://8.136.125.61/api/Account/volunteerApply',
+    "http://8.136.125.61/api/Volunteer/apply",
     data,
     {
       headers: {

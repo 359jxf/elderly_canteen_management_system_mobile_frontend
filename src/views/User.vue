@@ -125,6 +125,7 @@ font-size: 100%;
 .value {
 text-align: left;
 font-size: 100%;
+align-self: center;
 }
 
 .info-button{

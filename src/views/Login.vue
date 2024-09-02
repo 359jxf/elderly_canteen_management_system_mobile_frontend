@@ -47,7 +47,7 @@ const selectCredit = () => {
 
 const loginWithPassword = async () => {
   try {
-    const response = await axios.post('http://8.136.125.61/api/account/login', {
+    const response = await axios.post("http://8.136.125.61/api/account/login", {
       phoneNum: phoneNum.value,
       password: password.value,
     });
@@ -70,9 +70,9 @@ const loginWithPassword = async () => {
 
 const loginWithCredit = async () => {
   try {
-    const response = await axios.post('http://8.136.125.61/api/Account/verifiationCodeLogin', {
-      phoneNum: phoneNum.value,
-      verifyCode: verifyCode.value, 
+    const response = await axios.post("http://8.136.125.61/api/Account/verifiationCodeLogin", {
+      PhoneNum: phoneNum.value,
+      Code: verifyCode.value, 
     });
     if (response.data.loginSuccess) {
       const { token, identity, accountName } = response.data.response;
@@ -97,15 +97,15 @@ const getCredit = async ()=> {
     return;
   }
   try {
-    const response = await axios.post('http://8.136.125.61/api/Account/sendOTP', {
-      phone: phoneNum.value,
+    const response = await axios.post("http://8.136.125.61/api/Account/sendOTP", {
+      PhoneNum: phoneNum.value,
     }, {
       headers: {
         'Content-Type': 'application/json'
       }
     });
 
-    if(response.value.success){
+    if(response.data.success){
       alert('发送成功')
     } else{
       alert('发送失败')

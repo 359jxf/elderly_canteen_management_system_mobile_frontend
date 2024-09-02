@@ -58,7 +58,7 @@ const getCredit = async ()=> {
   }
 try {
   const response = await axios.post('http://8.136.125.61/api/Account/sendOTP', {
-    phoneNum: phoneNum.value,
+    PhoneNum: phoneNum.value,
   }, {
     headers: {
       'Content-Type': 'application/json'
@@ -134,12 +134,14 @@ try {
   font-size: 60%;
   min-width: 25%;
   text-align: left;
+  align-content: center;
 }
 
 .inputBox{
   width: 50%;
   height: 60%;
   border-radius: 10px ;
+  align-self: center;
 }
 
 .half{
@@ -154,6 +156,7 @@ try {
   left: 5%;
   border-radius: 5px ;
   font-size: 70%;
+  align-self: center;
 }
 
 .getIn{
