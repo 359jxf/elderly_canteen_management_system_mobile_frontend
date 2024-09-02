@@ -1,80 +1,99 @@
 <template>
-    <ReturnButton :targetRoute="{ name: 'Login' }" />
-    <div class="background">
-        <div class="headerBox">新用户注册</div>
-        <div class="registerBox">
-            <div class="row"><span class="label">手机号码</span> <input class="inputBox" v-model="phoneNum"/></div>
-            <div class="row"><span class="label">账户名称</span> <input class="inputBox" v-model="userName"/></div>
-            <div class="row"><span class="label">账户密码</span> <input class="inputBox" v-model="password"/></div>
-            <div class="row"><span class="label">性    别</span> <input class="inputBox" v-model="gender"/></div>
-            <div class="row"><span class="label">验证码</span> <input class="inputBox half" v-model="verificationCode"/><button class=verifyBtn @click="getCredit">发送</button></div>
-            <button class="getIn" @click="getIn">注册</button>
-        </div>
+  <ReturnButton :targetRoute="{ name: 'Login' }" />
+  <div class="background">
+    <div class="headerBox">新用户注册</div>
+    <div class="registerBox">
+      <div class="row">
+        <span class="label">手机号码</span> <input class="inputBox" v-model="phoneNum" />
+      </div>
+      <div class="row">
+        <span class="label">账户名称</span> <input class="inputBox" v-model="userName" />
+      </div>
+      <div class="row">
+        <span class="label">账户密码</span> <input class="inputBox" v-model="password" />
+      </div>
+      <div class="row">
+        <span class="label">性 别</span> <input class="inputBox" v-model="gender" />
+      </div>
+      <div class="row">
+        <span class="label">验证码</span>
+        <input class="inputBox half" v-model="verificationCode" /><button
+          class="verifyBtn"
+          @click="getCredit"
+        >
+          发送
+        </button>
+      </div>
+      <button class="getIn" @click="getIn">注册</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import axios from 'axios';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
 
-const phoneNum = ref('');
-const userName = ref('');
-const password = ref('');
-const gender = ref('');
-const verificationCode = ref('');
+const phoneNum = ref('')
+const userName = ref('')
+const password = ref('')
+const gender = ref('')
+const verificationCode = ref('')
 
-const getIn = async ()=> {
-    try {
+const getIn = async () => {
+  try {
     const response = await axios.post('http://8.136.125.61/api/account/register', {
       phoneNum: phoneNum.value,
-      verificationCode: verificationCode.value,
-    });
+      verificationCode: verificationCode.value
+    })
     if (response.data.loginSuccess) {
-      const { token, identity, accountName } = response.data.response;
+      const { token, identity, accountName } = response.data.response
 
-      localStorage.setItem('token', token);
-      localStorage.setItem('identity', identity);
-      localStorage.setItem('accountName', accountName);
+      localStorage.setItem('token', token)
+      localStorage.setItem('identity', identity)
+      localStorage.setItem('accountName', accountName)
 
-      router.push({ name: 'Home' });
+      router.push({ name: 'Home' })
     } else {
-      alert('注册失败：' + response.data.msg);
+      alert('注册失败：' + response.data.msg)
     }
   } catch (error) {
-    alert('An error occurred during login.');
+    alert('An error occurred during login.')
   }
-};
+}
 
-const getCredit = async ()=> {
-    const phoneNumber = String(phoneNum.value).trim(); // 确保是字符串并去除前后空格
-    const isValidPhoneNumber = /^\d{11}$/.test(phoneNumber);
+const getCredit = async () => {
+  const phoneNumber = String(phoneNum.value).trim() // 确保是字符串并去除前后空格
+  const isValidPhoneNumber = /^\d{11}$/.test(phoneNumber)
 
-    if (!isValidPhoneNumber) {
-    alert('手机号无效。必须是11位数字。');
-    return;
-    }
+  if (!isValidPhoneNumber) {
+    alert('手机号无效。必须是11位数字。')
+    return
+  }
   try {
-    const response = await axios.post('http://8.136.125.61/api/Account/sendOTP', {
-      phoneNum: phoneNum.value,
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
+    const response = await axios.post(
+      'http://8.136.125.61/api/Account/sendOTP',
+      {
+        phoneNum: phoneNum.value
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }
-    });
+    )
 
-    if(response.value.success){
+    if (response.value.success) {
       alert('发送成功')
-    } else{
+    } else {
       alert('发送失败')
     }
   } catch (error) {
-    console.error('请求失败:', error);
+    console.error('请求失败:', error)
   }
-};
+}
 </script>
 
 <style>
@@ -87,7 +106,7 @@ const getCredit = async ()=> {
   height: 100vh;
   width: 100vw;
 
-    background-color: wheat ;
+  background-color: wheat;
 }
 
 .registerBox {

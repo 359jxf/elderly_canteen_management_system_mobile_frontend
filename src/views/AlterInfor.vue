@@ -1,19 +1,10 @@
 <template>
   <ReturnButton :targetRoute="{ name: 'User' }" />
   <div class="background">
-      <div class="headerBox">修改信息</div>
-      <div class="registerBox">
-          <div class="row"><span class="label">账户名称</span> <input class="inputBox" v-model="accountName"/></div>
-          <div class="row"><span class="label">地址</span> <input class="inputBox" v-model="address"/></div>
-          <div class="row"><span class="label">性别</span> <input class="inputBox" v-model="gender"/></div>
-          <div class="row"><span class="label">出生日期</span> <input class="inputBox" type="date" v-model="birthDate"/></div>
-          <div class="row"><span class="label">选择图片</span> <input class="inputBox" type="file" accept="image/*" @change="onImageSelected"/></div>
-          <div v-if="imageUrl"><img :src="imageUrl" alt="Selected Image" class="preview"/></div>
-          <button class="getIn" @click="Ensure">确认修改</button>
-          <div class="actions">
-              <span @click="changePassword">修改密码</span>
-              <span @click="rebindPhone">改绑手机</span>
-          </div>
+    <div class="headerBox">修改信息</div>
+    <div class="registerBox">
+      <div class="row">
+        <span class="label">账户名称</span> <input class="inputBox" v-model="accountName" />
       </div>
       <div class="row">
         <span class="label">地址</span> <input class="inputBox" v-model="address" />
@@ -31,7 +22,27 @@
       </div>
       <div v-if="imageUrl"><img :src="imageUrl" alt="Selected Image" class="preview" /></div>
       <button class="getIn" @click="Ensure">确认修改</button>
+      <div class="actions">
+        <span @click="changePassword">修改密码</span>
+        <span @click="rebindPhone">改绑手机</span>
+      </div>
     </div>
+    <div class="row">
+      <span class="label">地址</span> <input class="inputBox" v-model="address" />
+    </div>
+    <div class="row">
+      <span class="label">性别</span> <input class="inputBox" v-model="gender" />
+    </div>
+    <div class="row">
+      <span class="label">出生日期</span>
+      <input class="inputBox" type="date" v-model="birthDate" />
+    </div>
+    <div class="row">
+      <span class="label">选择图片</span>
+      <input class="inputBox" type="file" accept="image/*" @change="onImageSelected" />
+    </div>
+    <div v-if="imageUrl"><img :src="imageUrl" alt="Selected Image" class="preview" /></div>
+    <button class="getIn" @click="Ensure">确认修改</button>
   </div>
 </template>
 
@@ -40,51 +51,42 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
-const router = useRouter();
+const router = useRouter()
 
-const accountName = ref('');
-const address = ref('');
-const gender = ref('');
-const birthDate = ref('');
-const selectedImage = ref(null); // 初始化为null而不是空字符串
-const imageUrl = ref('');
+const accountName = ref('')
+const address = ref('')
+const gender = ref('')
+const birthDate = ref('')
+const selectedImage = ref(null) // 初始化为null而不是空字符串
+const imageUrl = ref('')
 
 const Ensure = async () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token')
   try {
-    const formData = new FormData();
-    formData.append('accountName', accountName.value);
-    formData.append('portrait', selectedImage.value);
-    formData.append('gender', gender.value);
-    formData.append('birthDate', birthDate.value);
-    formData.append('address', address.value);
+    const formData = new FormData()
+    formData.append('accountName', accountName.value)
+    formData.append('portrait', selectedImage.value)
+    formData.append('gender', gender.value)
+    formData.append('birthDate', birthDate.value)
+    formData.append('address', address.value)
 
-    const response = await axios.post(
-      'http://8.136.125.61/api/Account/alterPersonInfo',
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        },
+    const response = await axios.post('http://8.136.125.61/api/Account/alterPersonInfo', formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
       }
-    )
+    })
 
     if (response.data.alterSuccess) {
       if (accountName.value !== '') {
-        localStorage.setItem('accountName', accountName.value);
-      }
-
-      if (selectedImage.value) {
-        const imagePreviewUrl = URL.createObjectURL(selectedImage.value)
-        localStorage.setItem('portrait', imagePreviewUrl)
+        localStorage.setItem('accountName', accountName.value)
       }
 
       console.log(accountName.value) // 调试用
       console.log(selectedImage.value) // 调试用
       router.push({ name: 'User' })
     } else {
-      alert('更新失败: ' + response.data.msg);
+      alert('更新失败: ' + response.data.msg)
     }
   } catch (error) {
     console.error('Error updating account:', error)
@@ -95,20 +97,19 @@ const Ensure = async () => {
 const onImageSelected = (event) => {
   const file = event.target.files[0]
   if (file) {
-    selectedImage.value = file; // 保存所选的图片文件
-    imageUrl.value = URL.createObjectURL(file); // 生成本地 URL 用于预览
+    selectedImage.value = file // 保存所选的图片文件
+    imageUrl.value = URL.createObjectURL(file) // 生成本地 URL 用于预览
   }
-};
+}
 
 const changePassword = () => {
-router.push({ name: 'ChangePassword' });
-};
+  router.push({ name: 'ChangePassword' })
+}
 
 const rebindPhone = () => {
-router.push({ name: 'Rebind' });
-};
+  router.push({ name: 'Rebind' })
+}
 </script>
-
 
 <style>
 .background {
@@ -118,7 +119,7 @@ router.push({ name: 'Rebind' });
   height: 100vh;
   width: 100vw;
 
-    background-color: wheat ;
+  background-color: wheat;
 }
 
 .registerBox {
@@ -160,11 +161,11 @@ router.push({ name: 'Rebind' });
   height: 12%;
 }
 
-.label{
-    width: 20%;
-    font-weight: bold;
-    font-size: 60%;
-    min-width: 25%;
+.label {
+  width: 20%;
+  font-weight: bold;
+  font-size: 60%;
+  min-width: 25%;
 }
 
 .inputBox {
@@ -188,29 +189,29 @@ router.push({ name: 'Rebind' });
   border-radius: 5px;
 }
 
-.getIn{
-    position: relative;
-    width: 40%;
-    height: 10%;
-    left: 30%;
-    top: 10%;
-    border-radius: 20px ;
-    font-size: 60%;
-    border: none;
-      color: white;
-      font-weight: bold;
-      background-color: #ffa822;
+.getIn {
+  position: relative;
+  width: 40%;
+  height: 10%;
+  left: 30%;
+  top: 10%;
+  border-radius: 20px;
+  font-size: 60%;
+  border: none;
+  color: white;
+  font-weight: bold;
+  background-color: #ffa822;
 }
 
-.preview{
-    position: relative;
-    height: 20%;
-    width: 20%;
+.preview {
+  position: relative;
+  height: 20%;
+  width: 20%;
 
-    top: 5vh;
-    left: 40%;
+  top: 5vh;
+  left: 40%;
 
-    border-radius:50%;
+  border-radius: 50%;
 }
 
 .actions {
@@ -229,6 +230,4 @@ router.push({ name: 'Rebind' });
   margin-left: 10vw; /* 设置左边距 */
   margin-right: 12vw; /* 设置右边距 */
 }
-
-
 </style>

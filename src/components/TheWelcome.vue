@@ -6,12 +6,8 @@
 </template>
 
 <script setup>
-<<<<<<< HEAD
 const accountName = localStorage.getItem('accountName')
-=======
-const accountName = localStorage.getItem('accountName');
-const portrait = localStorage.getItem('portrait');
->>>>>>> 2e40dbfd77bfa28b0d042fc8a8de73f9fa2eb410
+const portrait = localStorage.getItem('portrait')
 </script>
 
 <style scoped>

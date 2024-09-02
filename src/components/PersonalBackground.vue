@@ -7,7 +7,9 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+//const portrait = localStorage.getItem('portrait');
+</script>
 
 <style scoped>
 .background {

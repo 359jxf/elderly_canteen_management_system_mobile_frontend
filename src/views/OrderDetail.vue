@@ -1,14 +1,20 @@
 <template>
   <div class="container">
-    <div>
+    <div class="head">
       <Nav nav_text="订单详情" />
     </div>
     <div class="order_content">
-      <div>
+      <div v-if="orderDetail.DELIVER_OR_DINING === true">
         <SimpleAddressCard :order_address="orderDetail.CUS_ADDRESS" />
       </div>
       <div>
-        <VolunteerCard />
+        <VolunteerCard
+          :orderId="orderDetail.ORDER_ID"
+          :orderStatus="orderDetail.STATUS"
+          :deliverOrDining="orderDetail.DELIVER_OR_DINING"
+          :deliverStatus="orderDetail.DELIVER_STATUS"
+          ref="volunteerCard"
+        />
       </div>
       <div>
         <OrderCard :order_detail="orderDetail" />
@@ -17,21 +23,16 @@
         <div class="header">
           <span style="font-weight: bold">用户备注</span>
         </div>
-        <div class="content">
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          <span>{{ remark.remark }}</span>
+        <div class="remarkContent">
+          {{ orderDetail.REMARK }}
+          <div class="test">
+            以下为长文本测试 111111111111111111111111111111111111111111111111111111111111111111111
+            111111111111111111111111111111111111111111111111111111111111111111111
+            111111111111111111111111111111111111111111111111111111111111111111111
+            111111111111111111111111111111111111111111111111111111111111111111111
+            111111111111111111111111111111111111111111111111111111111111111111111
+            111111111111111111111111111111111111111111111111111111111111111111111
+          </div>
         </div>
       </div>
     </div>
@@ -45,11 +46,16 @@
       </div>
       <hr class="hr-solid" />
       <div class="buttonpt">
-        <van-button class="button" @click="buttonEvent" :disabled="canClick === false">
+        <van-button
+          :style="buttonStyle"
+          class="button"
+          @click="buttonEvent"
+          :disabled="canClick === false"
+        >
           {{ buttonText }}</van-button
         >
 
-        <!-- ref="commentDialog"：获取子组件的引用。在 setup 中，你可以使用commentDialog.value.showDialog();来访问子组件 -->
+        <!-- ref="commentDialog"：获取子组件的引用。在 setup 中，可以使用commentDialog.value.showDialog();来访问子组件 -->
         <CommentDialog
           @confirm="handleCommentConfirm"
           @cancel="handleCommentCancel"
@@ -61,10 +67,12 @@
 </template>
 
 <script setup>
+// 由于mock的订单信息快速过期哦，无法通过订单号查询，故暂时无法使用实际的刷新逻辑
+// 按钮的逻辑同样无法彻底实现
+
 import { useRemarkstore } from '@/store/modules/remark'
 import { onMounted } from 'vue'
 import { postAccpetOrder } from '../api/api'
-const remark = useRemarkstore()
 
 const route = useRoute()
 const orderDetail = computed(() => {
@@ -72,8 +80,9 @@ const orderDetail = computed(() => {
 })
 
 const identity = localStorage.getItem('identity')
-const buttonText = ref()
+const buttonText = ref('请刷新')
 const canClick = ref()
+
 // 确定buttonText和canClick
 const showButton = () => {
   // 用户-堂食-待确认-可点的确认取餐
@@ -119,7 +128,7 @@ const showButton = () => {
     orderDetail.DELIVER_OR_DINING == true &&
     orderDetail.DELIVER_STATUS == '待接单'
   ) {
-    buttonText.value == '确认接单'
+    buttonText.value = '确认接单'
     canClick.value = true
   }
   // 志愿者-外送-已接单-可点的确认送达
@@ -128,7 +137,7 @@ const showButton = () => {
     orderDetail.DELIVER_OR_DINING == true &&
     orderDetail.DELIVER_STATUS == '已接单'
   ) {
-    buttonText.value == '确认送达'
+    buttonText.value = '确认送达'
     canClick.value = true
   }
   // 志愿者-外送-已送达，待评价-不可点的查看评价
@@ -138,7 +147,7 @@ const showButton = () => {
     orderDetail.DELIVER_STATUS == '已送达' &&
     orderDetail.STATUS == '待评价'
   ) {
-    buttonText.value == '查看评价'
+    buttonText.value = '查看评价'
     canClick.value = false
   }
   // 志愿者-外送-已评价-可点的查看评价
@@ -148,28 +157,43 @@ const showButton = () => {
     orderDetail.DELIVER_STATUS == '已送达' &&
     orderDetail.STATUS == '已评价'
   ) {
-    buttonText.value == '查看评价'
+    buttonText.value = '查看评价'
     canClick.value = true
   }
 
-  buttonText.value = '去评价'
+  // 按钮的测试示例
+  buttonText.value = '确认送达'
   canClick.value = true
 }
 onMounted(showButton)
 
-const onRefresh = () => {
-  console.log('刷新页面')
-  showButton()
-}
+// 确定按钮颜色
+import { computed } from 'vue'
+const buttonStyle = computed(() => {
+  if (
+    buttonText.value == '确认取餐' ||
+    buttonText.value == '确认接单' ||
+    buttonText.value == '确认送达'
+  ) {
+    return {
+      backgroundColor: 'orange'
+    }
+  } else {
+    return {
+      backgroundColor: '#d4ff79'
+    }
+  }
+})
 
+import { postConfirmOrder, getOrderMsg, postConfirmDelivered } from '../api/api'
 // 确认接单
 // #region
 const showAlert = ref(false)
 const alertMessage = ref('')
 
-const accpetOrder = async (accpeted_order) => {
+const accpetOrder = async () => {
   console.log('接单')
-  const status = await postAccpetOrder(accpeted_order.ORDER_ID)
+  const status = await postAccpetOrder(orderDetail.value.ORDER_ID)
   console.log(status)
   switch (status) {
     case 200:
@@ -207,11 +231,56 @@ const handleCommentCancel = () => {
 }
 // #endregion
 
+// 目前的刷新无效，等待设定完善
+const onRefresh = () => {
+  console.log('刷新页面')
+  showButton()
+}
+
+//实际的刷新逻辑
+
+// const onRefresh = async() => {
+//   console.log("刷新页面");
+//   orderDetail.value=await getOrderMsg(orderDetail.value.ORDER_ID);
+//   volunteerCard.value.fetchVolunteerMsg();
+//   showButton();
+// };
+
 // 确认取餐
-const confirmOrder = () => {}
+// #region
+const confirmOrder = async () => {
+  const status = await postConfirmOrder(orderDetail.ORDER_ID)
+  switch (status) {
+    case 200:
+      alertMessage.value = '确认成功！'
+      break
+    case 400:
+      alertMessage.value = '确认失败，请退出重试'
+      break
+  }
+  showAlert.value = true
+  showDialog({ message: alertMessage.value, width: 300 }).then(() => {
+    onRefresh()
+  })
+}
+// #endregion
 
 // 确认送达
-const confirmDelivered = () => {}
+const confirmDelivered = async () => {
+  const status = await postConfirmDelivered(orderDetail.ORDER_ID)
+  switch (status) {
+    case 200:
+      alertMessage.value = '确认成功！'
+      break
+    case 400:
+      alertMessage.value = '确认失败，请退出重试'
+      break
+  }
+  showAlert.value = true
+  showDialog({ message: alertMessage.value, width: 300 }).then(() => {
+    onRefresh()
+  })
+}
 
 const buttonEvent = () => {
   if (buttonText.value == '确认取餐') {
@@ -231,6 +300,14 @@ const buttonEvent = () => {
 </script>
 
 <style scoped>
+.head {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+  width: 100%;
+}
+
 .container {
   height: 100vh;
   display: flex;
@@ -242,6 +319,8 @@ const buttonEvent = () => {
   /* 占据剩余空间 */
   overflow-y: auto;
   /* 允许垂直滚动 */
+
+  margin-top: 5vh;
 }
 
 .remark {
@@ -251,14 +330,17 @@ const buttonEvent = () => {
   width: 100vw;
 }
 
-.remark .content {
+.remark .remarkContent {
   width: 88vw;
   word-wrap: break-word;
 }
 
 .footer {
-  margin-top: auto;
-  margin-bottom: 1vh;
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+  background-color: white;
+  width: 100%;
 }
 
 .footer .info {
@@ -283,14 +365,13 @@ const buttonEvent = () => {
 }
 
 .buttonpt {
-  padding-left: 42.67%;
-  margin-bottom: 1%;
+  padding-left: 48%;
+  margin-bottom: 3%;
 }
 
 .button {
   width: 95%;
   height: 6.5vh;
-  background-color: orange;
   color: black;
   border: none;
   font-size: 20px;

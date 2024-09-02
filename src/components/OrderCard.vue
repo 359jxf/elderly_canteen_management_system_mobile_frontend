@@ -20,7 +20,7 @@
     <hr class="hr-solid" />
     <div class="card-mid">
       <div class="text">
-        <span class="title">购物车价格明细</span>
+        <span class="title">菜品价格明细</span>
       </div>
       <div class="info">
         <ul>
