@@ -1,8 +1,11 @@
 <!-- RatingDialog.vue -->
 <template>
     <van-dialog v-model:show="show" title="请对本次服务进行评价" show-cancel-button show-confirm-button confirm-button-text="确认"
-        cancel-button-text="取消" @confirm="onConfirm" @cancel="onCancel">
-        <div style="text-align: center;">
+        cancel-button-text="取消" @confirm="onConfirm" @cancel="onCancel"
+        confirmButtonColor="#7AAB13"
+        >
+        <div style="text-align: center;" class="tasteComment">
+            
             <van-rate v-model="rate" :size="30" color="#ffd21e" void-icon="star" void-color="#eeeeee" />
         </div>
         <van-field v-model="comment" rows="4" type="textarea" placeholder="可在此处输入评价" />
@@ -52,6 +55,7 @@ defineExpose({
 .van-dialog__header {
     text-align: center;
     font-weight: bold;
+    
 }
 
 

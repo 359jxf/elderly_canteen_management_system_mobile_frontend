@@ -134,8 +134,8 @@ const showButton = () => {
   }
 
   // 按钮的测试示例
-  buttonText.value = '确认送达';
-  canClick.value = true;
+  buttonText.value = '去评价'
+  canClick.value = true
 }
 onMounted(showButton)
 
