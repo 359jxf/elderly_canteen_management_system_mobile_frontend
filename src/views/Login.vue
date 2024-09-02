@@ -79,10 +79,10 @@ const loginWithCredit = async () => {
       verifyCode: verifyCode.value
     })
     if (response.data.loginSuccess) {
-      const { token, identity, accountName } = response.data.response
-      localStorage.setItem('token', token)
-      localStorage.setItem('identity', identity)
-      localStorage.setItem('accountName', accountName)
+      const { token, identity, accountName } = response.data.response;
+      localStorage.setItem('token', token);
+      localStorage.setItem('identity', identity);
+      localStorage.setItem('accountName', accountName);
 
       router.push({ name: 'Home' })
     } else {
@@ -121,11 +121,11 @@ const getCredit = async () => {
   } catch (error) {
     console.error('请求失败:', error)
   }
-}
+};
 
 const forgetPassword = () => {
-  router.push({ name: 'AlterPassword' })
-}
+router.push({ name: 'AlterPassword' });
+};
 
 const register = () => {
   router.push({ name: 'Register' })

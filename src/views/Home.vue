@@ -75,7 +75,7 @@ const deliver = () => {
   position: absolute;
   top: 12%;
 
-  width: 100%;
+  width: 100vw;
   height: 30%;
   background-color: rgb(239, 255, 250);
 }
@@ -119,7 +119,7 @@ const deliver = () => {
 .informationContainer {
   position: relative;
   width: 100vw;
-  height: 50%;
+  height: 47%;
   top: -10%;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
   border-radius: 20px; /* 四角圆滑 */
@@ -131,7 +131,7 @@ const deliver = () => {
   top: 10%;
 
   height: 0.8rem;
-  width: 100%;
+  width: 100vw;
 
   background-color: wheat;
 

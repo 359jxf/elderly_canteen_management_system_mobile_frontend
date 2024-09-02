@@ -15,23 +15,6 @@
               <span @click="rebindPhone">改绑手机</span>
           </div>
       </div>
-      <div class="row">
-        <span class="label">地址</span> <input class="inputBox" v-model="address" />
-      </div>
-      <div class="row">
-        <span class="label">性别</span> <input class="inputBox" v-model="gender" />
-      </div>
-      <div class="row">
-        <span class="label">出生日期</span>
-        <input class="inputBox" type="date" v-model="birthDate" />
-      </div>
-      <div class="row">
-        <span class="label">选择图片</span>
-        <input class="inputBox" type="file" accept="image/*" @change="onImageSelected" />
-      </div>
-      <div v-if="imageUrl"><img :src="imageUrl" alt="Selected Image" class="preview" /></div>
-      <button class="getIn" @click="Ensure">确认修改</button>
-    </div>
   </div>
 </template>
 
@@ -73,11 +56,6 @@ const Ensure = async () => {
     if (response.data.alterSuccess) {
       if (accountName.value !== '') {
         localStorage.setItem('accountName', accountName.value);
-      }
-
-      if (selectedImage.value) {
-        const imagePreviewUrl = URL.createObjectURL(selectedImage.value)
-        localStorage.setItem('portrait', imagePreviewUrl)
       }
 
       console.log(accountName.value) // 调试用
