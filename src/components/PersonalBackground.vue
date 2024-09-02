@@ -1,49 +1,50 @@
 <template>
-<div class="background">
+  <div class="background">
     <img src="../assets/Yui.jpg" alt="头像" class="headImage" />
     <div class="textBox">
-        <slot></slot>
+      <slot></slot>
     </div>
-</div>
+  </div>
 </template>
-  
+
 <script setup>
+//const portrait = localStorage.getItem('portrait');
 </script>
-  
+
 <style scoped>
-.background{
-    display: flex;
-    position: relative;
-    flex-direction: column; /* 使子元素按列布局 */
-    align-items: center; /* 子元素水平居中 */
-    top: 0;
+.background {
+  display: flex;
+  position: relative;
+  flex-direction: column; /* 使子元素按列布局 */
+  align-items: center; /* 子元素水平居中 */
+  top: 0;
 
-    height: 100vh;
-    width: 100vw;
+  height: 100vh;
+  width: 100vw;
 
-    background-color: wheat ;
+  background-color: wheat;
 }
 
-.headImage{
-    position: relative;
-    top: 15%;
+.headImage {
+  position: relative;
+  top: 15%;
 
-    height: 15%;
-    width: auto;
+  height: 15%;
+  width: auto;
 
-    border-radius: 50%; /* 将图片设置为圆形 */
-    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+  border-radius: 50%; /* 将图片设置为圆形 */
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1); /* 阴影效果 */
 }
 
-.textBox{
-    flex: 1;
+.textBox {
+  flex: 1;
 
-    height: 70%;
-    width: 100%;
+  height: 70%;
+  width: 100%;
 
-    background-color: white;
-    border-radius: 0.5rem;
+  background-color: white;
+  border-radius: 0.5rem;
 
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 </style>

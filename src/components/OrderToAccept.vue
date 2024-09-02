@@ -34,7 +34,8 @@ const clickAccept=()=>{
      
         <div class="part3">
             <div class="address">地址：{{ order_detail. CUS_ADDRESS}}</div>
-            <van-button @click.stop="clickAccept"
+            <!-- .stop阻止事件继续向上冒泡,使点击触发的是按钮事件而非卡片事件 -->
+            <van-button @click.stop="clickAccept" 
             :disabled="isAccepted===true" 
             :style="{ backgroundColor: 'rgb(249, 184, 62)' }" >接单</van-button> 
         </div>
@@ -48,7 +49,7 @@ const clickAccept=()=>{
 .part3 .van-button{
     max-height: 80%;
     object-fit: contain;
-
+    border-radius: 8px;
 }
 .address {
     font-size:1.8vh;

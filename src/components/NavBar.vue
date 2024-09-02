@@ -17,8 +17,6 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const goBack = () => {
   router.back()
-  // 或者
-  // router.go(-1);
 }
 const props = defineProps({
   title: String

@@ -9,16 +9,16 @@ import {
 //头像加载（渲染阶段）、点击跳转用户页
 //#region
 const portrait = ref();
-const loadPortrait=async()=>{
-  const url=await getPorTrait();
-  console.log("url:",url);
-  portrait.value=url;
-  console.log("portrait:",portrait);
+const loadPortrait = async () => {
+  const url = await getPorTrait();
+  console.log("url:", url);
+  portrait.value = url;
+  console.log("portrait:", portrait);
 }
 onMounted(loadPortrait);
 
 const router = useRouter();
-const clickPortrait=()=>{
+const clickPortrait = () => {
   router.push({ path: '/User' });
 }
 //#endregion
@@ -43,8 +43,8 @@ const fetchOrders = async () => {
 
     //订单按新到旧排序
     orderList.value.sort((a, b) => {
-        // 如果 UPDATED_TIME 是时间字符串（例如 '2023-08-15T10:00:00Z'），可以直接比较它们
-        return new Date(b.UPDATED_TIME) - new Date(a.UPDATED_TIME);
+      // 如果 UPDATED_TIME 是时间字符串（例如 '2023-08-15T10:00:00Z'），可以直接比较它们
+      return new Date(b.UPDATED_TIME) - new Date(a.UPDATED_TIME);
     });
 
     listReady.value = true; // 数据准备好
@@ -188,7 +188,7 @@ const accpetOrder = async (accpeted_order) => {
       alertMessage.value = '服务器错误，请稍后再试！';
       break;
     default:
-      alertMessage.value = '未知错误，请稍后再试！';
+      alertMessage.value = '未知错误，错误代码' + status + ',请稍后再试！';
   }
   showAlert.value = true;
   showDialog({ message: alertMessage.value, width: 300 })
@@ -206,50 +206,51 @@ const accpetOrder = async (accpeted_order) => {
 
 <template>
   <div class="container">
-    <div class="top">
-      <van-icon name="arrow-left" @click="onClickLeft" />
-      <p>志愿接单</p>
-      <img :src="portrait" @click="clickPortrait"/>
+    <div class="head">
+      <Nav nav_text="志愿接单" />
+      <van-tabs v-model:active="active" title-active-color="rgb(249, 184, 62)">
+        <van-tab title="待送订单" name="待送订单"></van-tab>
+        <van-tab title="已送订单" name="已送订单"></van-tab>
+      </van-tabs>
     </div>
 
-    <van-tabs v-model:active="active" title-active-color="rgb(249, 184, 62)">
-      <van-tab title="待送订单" name="待送订单"></van-tab>
-      <van-tab title="已送订单" name="已送订单"></van-tab>
-    </van-tabs>
 
-    <div class="acceptable" v-if="active === '待送订单'">
-      <van-pull-refresh v-model="refreshing" @refresh="onRefresh" v-if="active === '待送订单'">
-        <div class="current-order">
-          <div class="current-title">当前订单</div>
+    <div class="pageContent">
+      <div class="acceptable" v-if="active === '待送订单'">
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh" v-if="active === '待送订单'">
+          <div class="current-order">
+            <div class="current-title">当前订单</div>
 
-          <OrderToAccept :order_detail="acceptedOrder" :isAccepted="isAccepted" />
-        </div>
+            <OrderToAccept :order_detail="acceptedOrder" :isAccepted="isAccepted" />
+          </div>
 
-        <div class="orders">
-          <div class="order-title">可接订单</div>
-          <div class="scroll">
+          <div class="orders">
+            <div class="order-title">可接订单</div>
+            <div class="scroll">
+              <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+                <OrderToAccept v-for="item in list" :key="item.ORDER_ID" :order_detail="item" :isAccepted="isAccepted"
+                  @clickAccept="accpetOrder"></OrderToAccept>
+
+              </van-list>
+            </div>
+          </div>
+        </van-pull-refresh>
+
+      </div>
+
+
+
+      <div v-else class="finishedOrders">
+        <van-pull-refresh v-model="refreshingFinished" @refresh="onRefreshFinished">
+          <div class="finishedScroll">
             <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-              <OrderToAccept v-for="item in list" :key="item.ORDER_ID" :order_detail="item" :isAccepted="isAccepted"
-                @clickAccept="accpetOrder"></OrderToAccept>
-
+              <OrderInList v-for="item in list2" :key="item.ORDER_ID" :order_detail="item"></OrderInList>
             </van-list>
           </div>
-        </div>
-      </van-pull-refresh>
-
+        </van-pull-refresh>
+      </div>
     </div>
 
-
-
-    <div v-else class="finishedOrders">
-      <van-pull-refresh v-model="refreshingFinished" @refresh="onRefreshFinished">
-        <div class="finishedScroll">
-          <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-            <OrderInList v-for="item in list2" :key="item.ORDER_ID" :order_detail="item"></OrderInList>
-          </van-list>
-        </div>
-      </van-pull-refresh>
-    </div>
 
 
   </div>
@@ -271,36 +272,22 @@ const accpetOrder = async (accpeted_order) => {
   height: 5vh;
 }
 
-.top p {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
-}
-
-.top img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  margin-right: 10px;
-}
-
-.top .van-icon {
-  margin-left: 10px;
-}
-
-.top {
-  height: 5vh;
+.head {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
   width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  display: flex;
-  font-size: large;
-  font-weight: bold;
-  position: relative;
 }
+
 /*#endregion*/
 
+.pageContent {
+  margin-top: calc(5vh + 5vh);
+  width: 100%;
+  display: flex;
+  flex-grow: 1;
+}
 
 /*标签页-待送订单 */
 .acceptable {
@@ -332,6 +319,7 @@ const accpetOrder = async (accpeted_order) => {
   font-weight: bold;
   letter-spacing: 0.2vh;
 }
+
 /*#endregion*/
 
 /*可接订单部分 */
@@ -354,6 +342,7 @@ const accpetOrder = async (accpeted_order) => {
   flex-grow: 1;
   padding: 20px;
 }
+
 /*#endregion */
 
 
@@ -375,11 +364,4 @@ const accpetOrder = async (accpeted_order) => {
   padding: 20px;
   background-color: rgba(244, 244, 244);
 }
-
-
-
-
-
-
-
 </style>

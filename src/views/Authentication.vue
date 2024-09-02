@@ -14,6 +14,8 @@
 </template>
 
 <script setup>
+import 'vant/es/toast/style'
+import { showToast } from 'vant'
 import { ref } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
@@ -46,11 +48,25 @@ try {
   if (response.data.success) {
     router.push({ name: 'User' });
   } else {
-    alert('更新失败: ' + response.data.message);
+    showToast('实名失败，'+response.value.msg)
   }
 } catch (error) {
-  console.error('Error updating account:', error);
-  alert('更新失败，请稍后重试');
+  if (error.response) {
+      // 请求已发出，但服务器响应了状态码
+      // 不是2xx范围内的状态码
+      const statusCode = error.response.status;
+      if(statusCode===400){
+        showToast(`实名失败，此账号已实名`);
+      }
+      if(statusCode===404){
+        showToast(`实名失败`);
+      }
+    } else if (error.request) {
+      showToast('登录失败，未收到响应');
+    } else {
+      // 其他错误
+      showToast('登录失败，发生错误');
+    }
 }
 };
 

@@ -41,9 +41,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+
 
 const identity = localStorage.getItem('identity');
 const router = useRouter();
@@ -53,7 +52,7 @@ router.push({ name: 'AccpetOrder' });
 };
 
 const getVolunteerInfor = () => {
-router.push({ name: 'MyOrders' });
+router.push({ name: 'VolunteerInfor' });
 };
 
 const resturant = () => {
@@ -77,7 +76,7 @@ router.push({ name: 'OrderPage' });
   position: absolute;
   top: 12%;
 
-  width: 100%;
+  width: 100vw;
   height: 30%;
   background-color: rgb(239, 255, 250);
 }
@@ -121,7 +120,7 @@ router.push({ name: 'OrderPage' });
 .informationContainer{
   position: relative;
   width: 100vw;
-  height: 50%;
+  height: 47%;
   top: -10%;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */
   border-radius: 20px; /* 四角圆滑 */
@@ -133,7 +132,7 @@ router.push({ name: 'OrderPage' });
   top: 10%;
 
   height: 0.8rem;
-  width: 100%;
+  width: 100vw;
 
   background-color: wheat ;
 
@@ -196,7 +195,7 @@ router.push({ name: 'OrderPage' });
   justify-content: center; /* 保持内容的水平对齐 */
   height: 4%;
   width: 90%;
-  font-size: 60%;
+  font-size: 0.4rem;
   line-height: 5%; /* 确保行高与容器高度一致 */
 }
 </style>

@@ -9,7 +9,9 @@
       </div>
       <div class="card-right-bottom">
         <div class="card-right-bottom-left">
-          <span class="text">{{ props.price }}</span>
+          <span class="text"
+            >￥{{ (parseFloat(props.price.replace('￥', '')) * props.discount).toFixed(2) }}</span
+          >
         </div>
         <div class="card-right-bottom-right">
           <button class="icon-button" @click="decreaseQuantity">
@@ -34,7 +36,8 @@ const props = defineProps({
   name: String,
   price: String,
   category: String,
-  quantity: String
+  quantity: String,
+  discount: Number
 })
 const increaseQuantity = () => {
   menu.addcount(props.name)
