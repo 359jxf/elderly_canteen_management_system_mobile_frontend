@@ -27,7 +27,7 @@
   <van-popup v-model:show="showBottom" position="bottom" class="popup-container">
     <div class="popup-header">
       <span class="header-title">购物车</span>
-      <van-button class="clear-cart-button" type="danger" @click="clearCart">清空购物车</van-button>
+      <span class="clear-cart-button" @click="clearCartItem">清空</span>
     </div>
     <div class="popup-content">
       <div v-if="cartItems.length === 0" class="empty-cart">购物车为空</div>
@@ -87,7 +87,7 @@ import { ref } from 'vue'
 import { computed } from 'vue'
 import { showToast } from 'vant'
 import router from '@/router'
-import { createCart, getCartItem, getMenuToday, updateCartItem } from '@/api/api'
+import { createCart, getCartItem, getMenuToday, updateCartItem, clearCart } from '@/api/api'
 import { onMounted } from 'vue'
 const menu = useMenuStore()
 const cartId = ref('')
@@ -171,7 +171,7 @@ const decreaseQuantity = async (index) => {
 const handleCheckout = () => {
   router.push('/ShoppingCart')
 }
-const clearCart = async () => {
+const clearCartItem = async () => {
   try {
     await clearCart()
     cartItems.value = [] // 清空本地购物车数据
@@ -375,5 +375,10 @@ const clearCart = async () => {
 .footer {
   border-radius: 15px;
   border-color: #ffa500;
+}
+.clear-cart-button {
+  font-size: medium;
+  color: red;
+  font-weight: bold;
 }
 </style>

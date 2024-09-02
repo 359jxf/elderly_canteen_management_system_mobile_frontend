@@ -78,3 +78,15 @@ export const updateCartItem = async (cartId, dishId, quantity) => {
     console.log(error)
   }
 }
+
+export const clearCart = async (cartId) => {
+  try {
+    const res = await ins.post('/api/cart/clearCart', {
+      CART_ID: cartId
+    })
+    console.log(res.data.success)
+    return res.data.success
+  } catch (error) {
+    console.log(error)
+  }
+}
