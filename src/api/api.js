@@ -1,8 +1,9 @@
 import ins from '../utils/axiosInstance.js'
 
+//获取历史订单
 export const getOrders = async () => {
   const token = localStorage.getItem('token')
-  const res = await ins.get('/getPastOrder', {
+  const res = await ins.get('/api/order/getPastOrder', {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -12,9 +13,10 @@ export const getOrders = async () => {
   return res.data.response
 }
 
+// 查询可接订单
 export const getAcceptableOrder = async () => {
   const token = localStorage.getItem('token')
-  const res = await ins.get('/getAcceptableOrder', {
+  const res = await ins.get('/api/volServe/getAcceptableOrder', {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -24,9 +26,10 @@ export const getAcceptableOrder = async () => {
   return res.data.response
 }
 
+//查询志愿者当前订单
 export const getAcceptedOrder = async () => {
   const token = localStorage.getItem('token')
-  const res = await ins.get('/getAcceptedOrder', {
+  const res = await ins.get('/api/volServe/getAcceptedOrder', {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -36,9 +39,10 @@ export const getAcceptedOrder = async () => {
   return res.data.response
 }
 
+//查询志愿者已送订单
 export const getFinishedOrder = async () => {
   const token = localStorage.getItem('token')
-  const res = await ins.get('/getFinishedOrder', {
+  const res = await ins.get('/api/volServe/getFinishedOrder', {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -48,11 +52,12 @@ export const getFinishedOrder = async () => {
   return res.data.response
 }
 
+//接收配送订单
 export const postAccpetOrder = async (orderId) => {
   const token = localStorage.getItem('token')
   try {
     const response = await ins.post(
-      '/acceptOrder',
+      '/api/volServe/postAcceptOrder',
       { ORDER_ID: orderId },
       {
         headers: {
@@ -67,6 +72,7 @@ export const postAccpetOrder = async (orderId) => {
   }
 }
 
+//获取用户头像
 export const getPorTrait = async () => {
   const token = localStorage.getItem('token')
   const res = await ins.get('/api/account/getPersonInfo', {
@@ -79,10 +85,11 @@ export const getPorTrait = async () => {
   return res.data.response.portrait
 }
 
+//查询订单信息
 export const getOrderMsg = async (orderId) => {
   const token = localStorage.getItem('token')
   try {
-    const res = await ins.get('/getOrderMsg', {
+    const res = await ins.get('/api/order/getOrderMsg', {
       params: { OrderId: orderId },
 
       headers: {
@@ -98,10 +105,11 @@ export const getOrderMsg = async (orderId) => {
   }
 }
 
+//查询订单配送信息
 export const getOrderDeliverMsg = async (orderId) => {
   const token = localStorage.getItem('token')
   try {
-    const res = await ins.get('/getOrderDeliverMsg', {
+    const res = await ins.get('/api/order/getOrderDeliverMsg', {
       params: { OrderId: orderId },
 
       headers: {
@@ -117,11 +125,12 @@ export const getOrderDeliverMsg = async (orderId) => {
   }
 }
 
+//确认取餐
 export const postConfirmOrder = async (orderId) => {
   const token = localStorage.getItem('token')
   try {
     const res = await ins.post(
-      '/postConfirmOrder',
+      '/api/order/postConfirmOrder',
       { OrderId: orderId },
       {
         headers: {
@@ -137,11 +146,12 @@ export const postConfirmOrder = async (orderId) => {
   }
 }
 
+//确认送达
 export const postConfirmDelivered = async (orderId) => {
   const token = localStorage.getItem('token')
   try {
     const res = await ins.post(
-      '/postConfirmDelivered',
+      '/api/volServe/postConfirmDelivered',
       { OrderId: orderId },
       {
         headers: {
@@ -157,6 +167,7 @@ export const postConfirmDelivered = async (orderId) => {
   }
 }
 
+//提交订单评价
 export const postComment = async (
   orderId,
   deliverRate,
@@ -167,7 +178,7 @@ export const postComment = async (
   const token = localStorage.getItem('token')
   try {
     const res = await ins.post(
-      '/postConfirmDelivered',
+      '/api/order/postComment',
       {
         OrderId: orderId,
         CStars: falvorRate,
@@ -189,10 +200,11 @@ export const postComment = async (
   }
 }
 
+//查看订单评价
 export const getComment = async (orderId) => {
   const token = localStorage.getItem('token')
   try {
-    const res = await ins.get('/getComment', {
+    const res = await ins.get('/api/order/getComment', {
       params: { OrderId: orderId },
       headers: {
         Authorization: `Bearer ${token}`,
