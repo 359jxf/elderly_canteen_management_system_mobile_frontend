@@ -170,29 +170,31 @@ watch(active, (newActive) => {
 
 //接单逻辑（发送请求，弹窗，刷新）
 // #region 
-const showAlert = ref(false);
-const alertMessage = ref('');
-
+import { showLoadingToast, showSuccessToast, showFailToast } from 'vant';
 const accpetOrder = async (accpeted_order) => {
   console.log("接单");
   const status = await postAccpetOrder(accpeted_order.ORDER_ID);
-  console.log(status);
+  console.log('status:',status);
   switch (status) {
     case 200:
-      alertMessage.value = '接单成功！';
+      showSuccessToast({
+        message: '接单成功！',
+        onClose: () => {
+          console.log('确认接单foast消失')
+          onRefresh();
+        }
+      })
       break;
-    case 403:
-      alertMessage.value = '订单无法接受！';
+    case 400:
+    showFailToast({
+        message: '接单失败，请重试',
+        onClose: () => {
+          console.log('确认接单foast消失')
+          onRefresh();
+        }
+      })
       break;
-    case 500:
-      alertMessage.value = '服务器错误，请稍后再试！';
-      break;
-    default:
-      alertMessage.value = '未知错误，错误代码' + status + ',请稍后再试！';
   }
-  showAlert.value = true;
-  showDialog({ message: alertMessage.value, width: 300 })
-    .then(() => { onRefresh(); });
 
 }
 // #endregion
