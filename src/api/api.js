@@ -167,8 +167,37 @@ export const postConfirmDelivered = async (orderId) => {
   }
 }
 
-//提交订单评价
-export const postComment = async (
+//提交订单评价（堂食）
+export const postDiningComment = async (
+  orderId,
+  falvorRate,
+  flavorComment
+) => {
+  const token = localStorage.getItem('token')
+  try {
+    const res = await ins.post(
+      '/api/order/postDiningComment',
+      {
+        OrderId: orderId,
+        CStars: falvorRate,
+        CReviewText: flavorComment,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    console.log('post堂食订单评价 success:', res.data.success,'菜品得分',falvorRate,'菜品评价',flavorComment)
+    return res.status
+  } catch (error) {
+    return error.response
+  }
+}
+
+//提交订单评价（外送）
+export const postDeliverComment = async (
   orderId,
   deliverRate,
   deliverComment,
@@ -178,7 +207,7 @@ export const postComment = async (
   const token = localStorage.getItem('token')
   try {
     const res = await ins.post(
-      '/api/order/postComment',
+      '/api/order/postDeliverComment',
       {
         OrderId: orderId,
         CStars: falvorRate,
@@ -193,18 +222,20 @@ export const postComment = async (
         }
       }
     )
-    console.log('postComment success:', res.data.success)
+    console.log('post外送订单评价 success:', res.data.success,'菜品得分',falvorRate,'菜品评价',flavorComment,
+      '配送得分',deliverRate,'配送评价',deliverComment
+    )
     return res.status
   } catch (error) {
     return error.response
   }
 }
 
-//查看订单评价
-export const getComment = async (orderId) => {
+//查看订单评价（外送）
+export const getDeliverComment = async (orderId) => {
   const token = localStorage.getItem('token')
   try {
-    const res = await ins.get('/api/order/getComment', {
+    const res = await ins.get('/api/order/getDeliverComment', {
       params: { OrderId: orderId },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -214,7 +245,26 @@ export const getComment = async (orderId) => {
     console.log(res.data.response)
     return res.data.response
   } catch (error) {
-    console.error('Error fetching comment message:', error)
+    console.error('Error fetching DeliverComment message:', error)
+    throw error
+  }
+}
+
+//查看订单评价（堂食）
+export const getDiningComment = async (orderId) => {
+  const token = localStorage.getItem('token')
+  try {
+    const res = await ins.get('/api/order/getDiningComment', {
+      params: { OrderId: orderId },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    console.log(res.data.response)
+    return res.data.response
+  } catch (error) {
+    console.error('Error fetching DiningComment message:', error)
     throw error
   }
 }

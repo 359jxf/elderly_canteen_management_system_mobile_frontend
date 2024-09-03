@@ -23,7 +23,6 @@
     <div class="card-mid">
       <div class="text">
         <span class="title">菜品价格明细</span>
-        <span class="title">菜品价格明细</span>
       </div>
       <div class="info">
         <ul>
@@ -53,10 +52,6 @@
 </template>
 
 <script setup>
-import { useMenuStore } from '@/store/modules/menu'
-const menu = useMenuStore();
-const props = defineProps({
-  order_detail: Object
 const props = defineProps({
   order_detail: Object
 })

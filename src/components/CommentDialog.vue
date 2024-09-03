@@ -35,7 +35,7 @@
 
 <script setup>
 import { ref, defineEmits } from 'vue';
-import { postComment, getComment } from '../api/api'
+import { postDiningComment, postDeliverComment,getDeliverComment,getDiningComment } from '../api/api'
 import 'vant/es/toast/style'
 const props = defineProps({
     deliverOrDining: Boolean,
@@ -73,8 +73,10 @@ const onConfirm = async () => {
             message: '加载中...',
             forbidClick: true,
         });
-        const status = await postComment(props.orderId, deliverRate.value, falvorRate.value,
-            deliverComment.value, flavorComment.value);
+        const status = props.deliverOrDining==true?
+        await postDeliverComment(props.orderId, deliverRate.value, deliverComment.value, falvorRate.value,
+            flavorComment.value): await postDiningComment(props.orderId, falvorRate.value,
+            flavorComment.value);
         switch (status) {
             case 200:
                 showSuccessToast({
@@ -112,7 +114,9 @@ function writeComment() {
 
 const fetchComment = async () => {
     try {
-        const response = await getComment(props.orderId);
+        const response = props.deliverOrDining==true?
+        await getDeliverComment(props.orderId):await getDiningComment(props.orderId);
+        
         deliverRate.value = response.DStars;
         falvorRate.value = response.CStars;
         flavorComment.value = response.CReviewText;

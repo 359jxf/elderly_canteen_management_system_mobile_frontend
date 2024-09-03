@@ -306,12 +306,6 @@ const buttonEvent = () => {
   z-index: 1000;
   background-color: white;
   width: 100%;
-.head {
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-  background-color: white;
-  width: 100%;
 }
 
 
@@ -328,32 +322,9 @@ const buttonEvent = () => {
   /* 允许垂直滚动 */
 
   margin-top: 5vh;
-
-.container {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
-.order_content {
-  flex: 1;
-  /* 占据剩余空间 */
-  overflow-y: auto;
-  /* 允许垂直滚动 */
 
-  margin-top: 5vh;
-}
-
-.remark {
-  padding-top: 5%;
-  padding-left: 6%;
-  font-size: small;
-  width: 100vw;
-}
-
-.remark .remarkContent {
-  width: 88vw;
-  word-wrap: break-word;
 .remark {
   padding-top: 5%;
   padding-left: 6%;
@@ -366,13 +337,6 @@ const buttonEvent = () => {
   word-wrap: break-word;
 }
 
-.footer {
-  position: fixed;
-  bottom: 0;
-  z-index: 1000;
-  background-color: white;
-  width: 100%;
-}
 
 .footer {
   position: fixed;
