@@ -17,9 +17,6 @@
     <SearchLine v-model="searchTerm" class="nav" />
     <img src="../assets/slogan.jpg" class="slogan" />
   </div>
-  <div class="title">
-    <span class="menu">今日菜单</span>
-  </div>
   <div class="container">
     <div class="button-list">
       <button
@@ -226,18 +223,15 @@ const clearCartItem = async () => {
 .slogan {
   width: 100%;
 }
-.title {
-  padding-top: 1vh;
-  height: 5vh;
-  background-color: #ffe4b5;
-}
+
 .container {
+  margin-top: 5px;
   display: flex;
-  height: 72vh;
+  height: 77vh;
 }
 .button-list {
   width: 20%; /* 根据需要调整宽度 */
-  background-color: #ffe4b5; /* 更柔和的背景色 */
+  background-color: #f0f0f0; /* 更柔和的背景色 */
   z-index: 1;
 }
 
@@ -252,7 +246,7 @@ const clearCartItem = async () => {
 .menu-button {
   width: 100%;
   border: none;
-  background-color: #ffe4b5; /* 白色背景 */
+  background-color: #f0f0f0; /* 白色背景 */
   color: black; /* 更深的橙色 */
   padding: 2px; /* 更大的内边距 */
   font-size: large; /* 更合适的字体大小 */
