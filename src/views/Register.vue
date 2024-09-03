@@ -26,26 +26,41 @@ const password = ref('');
 const gender = ref('');
 const verificationCode = ref('');
 
-const getIn = async ()=> {
+const getIn = async () => {
   try {
-  const response = await axios.post('http://8.136.125.61/api/account/register', {
-    phoneNum: phoneNum.value,
-    verificationCode: verificationCode.value,
-  });
-  if (response.data.loginSuccess) {
-    const { token, identity, accountName } = response.data.response;
+    const formData = new FormData();
+    formData.append('userName', userName.value);
+    formData.append('gender', gender.value);
+    formData.append('verificationCode', verificationCode.value);
+    formData.append('phoneNum', phoneNum.value);
+    formData.append('password', password.value);
+    const response = await axios.post(
+      'http://8.136.125.61/api/account/register',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
 
-    localStorage.setItem('token', token);
-    localStorage.setItem('identity', identity);
-    localStorage.setItem('accountName', accountName);
+    if (response.data.registerSuccess) {
+      if (userName.value !== '') {
+        localStorage.setItem('accountName', userName.value);
+      }
+      const { token, identity, accountName } = response.data.response;
+      localStorage.setItem('token', token);
+      localStorage.setItem('identity', identity);
+      localStorage.setItem('accountName', accountName);
 
-    router.push({ name: 'Home' });
-  } else {
-    alert('注册失败：' + response.data.msg);
+      router.push({ name: 'Home' });
+    } else {
+      alert('更新失败: ' + response.data.msg);
+    }
+  } catch (error) {
+    console.error('Error updating account:', error);
+    alert('更新失败，请稍后重试');
   }
-} catch (error) {
-  alert('An error occurred during login.');
-}
 };
 
 const getCredit = async ()=> {
@@ -76,7 +91,7 @@ try {
 };
 </script>
 
-<style>
+<style scoped>
 .background{
   display: flex;
   position: relative;
@@ -138,8 +153,9 @@ try {
 
 .inputBox{
   width: 50%;
-  height: 60%;
-  border-radius: 10px ;
+  height: 50%;
+  border-radius: 1vh ;
+  font-size: 0.4rem;
 }
 
 .half{
@@ -153,7 +169,7 @@ try {
   height: 50%;
   left: 5%;
   border-radius: 5px ;
-  font-size: 70%;
+  font-size: 60%;
 }
 
 .getIn{
@@ -164,5 +180,9 @@ try {
   top: 10%;
   border-radius: 20px ;
   font-size: 60%;
+  border: none;
+  color: white;
+  font-weight: bold;
+  background-color: #ffa822;
 }
 </style>

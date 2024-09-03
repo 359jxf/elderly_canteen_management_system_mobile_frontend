@@ -39,9 +39,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import axios from 'axios'
+import { useRouter } from 'vue-router';
+
 
 const identity = localStorage.getItem('identity')
 const router = useRouter()
@@ -51,8 +50,8 @@ const getVolunteerOrder = () => {
 }
 
 const getVolunteerInfor = () => {
-  router.push({ name: 'MyOrders' })
-}
+router.push({ name: 'VolunteerInfor' });
+};
 
 const resturant = () => {
   router.push({ name: 'OrderPage' })
@@ -194,7 +193,7 @@ const deliver = () => {
   justify-content: center; /* 保持内容的水平对齐 */
   height: 4%;
   width: 90%;
-  font-size: 60%;
+  font-size: 0.4rem;
   line-height: 5%; /* 确保行高与容器高度一致 */
 }
 </style>

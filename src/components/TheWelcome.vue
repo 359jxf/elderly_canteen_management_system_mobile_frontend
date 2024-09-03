@@ -1,6 +1,6 @@
 <template>
   <div class="theHelloContainer">
-    <img :src="portrait" alt="头像" class="helloImage" />
+    <img :src="portrait" alt="" class="helloImage" />
     你好，{{ accountName }}
   </div>
 </template>
@@ -38,8 +38,8 @@ const portrait = localStorage.getItem('portrait');
   position: relative; /* 相对定位 */
   left: -15%;
   top: 0%;
-  width: auto;
-  height: 70%;
+  width: 15vw;
+  height: 15vw;
   border-radius: 50%; /* 将图片设置为圆形 */
   object-fit: cover; /* 确保图片覆盖整个高度 */
 }

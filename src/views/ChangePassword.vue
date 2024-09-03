@@ -61,7 +61,7 @@ router.push({ name: 'AlterPassword' });
 </script>
 
 
-<style>
+<style  scoped>
 .background{
     position: relative;
     top: 0;

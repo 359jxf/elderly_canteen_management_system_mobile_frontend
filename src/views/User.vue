@@ -1,6 +1,6 @@
 <template>
   <PersonalBackground>
-    <div class="textContainer" v-if="getSuccess">
+  <div class="textContainer">
       <span class="head">个人信息</span>
       <button class="info-button" @click="alterInformation">🖊</button>
       <div class="space"></div>
@@ -23,9 +23,6 @@
         <span class="label">地址:</span> <span class="value">{{ userData.address }}</span>
       </div>
     </div>
-    <div class="errorContainer" v-else>
-      <p>{{ errorMessage }}</p>
-    </div>
     <div class="buttonContainer">
       <button class="buttonType authen" @click="authen">实名认证</button>
       <button class="buttonType apply" @click="apply">志愿者申请</button>
@@ -36,9 +33,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+import 'vant/es/toast/style'
+import { showToast } from 'vant'
 
 import defaultPic from '@/assets/Yui.jpg'
 
@@ -144,8 +143,9 @@ const apply = () => {
 }
 
 .value {
-  text-align: left;
-  font-size: 100%;
+text-align: left;
+font-size: 100%;
+
 }
 
 .info-button {

@@ -27,7 +27,10 @@ const sendApplication = async () => {
       selfStatement: selfStatement.value
     }
 
-    const response = await axios.post('http://8.136.125.61/api/Account/volunteerApply', data, {
+  const response = await axios.post(
+    "http://8.136.125.61/api/Volunteer/apply",
+    data,
+    {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'

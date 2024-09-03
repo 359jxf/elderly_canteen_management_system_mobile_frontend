@@ -23,6 +23,7 @@
     <div class="card-mid">
       <div class="text">
         <span class="title">菜品价格明细</span>
+        <span class="title">菜品价格明细</span>
       </div>
       <div class="info">
         <ul>
@@ -56,6 +57,8 @@ import { useMenuStore } from '@/store/modules/menu'
 const menu = useMenuStore();
 const props = defineProps({
   order_detail: Object
+const props = defineProps({
+  order_detail: Object
 })
 </script>
 
@@ -67,40 +70,53 @@ const props = defineProps({
   padding: 3% 6%;
 }
 
+
 .card-header .text {
   margin-bottom: 5%;
 }
+
 
 .card-header .text .title {
   font-weight: bold;
   font-size: 20px;
   letter-spacing: 3px;
+  font-size: 20px;
+  letter-spacing: 3px;
 }
+
 
 .card-header .info {
   font-size: small;
   margin-left: 8px;
+  margin-left: 8px;
 }
+
 
 .hr-solid {
   border: 0;
   border-top: 1px solid #d0d0d5;
   margin-top: 5px;
   margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
+
 
 .card-mid .text {
   margin-bottom: 5%;
 }
+
 
 .card-mid .text .title {
   font-weight: bold;
   font-size: small;
 }
 
+
 .card-mid .info {
   font-size: small;
 }
+
 
 .card-footer {
   display: flex;
@@ -108,10 +124,12 @@ const props = defineProps({
   align-items: center;
 }
 
+
 .card-footer .left {
   display: flex;
   align-items: center;
 }
+
 
 .card-footer .left .text {
   font-weight: bold;
@@ -125,7 +143,10 @@ const props = defineProps({
   font-size: medium;
 }
 
+
 ul {
+  list-style-type: none;
+  /* 移除默认的列表样式 */
   list-style-type: none;
   /* 移除默认的列表样式 */
   padding: 0;

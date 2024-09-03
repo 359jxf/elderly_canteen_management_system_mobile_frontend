@@ -306,8 +306,28 @@ const buttonEvent = () => {
   z-index: 1000;
   background-color: white;
   width: 100%;
+.head {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+  width: 100%;
 }
 
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.order_content {
+  flex: 1;
+  /* 占据剩余空间 */
+  overflow-y: auto;
+  /* 允许垂直滚动 */
+
+  margin-top: 5vh;
 
 .container {
   height: 100vh;
@@ -334,6 +354,24 @@ const buttonEvent = () => {
 .remark .remarkContent {
   width: 88vw;
   word-wrap: break-word;
+.remark {
+  padding-top: 5%;
+  padding-left: 6%;
+  font-size: small;
+  width: 100vw;
+}
+
+.remark .remarkContent {
+  width: 88vw;
+  word-wrap: break-word;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+  background-color: white;
+  width: 100%;
 }
 
 .footer {
@@ -350,31 +388,59 @@ const buttonEvent = () => {
   font-size: small;
 }
 
+
 .footer .info .header {
   margin-bottom: 2%;
 }
 
+
 .footer .info .mid {
   margin-bottom: 10%;
 }
+
 
 .hr-solid {
   border: 0;
   border-top: 1px solid #d0d0d5;
   margin-bottom: 10px;
   margin-top: 8px;
+  margin-bottom: 10px;
+  margin-top: 8px;
 }
+
 
 .buttonpt {
   padding-left: 48%;
   margin-bottom: 3%;
+  padding-left: 48%;
+  margin-bottom: 3%;
 }
+
 
 .button {
   width: 95%;
   height: 6.5vh;
+  width: 95%;
+  height: 6.5vh;
   color: black;
   border: none;
+  font-size: 20px;
+  font-weight: 600 !important;
+  letter-spacing: 3px;
+  /* 字间距*/
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.hotline .title {
+  /*两个类之间的空格必不可省*/
+  color: rgb(219, 95, 95);
+  padding-right: 19px;
+}
+
+.hotline .phone {
+  color: rgb(144, 149, 153);
+  /* 设置电话号码的颜色为黑色 */
   font-size: 20px;
   font-weight: 600 !important;
   letter-spacing: 3px;

@@ -14,10 +14,16 @@ const loadPortrait = async () => {
   console.log("url:", url);
   portrait.value = url;
   console.log("portrait:", portrait);
+const loadPortrait = async () => {
+  const url = await getPorTrait();
+  console.log("url:", url);
+  portrait.value = url;
+  console.log("portrait:", portrait);
 }
 onMounted(loadPortrait);
 
 const router = useRouter();
+const clickPortrait = () => {
 const clickPortrait = () => {
   router.push({ path: '/User' });
 }
@@ -43,6 +49,8 @@ const fetchOrders = async () => {
 
     //订单按新到旧排序
     orderList.value.sort((a, b) => {
+      // 如果 UPDATED_TIME 是时间字符串（例如 '2023-08-15T10:00:00Z'），可以直接比较它们
+      return new Date(b.UPDATED_TIME) - new Date(a.UPDATED_TIME);
       // 如果 UPDATED_TIME 是时间字符串（例如 '2023-08-15T10:00:00Z'），可以直接比较它们
       return new Date(b.UPDATED_TIME) - new Date(a.UPDATED_TIME);
     });
@@ -216,7 +224,20 @@ const accpetOrder = async (accpeted_order) => {
       </van-tabs>
     </div>
 
+    <div class="head">
+      <Nav nav_text="志愿接单" />
+      <van-tabs v-model:active="active" title-active-color="rgb(249, 184, 62)">
+        <van-tab title="待送订单" name="待送订单"></van-tab>
+        <van-tab title="已送订单" name="已送订单"></van-tab>
+      </van-tabs>
+    </div>
 
+
+    <div class="pageContent">
+      <div class="acceptable" v-if="active === '待送订单'">
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh" v-if="active === '待送订单'">
+          <div class="current-order">
+            <div class="current-title">当前订单</div>
     <div class="pageContent">
       <div class="acceptable" v-if="active === '待送订单'">
         <van-pull-refresh v-model="refreshing" @refresh="onRefresh" v-if="active === '待送订单'">
@@ -225,7 +246,15 @@ const accpetOrder = async (accpeted_order) => {
 
             <OrderToAccept :order_detail="acceptedOrder" :isAccepted="isAccepted" />
           </div>
+            <OrderToAccept :order_detail="acceptedOrder" :isAccepted="isAccepted" />
+          </div>
 
+          <div class="orders">
+            <div class="order-title">可接订单</div>
+            <div class="scroll">
+              <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+                <OrderToAccept v-for="item in list" :key="item.ORDER_ID" :order_detail="item" :isAccepted="isAccepted"
+                  @clickAccept="accpetOrder"></OrderToAccept>
           <div class="orders">
             <div class="order-title">可接订单</div>
             <div class="scroll">
@@ -237,10 +266,26 @@ const accpetOrder = async (accpeted_order) => {
             </div>
           </div>
         </van-pull-refresh>
+              </van-list>
+            </div>
+          </div>
+        </van-pull-refresh>
 
+      </div>
       </div>
 
 
+
+      <div v-else class="finishedOrders">
+        <van-pull-refresh v-model="refreshingFinished" @refresh="onRefreshFinished">
+          <div class="finishedScroll">
+            <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+              <OrderInList v-for="item in list2" :key="item.ORDER_ID" :order_detail="item"></OrderInList>
+            </van-list>
+          </div>
+        </van-pull-refresh>
+      </div>
+    </div>
 
       <div v-else class="finishedOrders">
         <van-pull-refresh v-model="refreshingFinished" @refresh="onRefreshFinished">
@@ -286,8 +331,21 @@ const accpetOrder = async (accpeted_order) => {
 
 .pageContent {
   margin-top: calc(5vh + 5vh);
+.head {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+  width: 100%;
+}
+
+/*#endregion*/
+
+.pageContent {
+  margin-top: calc(5vh + 5vh);
   width: 100%;
   display: flex;
+  flex-grow: 1;
   flex-grow: 1;
 }
 
@@ -322,6 +380,7 @@ const accpetOrder = async (accpeted_order) => {
   letter-spacing: 0.2vh;
 }
 
+
 /*#endregion*/
 
 /*可接订单部分 */
@@ -344,6 +403,7 @@ const accpetOrder = async (accpeted_order) => {
   flex-grow: 1;
   padding: 20px;
 }
+
 
 /*#endregion */
 

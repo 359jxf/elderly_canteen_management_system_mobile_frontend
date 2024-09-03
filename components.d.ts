@@ -10,6 +10,7 @@ declare module 'vue' {
     404: typeof import('./src/views/404.vue')['default']
     AccpetOrder: typeof import('./src/views/AccpetOrder.vue')['default']
     AddressCard: typeof import('./src/components/AddressCard.vue')['default']
+    Alert: typeof import('./src/components/Alert.vue')['default']
     AlterInfor: typeof import('./src/views/AlterInfor.vue')['default']
     AlterPassword: typeof import('./src/views/AlterPassword.vue')['default']
     Authentication: typeof import('./src/views/Authentication.vue')['default']
@@ -46,11 +47,12 @@ declare module 'vue' {
     User: typeof import('./src/views/User.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanCol: typeof import('vant/es')['Col']
-    VanConfigProvider: typeof import('vant/es')['ConfigProvider']
     VanDialog: typeof import('vant/es')['Dialog']
     VanField: typeof import('vant/es')['Field']
     VanIcon: typeof import('vant/es')['Icon']
+    VanImage: typeof import('vant/es')['Image']
     VanList: typeof import('vant/es')['List']
+    VanPopup: typeof import('vant/es')['Popup']
     VanPullRefresh: typeof import('vant/es')['PullRefresh']
     VanRate: typeof import('vant/es')['Rate']
     VanRow: typeof import('vant/es')['Row']
@@ -61,5 +63,6 @@ declare module 'vue' {
     ViewCommentDialog: typeof import('./src/components/ViewCommentDialog.vue')['default']
     VolunteerApply: typeof import('./src/views/VolunteerApply.vue')['default']
     VolunteerCard: typeof import('./src/components/VolunteerCard.vue')['default']
+    VolunteerInfor: typeof import('./src/views/VolunteerInfor.vue')['default']
   }
 }

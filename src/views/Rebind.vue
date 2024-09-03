@@ -48,7 +48,7 @@ alert('更新失败，请稍后重试');
 </script>
 
 
-<style>
+<style scoped>
 .background{
     position: relative;
     top: 0;

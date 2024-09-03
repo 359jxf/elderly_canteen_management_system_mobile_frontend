@@ -18,14 +18,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import axios from 'axios'
-import { useRouter } from 'vue-router'
+import 'vant/es/toast/style'
+import { showToast } from 'vant'
+import { ref } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
+const router = useRouter();
 
-const name = ref(null)
-const IDCard = ref(null)
+
+const name = ref(null);
+const IDCard = ref(null);
 
 const sendApplication = async () => {
   const token = localStorage.getItem('token')
@@ -40,18 +43,34 @@ const sendApplication = async () => {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
-    })
-    console.log('Response:', response)
-    if (response.data.success) {
-      router.push({ name: 'User' })
-    } else {
-      alert('更新失败: ' + response.data.message)
     }
-  } catch (error) {
-    console.error('Error updating account:', error)
-    alert('更新失败，请稍后重试')
+  );
+  console.log('Response:', response);
+  if (response.data.success) {
+    router.push({ name: 'User' });
+  } else {
+    showToast('实名失败，'+response.value.msg)
   }
+} catch (error) {
+  if (error.response) {
+      // 请求已发出，但服务器响应了状态码
+      // 不是2xx范围内的状态码
+      const statusCode = error.response.status;
+      if(statusCode===400){
+        showToast(`实名失败，此账号已实名`);
+      }
+      if(statusCode===404){
+        showToast(`实名失败`);
+      }
+    } else if (error.request) {
+      showToast('登录失败，未收到响应');
+    } else {
+      // 其他错误
+      showToast('登录失败，发生错误');
+    }
 }
+};
+
 </script>
 
 <style scoped>
