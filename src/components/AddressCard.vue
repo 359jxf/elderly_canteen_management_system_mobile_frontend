@@ -1,11 +1,11 @@
 <template>
   <div class="address-card">
     <div class="header">
-      <span class="title">填写取餐地址</span>
+      <span class="title">取餐地址</span>
     </div>
     <div class="body">
       <div class="address-input">
-        <input v-model="defaultaddr" class="text-input" placeholder="请输入地址" />
+        <input v-model="user.addr" class="text-input" placeholder="请输入地址" />
       </div>
       <div class="voice-icon">
         <img src="../assets/voice.png" alt="语音输入" class="voice-pic" />
@@ -13,19 +13,15 @@
     </div>
     <hr class="divider" />
     <div class="footer">
-      <van-checkbox v-model="checked">
+      <van-checkbox v-model="user.setDefault">
         <span class="checkbox-text">设为默认地址</span>
       </van-checkbox>
     </div>
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
 import { useUserStore } from '@/store/modules/user'
-
-const checked = ref(false)
 const user = useUserStore()
-const defaultaddr = ref(user.defaultaddr ? user.defaultaddr : '')
 </script>
 <style scoped>
 .address-card {

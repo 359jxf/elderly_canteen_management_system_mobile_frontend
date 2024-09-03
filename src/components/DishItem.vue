@@ -4,7 +4,7 @@
       <img :src="props.imageUrl" height="100px" width="130px" />
       <div v-if="badgeCount > 0" class="badge">{{ badgeCount }}</div>
     </div>
-    <div class="bottom">
+    <div class="right">
       <div class="text">
         <div class="name">
           <span>{{ props.dishName }}</span>
@@ -18,12 +18,14 @@
           </span>
           <span v-else> ￥{{ props.dishPrice.toFixed(2) }} </span>
         </div>
+      </div>
+      <div class="bottom">
         <div class="sale">
           <span>销量：{{ props.sales }}</span>
         </div>
-      </div>
-      <div class="button">
-        <button class="plus-button" @click="addItem">＋</button>
+        <div class="button">
+          <button class="plus-button" @click="addItem">＋</button>
+        </div>
       </div>
     </div>
   </div>
@@ -58,7 +60,7 @@ const addItem = () => {
   width: 100%;
   border-radius: 10px;
   margin: 3%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(255, 154, 58, 0.5);
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
@@ -86,7 +88,7 @@ const addItem = () => {
   justify-content: center;
   font-size: 12px;
 }
-.bottom {
+.right {
   width: 80%;
 }
 .text {
@@ -94,20 +96,20 @@ const addItem = () => {
   width: 100%;
   margin-left: 4%;
 }
-.name {
-}
 .name span {
   font-size: medium;
   font-weight: bold;
-}
-.price {
 }
 .price span {
   font-size: medium;
   font-weight: bold;
 }
-.button {
-  margin-left: 60%;
+.right .bottom {
+  margin-top: 1vh;
+  display: flex;
+}
+.sale {
+  margin-right: 5vw;
 }
 .plus-button {
   background-color: orange;

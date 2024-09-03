@@ -1,6 +1,20 @@
 <template>
+  <div class="floating-cart-bar">
+    <div class="cart-icon">
+      <van-badge :content="menu.totalNum" v-if="menu.totalNum !== 0">
+        <van-icon name="cart-o" color="#ffb94a" size="38px" @click="onClickIcon" />
+      </van-badge>
+      <template v-else>
+        <van-icon name="cart-o" color="#ffb94a" size="38px" @click="onClickIcon" />
+      </template>
+    </div>
+    <div class="text" @click="onClickIcon">
+      <span>查看购物车</span>
+    </div>
+  </div>
+
   <div class="header">
-    <SearchLine v-model="searchTerm" />
+    <SearchLine v-model="searchTerm" class="nav" />
     <img src="../assets/slogan.jpg" class="slogan" />
   </div>
   <div class="title">
@@ -15,6 +29,8 @@
         :key="button.id"
         @click="onClickMenuButton(button.name)"
       >
+        <img :src="`/src/assets/image/${button.imageUrl}`" height="25px" width="25px" />
+        <br />
         {{ button.name }}
       </button>
     </div>
@@ -64,20 +80,6 @@
       <van-button class="checkout-button" type="primary" @click="handleCheckout">去结算</van-button>
     </div>
   </van-popup>
-
-  <van-action-bar>
-    <div class="cart">
-      <van-action-bar-icon
-        icon="cart-o"
-        text="购物车"
-        @click="onClickIcon"
-        :badge="menu.totalNum > 0 ? menu.totalNum : ''"
-      ></van-action-bar-icon>
-    </div>
-    <div class="text" @click="onClickIcon">
-      <span>查看购物车</span>
-    </div>
-  </van-action-bar>
 </template>
 
 <script setup>
@@ -103,7 +105,15 @@ const getItems = async () => {
     console.error('获取当日菜品失败：', error)
     showToast('获取当日菜品失败，请稍后再试')
   }
+  // try {
+  //   const response = await axios.get('http://8.136.125.61/api/order/getMenuToday')
+  //   items.value = response.data.menu
+  //   console.log(response.data.menu)
+  // } catch (error) {
+  //   console.error('Error logging in with password:', error)
+  // }
 }
+
 const getCartId = async () => {
   try {
     cartId.value = await createCart()
@@ -118,10 +128,12 @@ onMounted(async () => {
 })
 const showBottom = ref(false)
 const buttons = ref([
-  { name: '主食', focus: false },
-  { name: '炒菜', focus: false },
-  { name: '凉菜', focus: false },
-  { name: '粥品', focus: false }
+  { name: '促销', focus: false, imageUrl: 'tag.png' },
+  { name: '素类', focus: false, imageUrl: 'vegetable.png' },
+  { name: '荤类', focus: false, imageUrl: 'meat.png' },
+  { name: '主食', focus: false, imageUrl: 'meat.png' },
+  { name: '汤类', focus: false, imageUrl: 'hot-soup.png' },
+  { name: '饮料', focus: false, imageUrl: 'drink.png' }
 ])
 const onClickIcon = async () => {
   if (menu.totalNum == 0) {
@@ -149,11 +161,28 @@ const onClickMenuButton = (name) => {
 const searchTerm = ref('')
 const filteredItems = computed(() => {
   const activeButton = buttons.value.find((button) => button.focus)
-  const filteredByCategory = activeButton
-    ? items.value.filter((item) => item.category === activeButton.name)
+
+  // 筛选按类别
+  let filteredByCategory = activeButton
+    ? items.value.filter(
+        (item) => item.category === activeButton.name || activeButton.name === '促销'
+      )
     : items.value
+
+  // 筛选按搜索词
   const searchLower = searchTerm.value.trim().toLowerCase()
-  return filteredByCategory.filter((item) => item.dishName.toLowerCase().includes(searchLower))
+  filteredByCategory = filteredByCategory.filter((item) =>
+    item.dishName.toLowerCase().includes(searchLower)
+  )
+
+  // 如果按钮是促销按钮，筛选出促销菜品
+  if (activeButton && activeButton.name === '促销') {
+    filteredByCategory = filteredByCategory.filter(
+      (item) => item.discountPrice && item.discountPrice !== item.dishPrice
+    )
+  }
+
+  return filteredByCategory
 })
 const increaseQuantity = async (index) => {
   const item = cartItems.value[index]
@@ -184,7 +213,10 @@ const clearCartItem = async () => {
 </script>
 <style scoped>
 .header {
-  height: 25vh;
+  height: 23vh;
+}
+.nav {
+  margin-bottom: 1vh;
 }
 .search-line-icon {
   display: flex;
@@ -195,36 +227,43 @@ const clearCartItem = async () => {
   width: 100%;
 }
 .title {
+  padding-top: 1vh;
   height: 5vh;
+  background-color: #ffe4b5;
 }
 .container {
   display: flex;
-  height: 70vh;
+  height: 72vh;
 }
 .button-list {
   width: 20%; /* 根据需要调整宽度 */
-  border-right: 1px;
+  background-color: #ffe4b5; /* 更柔和的背景色 */
+  z-index: 1;
 }
+
 .menu {
   font-size: 20px;
-  font-weight: 1000;
-  margin: 2%;
+  font-weight: bold; /* 加粗字体 */
+  color: #333; /* 深色字体以提高对比度 */
+  margin: 10px 10px; /* 上下间距 */
   text-align: center;
 }
+
 .menu-button {
   width: 100%;
-  flex: 1; /* 平分按钮区域 */
-  border: none; /* 取消按钮边框 */
-  background-color: white; /* 背景色 */
-  color: #ffa500; /* 按钮文字颜色 */
-  padding: 10px; /* 内边距 */
-  margin-bottom: 10px; /* 按钮之间的间距 */
-  font-size: medium; /* 按钮文字大小 */
-  text-align: center; /* 使按钮文字居中 */
-  border-radius: 7px; /* 圆角 */
+  border: none;
+  background-color: #ffe4b5; /* 白色背景 */
+  color: black; /* 更深的橙色 */
+  padding: 2px; /* 更大的内边距 */
+  font-size: large; /* 更合适的字体大小 */
+  text-align: center;
+  border-radius: 7px;
+  transition:
+    background-color 0.3s,
+    color 0.3s; /* 添加平滑的过渡效果 */
 }
 .menu-button.focus {
-  background-color: orange;
+  background-color: white;
   color: black;
 }
 .menu-line {
@@ -248,7 +287,16 @@ const clearCartItem = async () => {
 .text {
   font-size: medium;
   font-weight: bold;
-  margin-left: 15%;
+  background-color: #ffb94a;
+  text-align: center;
+  padding: 2vh;
+  width: 100%;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+  display: flex;
+}
+.text span {
+  margin-left: 15vw;
 }
 .num {
   font-size: large;
@@ -380,5 +428,33 @@ const clearCartItem = async () => {
   font-size: medium;
   color: red;
   font-weight: bold;
+}
+.floating-cart-bar {
+  position: fixed;
+  top: 90vh; /* 距离顶部的距离，可以根据需要调整 */
+  width: 90vw;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  border-radius: 50px; /* 椭圆形状 */
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  z-index: 1000; /* 确保悬浮栏在最上层 */
+}
+.cart-icon {
+  padding: 10px 20px;
+  background-color: white;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+}
+.floating-cart-text {
+  color: white;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.floating-cart-button {
+  background-color: white;
+  color: #ffb94a;
 }
 </style>
