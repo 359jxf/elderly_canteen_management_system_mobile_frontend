@@ -268,23 +268,8 @@ const accpetOrder = async (accpeted_order) => {
 
 .pageContent {
   margin-top: calc(5vh + 5vh);
-}
-
-.head {
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-  background-color: white;
-  width: 100%;
-}
-
-/*#endregion*/
-
-.pageContent {
-  margin-top: calc(5vh + 5vh);
   width: 100%;
   display: flex;
-  flex-grow: 1;
   flex-grow: 1;
 }
 
@@ -342,7 +327,6 @@ const accpetOrder = async (accpeted_order) => {
   flex-grow: 1;
   padding: 20px;
 }
-
 
 /*#endregion */
 

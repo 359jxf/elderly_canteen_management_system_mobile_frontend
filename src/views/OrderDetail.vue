@@ -368,14 +368,10 @@ const buttonEvent = () => {
   border-top: 1px solid #d0d0d5;
   margin-bottom: 10px;
   margin-top: 8px;
-  margin-bottom: 10px;
-  margin-top: 8px;
 }
 
 
 .buttonpt {
-  padding-left: 48%;
-  margin-bottom: 3%;
   padding-left: 48%;
   margin-bottom: 3%;
 }
@@ -384,14 +380,10 @@ const buttonEvent = () => {
 .button {
   width: 95%;
   height: 6.5vh;
-  width: 95%;
-  height: 6.5vh;
   color: black;
   border: none;
   font-size: 20px;
-  font-weight: 600 !important;
   letter-spacing: 3px;
-  /* 字间距*/
   border-radius: 12px;
   cursor: pointer;
 }
@@ -405,22 +397,11 @@ const buttonEvent = () => {
 .hotline .phone {
   color: rgb(144, 149, 153);
   /* 设置电话号码的颜色为黑色 */
-  font-size: 20px;
-  font-weight: 600 !important;
-  letter-spacing: 3px;
-  /* 字间距*/
-  border-radius: 12px;
-  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600 ;
+  letter-spacing: 1px;
 }
 
-.hotline .title {
-  /*两个类之间的空格必不可省*/
-  color: rgb(219, 95, 95);
-  padding-right: 19px;
-}
 
-.hotline .phone {
-  color: rgb(144, 149, 153);
-  /* 设置电话号码的颜色为黑色 */
-}
+
 </style>

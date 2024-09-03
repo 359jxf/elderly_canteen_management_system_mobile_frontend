@@ -75,8 +75,6 @@ const props = defineProps({
   font-weight: bold;
   font-size: 20px;
   letter-spacing: 3px;
-  font-size: 20px;
-  letter-spacing: 3px;
 }
 
 
@@ -90,8 +88,6 @@ const props = defineProps({
 .hr-solid {
   border: 0;
   border-top: 1px solid #d0d0d5;
-  margin-top: 5px;
-  margin-bottom: 10px;
   margin-top: 5px;
   margin-bottom: 10px;
 }
@@ -140,8 +136,6 @@ const props = defineProps({
 
 
 ul {
-  list-style-type: none;
-  /* 移除默认的列表样式 */
   list-style-type: none;
   /* 移除默认的列表样式 */
   padding: 0;
