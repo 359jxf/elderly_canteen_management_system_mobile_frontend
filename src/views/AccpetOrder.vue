@@ -14,24 +14,15 @@ const loadPortrait = async () => {
   console.log("url:", url);
   portrait.value = url;
   console.log("portrait:", portrait);
-const loadPortrait = async () => {
-  const url = await getPorTrait();
-  console.log("url:", url);
-  portrait.value = url;
-  console.log("portrait:", portrait);
+
 }
 onMounted(loadPortrait);
 
 const router = useRouter();
-const clickPortrait = () => {
-const clickPortrait = () => {
-  router.push({ path: '/User' });
-}
 //#endregion
 
 //标签页-待送订单
 //#region
-const onClickLeft = () => history.back();
 const listReady = ref(false); // 添加一个布尔变量以确保数据准备好
 const orderList = ref([]);
 const acceptedOrder = ref({});
@@ -76,7 +67,7 @@ const onLoad = () => {
   // 确保数据准备好之后再加载。否则在页面刚打开时，onLoad会先于fetch以空数据加载
   if (!listReady.value) return;
 
-  console.log("use", orderList.value);
+  console.log("orderList获取成功，use", orderList.value);
   loading.value = true;
 
   try {
@@ -182,7 +173,7 @@ import { showLoadingToast, showSuccessToast, showFailToast } from 'vant';
 const accpetOrder = async (accpeted_order) => {
   console.log("接单");
   const status = await postAccpetOrder(accpeted_order.ORDER_ID);
-  console.log('status:',status);
+  console.log('status:', status);
   switch (status) {
     case 200:
       showSuccessToast({
@@ -194,7 +185,7 @@ const accpetOrder = async (accpeted_order) => {
       })
       break;
     case 400:
-    showFailToast({
+      showFailToast({
         message: '接单失败，请重试',
         onClose: () => {
           console.log('确认接单foast消失')
@@ -224,20 +215,8 @@ const accpetOrder = async (accpeted_order) => {
       </van-tabs>
     </div>
 
-    <div class="head">
-      <Nav nav_text="志愿接单" />
-      <van-tabs v-model:active="active" title-active-color="rgb(249, 184, 62)">
-        <van-tab title="待送订单" name="待送订单"></van-tab>
-        <van-tab title="已送订单" name="已送订单"></van-tab>
-      </van-tabs>
-    </div>
 
 
-    <div class="pageContent">
-      <div class="acceptable" v-if="active === '待送订单'">
-        <van-pull-refresh v-model="refreshing" @refresh="onRefresh" v-if="active === '待送订单'">
-          <div class="current-order">
-            <div class="current-title">当前订单</div>
     <div class="pageContent">
       <div class="acceptable" v-if="active === '待送订单'">
         <van-pull-refresh v-model="refreshing" @refresh="onRefresh" v-if="active === '待送订单'">
@@ -246,15 +225,8 @@ const accpetOrder = async (accpeted_order) => {
 
             <OrderToAccept :order_detail="acceptedOrder" :isAccepted="isAccepted" />
           </div>
-            <OrderToAccept :order_detail="acceptedOrder" :isAccepted="isAccepted" />
-          </div>
 
-          <div class="orders">
-            <div class="order-title">可接订单</div>
-            <div class="scroll">
-              <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-                <OrderToAccept v-for="item in list" :key="item.ORDER_ID" :order_detail="item" :isAccepted="isAccepted"
-                  @clickAccept="accpetOrder"></OrderToAccept>
+
           <div class="orders">
             <div class="order-title">可接订单</div>
             <div class="scroll">
@@ -266,16 +238,11 @@ const accpetOrder = async (accpeted_order) => {
             </div>
           </div>
         </van-pull-refresh>
-              </van-list>
-            </div>
-          </div>
-        </van-pull-refresh>
 
-      </div>
-      </div>
 
 
 
+      </div>
       <div v-else class="finishedOrders">
         <van-pull-refresh v-model="refreshingFinished" @refresh="onRefreshFinished">
           <div class="finishedScroll">
@@ -286,19 +253,6 @@ const accpetOrder = async (accpeted_order) => {
         </van-pull-refresh>
       </div>
     </div>
-
-      <div v-else class="finishedOrders">
-        <van-pull-refresh v-model="refreshingFinished" @refresh="onRefreshFinished">
-          <div class="finishedScroll">
-            <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-              <OrderInList v-for="item in list2" :key="item.ORDER_ID" :order_detail="item"></OrderInList>
-            </van-list>
-          </div>
-        </van-pull-refresh>
-      </div>
-    </div>
-
-
 
   </div>
 
@@ -331,6 +285,8 @@ const accpetOrder = async (accpeted_order) => {
 
 .pageContent {
   margin-top: calc(5vh + 5vh);
+}
+
 .head {
   position: fixed;
   top: 0;
