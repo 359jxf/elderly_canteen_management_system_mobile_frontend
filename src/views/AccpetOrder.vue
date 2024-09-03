@@ -6,20 +6,6 @@ import {
   , postAccpetOrder, getPorTrait
 } from '../api/api';
 
-//头像加载（渲染阶段）、点击跳转用户页
-//#region
-const portrait = ref();
-const loadPortrait = async () => {
-  const url = await getPorTrait();
-  console.log("url:", url);
-  portrait.value = url;
-  console.log("portrait:", portrait);
-
-}
-onMounted(loadPortrait);
-
-const router = useRouter();
-//#endregion
 
 //标签页-待送订单
 //#region
@@ -29,6 +15,7 @@ const acceptedOrder = ref({});
 const isAccepted = ref();//false表示当前没接单
 const fetchOrders = async () => {
   try {
+    console.log('fetchOrders尝试执行')
     const response = await getAcceptableOrder();//待送订单
     orderList.value = response;
     const response2 = await getAcceptedOrder();//当前订单
@@ -40,8 +27,6 @@ const fetchOrders = async () => {
 
     //订单按新到旧排序
     orderList.value.sort((a, b) => {
-      // 如果 UPDATED_TIME 是时间字符串（例如 '2023-08-15T10:00:00Z'），可以直接比较它们
-      return new Date(b.UPDATED_TIME) - new Date(a.UPDATED_TIME);
       // 如果 UPDATED_TIME 是时间字符串（例如 '2023-08-15T10:00:00Z'），可以直接比较它们
       return new Date(b.UPDATED_TIME) - new Date(a.UPDATED_TIME);
     });
@@ -65,6 +50,7 @@ let currentIndex = 0; // 当前已加载的索引
 
 const onLoad = () => {
   // 确保数据准备好之后再加载。否则在页面刚打开时，onLoad会先于fetch以空数据加载
+  console.log('判断数据是否获取成功')
   if (!listReady.value) return;
 
   console.log("orderList获取成功，use", orderList.value);
@@ -238,9 +224,6 @@ const accpetOrder = async (accpeted_order) => {
             </div>
           </div>
         </van-pull-refresh>
-
-
-
 
       </div>
       <div v-else class="finishedOrders">

@@ -12,6 +12,8 @@ const props=defineProps({
     nav_text:String
 })
 
+//头像加载（渲染阶段）、点击跳转用户页
+//#region
 const portrait = ref();
 const loadPortrait = async () => {
     const url = await getPorTrait();
@@ -25,6 +27,7 @@ const router = useRouter();
 const clickPortrait = () => {
     router.push({ path: '/User' });
 }
+//#endregion
 </script>
 
 <style scoped>
