@@ -35,7 +35,7 @@ const handleClick = () => {
   font-size: 100%;
   background-color: wheat;
 }
-</script > <style scoped > .back {
+.back {
   position: fixed;
 
   top: 5%;

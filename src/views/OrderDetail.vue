@@ -1,41 +1,49 @@
 <template>
   <div class="container">
-    <div>
+    <div class="head">
       <Nav nav_text="订单详情" />
     </div>
+
+    <!-- 志愿者信息与订单内容 -->
     <div class="order_content">
-      <div>
+      <!-- 配送地址 -->
+      <div v-if="orderDetail.DELIVER_OR_DINING === true">
         <SimpleAddressCard :order_address="orderDetail.CUS_ADDRESS" />
       </div>
+
+      <!-- 志愿者信息 -->
       <div>
-        <VolunteerCard />
+        <VolunteerCard :orderId="orderDetail.ORDER_ID" :orderStatus="orderDetail.STATUS"
+          :deliverOrDining="orderDetail.DELIVER_OR_DINING" :deliverStatus="orderDetail.DELIVER_STATUS"
+          ref="volunteerCard" />
       </div>
+
+      <!-- 订单信息 -->
       <div>
         <OrderCard :order_detail="orderDetail" />
       </div>
+
+      <!-- 备注信息 -->
       <div class="remark">
         <div class="header">
           <span style="font-weight: bold">用户备注</span>
         </div>
-        <div class="content">
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          11111111111111111111111111111111111111111111111111111111111111111111111111
-          <span>{{ remark.remark }}</span>
+        <div class="remarkContent">
+          {{ orderDetail.REMARK }}
+          <div class="test">
+            以下为长文本测试
+            111111111111111111111111111111111111111111111111111111111111111111111
+            111111111111111111111111111111111111111111111111111111111111111111111
+            111111111111111111111111111111111111111111111111111111111111111111111
+            111111111111111111111111111111111111111111111111111111111111111111111
+            111111111111111111111111111111111111111111111111111111111111111111111
+            111111111111111111111111111111111111111111111111111111111111111111111
+          </div>
         </div>
       </div>
     </div>
 
+    <!-- 按钮与投诉电话 -->
     <div class="footer">
       <div class="info">
         <div class="hotline">
@@ -45,35 +53,36 @@
       </div>
       <hr class="hr-solid" />
       <div class="buttonpt">
-        <van-button class="button" @click="buttonEvent" :disabled="canClick === false">
-          {{ buttonText }}</van-button
-        >
+        <van-button :style="buttonStyle" class="button" @click="buttonEvent" :disabled="canClick === false">
+          {{ buttonText }}</van-button>
 
-        <!-- ref="commentDialog"：获取子组件的引用。在 setup 中，你可以使用commentDialog.value.showDialog();来访问子组件 -->
-        <CommentDialog
-          @confirm="handleCommentConfirm"
-          @cancel="handleCommentCancel"
-          ref="commentDialog"
-        />
+        <!-- ref="commentDialog"：获取子组件的引用。在 setup 中，可以使用commentDialog.value.showDialog();来访问子组件 -->
+        <CommentDialog @exit="handleCommentExit" ref="commentDialog" :deliverOrDining="orderDetail.DELIVER_OR_DINING" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useRemarkstore } from '@/store/modules/remark'
-import { onMounted } from 'vue'
-import { postAccpetOrder } from '../api/api'
-const remark = useRemarkstore()
+// 由于mock的订单信息快速过期，无法通过订单号查询，故暂时无法使用实际的刷新逻辑
+// 按钮的逻辑同样无法彻底实现
+
+
+import { onMounted } from 'vue';
+import {
+  postAccpetOrder
+} from '../api/api';
+
 
 const route = useRoute()
 const orderDetail = computed(() => {
   return route.query.detail ? JSON.parse(route.query.detail) : {}
 })
 
-const identity = localStorage.getItem('identity')
-const buttonText = ref()
-const canClick = ref()
+const identity = localStorage.getItem('identity');
+const buttonText = ref('请刷新');
+const canClick = ref();
+
 // 确定buttonText和canClick
 const showButton = () => {
   // 用户-堂食-待确认-可点的确认取餐
@@ -114,80 +123,74 @@ const showButton = () => {
   }
 
   // 志愿者-外送-待接单-可点的确认接单
-  else if (
-    identity == 'volunteer' &&
-    orderDetail.DELIVER_OR_DINING == true &&
-    orderDetail.DELIVER_STATUS == '待接单'
-  ) {
-    buttonText.value == '确认接单'
-    canClick.value = true
+  else if (identity == 'volunteer' && orderDetail.DELIVER_OR_DINING == true && orderDetail.DELIVER_STATUS == '待接单') {
+    buttonText.value = '确认接单';
+    canClick.value = true;
   }
   // 志愿者-外送-已接单-可点的确认送达
-  else if (
-    identity == 'volunteer' &&
-    orderDetail.DELIVER_OR_DINING == true &&
-    orderDetail.DELIVER_STATUS == '已接单'
-  ) {
-    buttonText.value == '确认送达'
-    canClick.value = true
+  else if (identity == 'volunteer' && orderDetail.DELIVER_OR_DINING == true && orderDetail.DELIVER_STATUS == '已接单') {
+    buttonText.value = '确认送达';
+    canClick.value = true;
   }
   // 志愿者-外送-已送达，待评价-不可点的查看评价
-  else if (
-    identity == 'volunteer' &&
-    orderDetail.DELIVER_OR_DINING == true &&
-    orderDetail.DELIVER_STATUS == '已送达' &&
-    orderDetail.STATUS == '待评价'
-  ) {
-    buttonText.value == '查看评价'
-    canClick.value = false
+  else if (identity == 'volunteer' && orderDetail.DELIVER_OR_DINING == true && orderDetail.DELIVER_STATUS == '已送达' && orderDetail.STATUS == '待评价') {
+    buttonText.value = '查看评价';
+    canClick.value = false;
   }
   // 志愿者-外送-已评价-可点的查看评价
-  else if (
-    identity == 'volunteer' &&
-    orderDetail.DELIVER_OR_DINING == true &&
-    orderDetail.DELIVER_STATUS == '已送达' &&
-    orderDetail.STATUS == '已评价'
-  ) {
-    buttonText.value == '查看评价'
-    canClick.value = true
+  else if (identity == 'volunteer' && orderDetail.DELIVER_OR_DINING == true && orderDetail.DELIVER_STATUS == '已送达' && orderDetail.STATUS == '已评价') {
+    buttonText.value = '查看评价';
+    canClick.value = true;
   }
 
+  // 按钮的测试示例
   buttonText.value = '去评价'
-  canClick.value = true
+    canClick.value = true
 }
 onMounted(showButton)
 
-const onRefresh = () => {
-  console.log('刷新页面')
-  showButton()
-}
+// 确定按钮颜色
+import { computed } from 'vue';
+const buttonStyle = computed(() => {
+  if (buttonText.value == '确认取餐' || buttonText.value == '确认接单' || buttonText.value == '确认送达') {
+    return {
+      backgroundColor: 'orange'
+    }
+  }
+  else {
+    return {
+      backgroundColor: '#d4ff79'
+    }
+  }
+})
 
+import { postConfirmOrder, getOrderMsg, postConfirmDelivered } from '../api/api'
 // 确认接单
 // #region
-const showAlert = ref(false)
-const alertMessage = ref('')
-
-const accpetOrder = async (accpeted_order) => {
-  console.log('接单')
-  const status = await postAccpetOrder(accpeted_order.ORDER_ID)
-  console.log(status)
+const accpetOrder = async () => {
+  console.log("接单");
+  const status = await postAccpetOrder(orderDetail.value.ORDER_ID);
+  console.log('status:',status);
   switch (status) {
     case 200:
-      alertMessage.value = '接单成功！'
-      break
-    case 403:
-      alertMessage.value = '订单无法接受！'
-      break
-    case 500:
-      alertMessage.value = '服务器错误，请稍后再试！'
-      break
-    default:
-      alertMessage.value = '未知错误，错误代码' + status + ',请稍后再试！'
+      showSuccessToast({
+        message: '接单成功！',
+        onClose: () => {
+          console.log('确认接单foast消失')
+          onRefresh();
+        }
+      })
+      break;
+    case 400:
+    showFailToast({
+        message: '接单失败，请重试',
+        onClose: () => {
+          console.log('确认接单foast消失')
+          onRefresh();
+        }
+      })
+      break;
   }
-  showAlert.value = true
-  showDialog({ message: alertMessage.value, width: 300 }).then(() => {
-    onRefresh()
-  })
 }
 // #endregion
 
@@ -195,23 +198,89 @@ const accpetOrder = async (accpeted_order) => {
 // #region
 const commentDialog = ref(null)
 
-// 处理确认事件
-const handleCommentConfirm = ({ rate, comment }) => {
-  console.log('评价星级:', rate)
-  console.log('评价内容:', comment)
+// 处理评价弹窗退出事件
+const handleCommentExit = () => {
+  console.log('检测到弹窗关闭')
+  onRefresh();
 }
 
-// 处理取消事件
-const handleCommentCancel = () => {
-  console.log('取消评价')
+
+// #endregion
+
+
+// 目前的刷新无效，等待设定完善
+const onRefresh = () => {
+  console.log("刷新页面");
+  showButton();
+};
+
+
+//实际的刷新逻辑
+
+// const onRefresh = async() => {
+//   console.log("刷新页面");
+//   orderDetail.value=await getOrderMsg(orderDetail.value.ORDER_ID);
+//   volunteerCard.value.fetchVolunteerMsg();
+//   showButton();
+// };
+
+
+
+// 确认取餐
+// #region
+const confirmOrder = async () => {
+  const status = await postConfirmOrder(orderDetail.ORDER_ID);
+  console.log('status:',status);
+  switch (status) {
+    case 200:
+      showSuccessToast({
+        message: '确认取餐成功',
+        onClose: () => {
+          console.log('确认取餐foast消失')
+          onRefresh();
+        }
+      })
+      break;
+    case 400:
+    showFailToast({
+        message: '确认失败，请重试',
+        onClose: () => {
+          console.log('确认取餐foast消失')
+          onRefresh();
+        }
+      })
+      break;
+  }
 }
 // #endregion
 
-// 确认取餐
-const confirmOrder = () => {}
-
+import { showLoadingToast, showSuccessToast, showFailToast } from 'vant';
 // 确认送达
-const confirmDelivered = () => {}
+const confirmDelivered = async () => {
+  const status = await postConfirmDelivered(orderDetail.ORDER_ID);
+  console.log('status:',status);
+  switch (status) {
+    case 200:
+      showSuccessToast({
+        message: '确认成功！',
+        onClose: () => {
+          console.log('确认送达foast消失')
+          onRefresh();
+        }
+      })
+      break;
+    case 400:
+    showFailToast({
+        message: '确认失败，请重试',
+        onClose: () => {
+          console.log('确认送达foast消失')
+          onRefresh();
+        }
+      })
+      break;
+  }
+
+}
 
 const buttonEvent = () => {
   if (buttonText.value == '确认取餐') {
@@ -231,6 +300,15 @@ const buttonEvent = () => {
 </script>
 
 <style scoped>
+.head {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+  width: 100%;
+}
+
+
 .container {
   height: 100vh;
   display: flex;
@@ -242,7 +320,10 @@ const buttonEvent = () => {
   /* 占据剩余空间 */
   overflow-y: auto;
   /* 允许垂直滚动 */
+
+  margin-top: 5vh;
 }
+
 
 .remark {
   padding-top: 5%;
@@ -251,14 +332,18 @@ const buttonEvent = () => {
   width: 100vw;
 }
 
-.remark .content {
+.remark .remarkContent {
   width: 88vw;
   word-wrap: break-word;
 }
 
+
 .footer {
-  margin-top: auto;
-  margin-bottom: 1vh;
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+  background-color: white;
+  width: 100%;
 }
 
 .footer .info {
@@ -267,13 +352,16 @@ const buttonEvent = () => {
   font-size: small;
 }
 
+
 .footer .info .header {
   margin-bottom: 2%;
 }
 
+
 .footer .info .mid {
   margin-bottom: 10%;
 }
+
 
 .hr-solid {
   border: 0;
@@ -282,21 +370,20 @@ const buttonEvent = () => {
   margin-top: 8px;
 }
 
+
 .buttonpt {
-  padding-left: 42.67%;
-  margin-bottom: 1%;
+  padding-left: 48%;
+  margin-bottom: 3%;
 }
+
 
 .button {
   width: 95%;
   height: 6.5vh;
-  background-color: orange;
   color: black;
   border: none;
   font-size: 20px;
-  font-weight: 600 !important;
   letter-spacing: 3px;
-  /* 字间距*/
   border-radius: 12px;
   cursor: pointer;
 }
@@ -310,5 +397,11 @@ const buttonEvent = () => {
 .hotline .phone {
   color: rgb(144, 149, 153);
   /* 设置电话号码的颜色为黑色 */
+  font-size: 15px;
+  font-weight: 600 ;
+  letter-spacing: 1px;
 }
+
+
+
 </style>

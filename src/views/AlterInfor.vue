@@ -3,11 +3,16 @@
   <div class="background">
       <div class="headerBox">修改信息</div>
       <div class="registerBox">
-          <div class="row"><span class="label">账户名称</span> <input class="inputBox" v-model="accountName"/></div>
-          <div class="row"><span class="label">地址</span> <input class="inputBox" v-model="address"/></div>
-          <div class="row"><span class="label">性别</span> <input class="inputBox" v-model="gender"/></div>
-          <div class="row"><span class="label">出生日期</span> <input class="inputBox" type="date" v-model="birthDate"/></div>
-          <div class="row"><span class="label">选择图片</span> <input class="inputBox" type="file" accept="image/*" @change="onImageSelected"/></div>
+          <div class="row"><span class="label">账户名称</span> <input class="inputbox" v-model="accountName"/></div>
+          <div class="row"><span class="label">地址</span> <input class="inputbox" v-model="address"/></div>
+          <div class="row"><span class="label">性别</span> 
+            <select v-model="gender" class="inputbox">
+              <option value="">选择性别</option>
+              <option value="male">男</option>
+              <option value="female">女</option>
+            </select></div>
+          <div class="row"><span class="label">出生日期</span> <input class="inputbox" type="date" v-model="birthDate" :readonly="isNameNotEmpty" /></div>
+          <div class="row"><span class="label">选择图片</span> <input class="inputbox no-border" type="file" accept="image/*" @change="onImageSelected"/></div>
           <div v-if="imageUrl"><img :src="imageUrl" alt="Selected Image" class="preview"/></div>
           <button class="getIn" @click="Ensure">确认修改</button>
           <div class="actions">
@@ -15,30 +20,15 @@
               <span @click="rebindPhone">改绑手机</span>
           </div>
       </div>
-      <div class="row">
-        <span class="label">地址</span> <input class="inputBox" v-model="address" />
-      </div>
-      <div class="row">
-        <span class="label">性别</span> <input class="inputBox" v-model="gender" />
-      </div>
-      <div class="row">
-        <span class="label">出生日期</span>
-        <input class="inputBox" type="date" v-model="birthDate" />
-      </div>
-      <div class="row">
-        <span class="label">选择图片</span>
-        <input class="inputBox" type="file" accept="image/*" @change="onImageSelected" />
-      </div>
-      <div v-if="imageUrl"><img :src="imageUrl" alt="Selected Image" class="preview" /></div>
-      <button class="getIn" @click="Ensure">确认修改</button>
-    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import axios from 'axios'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+import 'vant/es/toast/style'
+import { showToast } from 'vant'
 
 const router = useRouter();
 
@@ -48,13 +38,47 @@ const gender = ref('');
 const birthDate = ref('');
 const selectedImage = ref(null); // 初始化为null而不是空字符串
 const imageUrl = ref('');
+const isNameNotEmpty = ref(false);
+fetchData();
+
+async function fetchData() {
+try {
+  // 从 localStorage 中获取保存的 Token
+  const token = localStorage.getItem('token');
+
+  // 使用 axios 发起 GET 请求，附带 Authorization 头
+  const response = await axios.get('http://8.136.125.61/api/account/getPersonInfo', {
+    headers: {
+      Authorization: `Bearer ${token}`  // 将 Token 添加到 Authorization 头中
+    }
+  });
+
+  if (response.data) {
+    console.log(response.data.response); // 调试用
+    
+    accountName.value = response.data.response.accountName;
+    address.value = response.data.response.address;
+    gender.value = response.data.response.gender;
+    birthDate.value = response.data.response.birthDate;
+
+    if(response.data.response.name !== null){
+      isNameNotEmpty.value =true;
+    }
+    
+  } else {
+    showToast('信息获取失败')
+  }
+} catch (error) {
+  showToast('信息获取失败')
+}
+};
 
 const Ensure = async () => {
   const token = localStorage.getItem('token');
   try {
     const formData = new FormData();
     formData.append('accountName', accountName.value);
-    formData.append('portrait', selectedImage.value);
+    formData.append('avatar', selectedImage.value);
     formData.append('gender', gender.value);
     formData.append('birthDate', birthDate.value);
     formData.append('address', address.value);
@@ -75,14 +99,9 @@ const Ensure = async () => {
         localStorage.setItem('accountName', accountName.value);
       }
 
-      if (selectedImage.value) {
-        const imagePreviewUrl = URL.createObjectURL(selectedImage.value)
-        localStorage.setItem('portrait', imagePreviewUrl)
-      }
-
-      console.log(accountName.value) // 调试用
-      console.log(selectedImage.value) // 调试用
-      router.push({ name: 'User' })
+      console.log(selectedImage.value); // 调试用
+      localStorage.removeItem('portrait');
+      router.push({ name: 'User' });
     } else {
       alert('更新失败: ' + response.data.msg);
     }
@@ -110,10 +129,10 @@ router.push({ name: 'Rebind' });
 </script>
 
 
-<style>
-.background {
-  position: relative;
-  top: 0;
+<style scoped>
+.background{
+    position: relative;
+    top: 0;
 
   height: 100vh;
   width: 100vw;
@@ -165,14 +184,33 @@ router.push({ name: 'Rebind' });
     font-weight: bold;
     font-size: 60%;
     min-width: 25%;
+    align-content: center;
 }
 
-.inputBox {
-  position: relative;
-  width: 50%;
-  height: 60%;
-  border-radius: 10px;
-  font-size: 60%;
+.inputbox{
+    position: relative;
+    width: 50%;
+    height: 60%;
+    border-radius: 10px ;
+    font-size: 60%;
+    padding-left: 5px;
+    border: 2px solid #000;
+    align-self: center;
+}
+
+.inputBox{
+    position: relative;
+    width: 50%;
+    height: 60%;
+    border-radius: 10px ;
+    font-size: 60%;
+    padding-left: 5px;
+    align-self: center;
+}
+
+.no-border {  
+  /* 覆盖边框样式为无 */  
+  border: none;  
 }
 
 .half {
@@ -193,19 +231,20 @@ router.push({ name: 'Rebind' });
     width: 40%;
     height: 10%;
     left: 30%;
-    top: 10%;
+    top: 5%;
     border-radius: 20px ;
     font-size: 60%;
     border: none;
       color: white;
       font-weight: bold;
       background-color: #ffa822;
+      margin-top: 8%;
 }
 
 .preview{
     position: relative;
-    height: 20%;
-    width: 20%;
+    height: 12vw;
+    width: 12vw;
 
     top: 5vh;
     left: 40%;
@@ -227,7 +266,7 @@ router.push({ name: 'Rebind' });
   text-decoration: underline;
   font-size: 60%;
   margin-left: 10vw; /* 设置左边距 */
-  margin-right: 12vw; /* 设置右边距 */
+  margin-right: 14vw; /* 设置右边距 */
 }
 
 
