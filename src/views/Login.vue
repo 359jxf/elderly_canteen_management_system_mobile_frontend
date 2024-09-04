@@ -56,6 +56,8 @@ import axios from 'axios';
 import 'vant/es/toast/style'
 import { showToast } from 'vant'
 
+
+
 const router = useRouter();
 const isPassword = ref(true);
 
@@ -69,6 +71,12 @@ const selectPassword = () => {
 const selectCredit = () => {
   isPassword.value = false;
 };
+
+if (!sessionStorage.getItem('hasRefreshed')) {
+    // 如果没有刷新过页面，则刷新页面
+    sessionStorage.setItem('hasRefreshed', 'true');
+    window.location.reload();
+}
 
 
 const loginWithPassword = async () => {
@@ -132,11 +140,25 @@ const loginWithCredit = async () => {
 
       router.push({ name: 'Home' });
     } else {
-      alert('Login failed: ' + response.data.msg);
+      showToast(`登录失败`);
     }
   } catch (error) {
-    console.error('Error logging in with credit:', error);
-    alert('An error occurred during login.');
+    if (error.response) {
+      // 请求已发出，但服务器响应了状态码
+      // 不是2xx范围内的状态码
+      const statusCode = error.response.status;
+      if(statusCode===400){
+        showToast(`登录失败，密码错误`);
+      }
+      if(statusCode===404){
+        showToast(`登录失败，用户名未找到`);
+      }
+    } else if (error.request) {
+      showToast('登录失败，未收到响应');
+    } else {
+      // 其他错误
+      showToast('登录失败，发生错误', error);
+    }
   }
 };
 
@@ -156,12 +178,12 @@ const getCredit = async ()=> {
     });
 
     if(response.value.success){
-      alert('发送成功')
+      showToast('发送成功');
     } else{
-      alert('发送失败')
+      showToast('发送失败');
     }
   } catch (error) {
-    console.error('请求失败:', error);
+    showToast('发送成功');
   }
 };
 
@@ -291,7 +313,7 @@ router.push({ name: 'Register' });
   font-size: 60%;
   background-color: white;
   box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5); /* 阴影效果 */
-  border-radius: 1vh;
+  border-radius: 1vh  ;
 }
 
 .password{

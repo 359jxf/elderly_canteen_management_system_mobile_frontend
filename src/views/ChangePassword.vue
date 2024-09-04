@@ -16,6 +16,8 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import 'vant/es/toast/style'
+import { showToast } from 'vant'
 
 const router = useRouter();
 const newPassword=ref('');
@@ -47,11 +49,10 @@ console.log('Response:', response);
 if (response.data.success) {
   router.push({ name: 'User' });
 } else {
-  alert('更新失败: ' + response.data.message);
+  showToast('更新失败: ' + response.data.message);
 }
 } catch (error) {
-console.error('Error updating account:', error);
-alert('更新失败，请稍后重试');
+showToast('更新失败，请稍后重试',error);
 }
 };
 

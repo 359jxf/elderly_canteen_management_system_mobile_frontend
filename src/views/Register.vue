@@ -17,6 +17,8 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import 'vant/es/toast/style'
+import { showToast } from 'vant'
 
 const router = useRouter();
 
@@ -55,11 +57,10 @@ const getIn = async () => {
 
       router.push({ name: 'Home' });
     } else {
-      alert('更新失败: ' + response.data.msg);
+      showToast('注册失败：'+response.data.msg)
     }
   } catch (error) {
-    console.error('Error updating account:', error);
-    alert('更新失败，请稍后重试');
+    showToast('注册失败')
   }
 };
 
@@ -81,12 +82,12 @@ try {
   });
 
   if(response.value.success){
-    alert('发送成功')
+    showToast('发送成功');
   } else{
-    alert('发送失败')
+    showToast('发送失败');
   }
 } catch (error) {
-  console.error('请求失败:', error);
+  showToast('发送失败');
 }
 };
 </script>
