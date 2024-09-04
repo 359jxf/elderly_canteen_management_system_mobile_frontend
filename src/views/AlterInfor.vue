@@ -11,7 +11,7 @@
               <option value="male">男</option>
               <option value="female">女</option>
             </select></div>
-          <div class="row"><span class="label">出生日期</span> <input class="inputbox" type="date" v-model="birthDate"/></div>
+          <div class="row"><span class="label">出生日期</span> <input class="inputbox" type="date" v-model="birthDate" :readonly="isNameNotEmpty" /></div>
           <div class="row"><span class="label">选择图片</span> <input class="inputbox no-border" type="file" accept="image/*" @change="onImageSelected"/></div>
           <div v-if="imageUrl"><img :src="imageUrl" alt="Selected Image" class="preview"/></div>
           <button class="getIn" @click="Ensure">确认修改</button>
@@ -38,7 +38,7 @@ const gender = ref('');
 const birthDate = ref('');
 const selectedImage = ref(null); // 初始化为null而不是空字符串
 const imageUrl = ref('');
-
+const isNameNotEmpty = ref(false);
 fetchData();
 
 async function fetchData() {
@@ -55,15 +55,21 @@ try {
 
   if (response.data) {
     console.log(response.data.response); // 调试用
+    
     accountName.value = response.data.response.accountName;
     address.value = response.data.response.address;
     gender.value = response.data.response.gender;
     birthDate.value = response.data.response.birthDate;
+
+    if(response.data.response.name !== null){
+      isNameNotEmpty.value =true;
+    }
+    
   } else {
     showToast('信息获取失败')
   }
 } catch (error) {
-  console.error('Error fetching data:', error);
+  showToast('信息获取失败')
 }
 };
 
@@ -72,7 +78,7 @@ const Ensure = async () => {
   try {
     const formData = new FormData();
     formData.append('accountName', accountName.value);
-    formData.append('portrait', selectedImage.value);
+    formData.append('avatar', selectedImage.value);
     formData.append('gender', gender.value);
     formData.append('birthDate', birthDate.value);
     formData.append('address', address.value);
@@ -93,9 +99,9 @@ const Ensure = async () => {
         localStorage.setItem('accountName', accountName.value);
       }
 
-      console.log(accountName.value) // 调试用
-      console.log(selectedImage.value) // 调试用
-      router.push({ name: 'User' })
+      console.log(selectedImage.value); // 调试用
+      localStorage.removeItem('portrait');
+      router.push({ name: 'User' });
     } else {
       alert('更新失败: ' + response.data.msg);
     }

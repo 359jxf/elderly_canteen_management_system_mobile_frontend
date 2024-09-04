@@ -1,5 +1,5 @@
 <template>
-    <PersonalBackground>
+    <PersonalBackground  :ava="portrait">
     <ReturnButton :targetRoute="{ name: 'Home' }" />
     <div class="textContainer">
         <span class="head">志愿者信息</span>
@@ -21,12 +21,16 @@
   import { ref, onMounted } from 'vue';
   import axios from 'axios';
   import { computed } from 'vue';
+  import 'vant/es/toast/style'
+  import { showToast } from 'vant'
+
+  const portrait = localStorage.getItem('portrait');
 
   const userData = ref({
     accountId: '',
     name: '',
     time: '',
-    deliverCount: 10
+    deliverCount: '',
   });
   
   
@@ -51,10 +55,10 @@
       console.log(response.data.response); // 调试用
       userData.value = response.data.response;
     } else {
-        alert('')
+      showToast('获取信息失败')
     }
   } catch (error) {
-    console.error('Error fetching data:', error);
+    showToast(error);
   }
   };
   

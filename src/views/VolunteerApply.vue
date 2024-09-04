@@ -1,31 +1,38 @@
 <template>
   <ReturnButton :targetRoute="{ name: 'User' }" />
-  <PersonalBackground>
-    <div class="header">志愿者申请</div>
-    <div class="realname">真实姓名：{{ name }}</div>
-    <div class="container">
-      <textarea v-model="selfStatement" class="description" placeholder="输入申请内容"></textarea>
-    </div>
-    <button class="send" @click="sendApplication">提 交</button>
+  <PersonalBackground  :ava="portrait">
+      <div class="header">志愿者申请</div>
+      <div class="realname">真实姓名：{{ name }}</div>
+      <div class="container">
+        <textarea v-model="selfStatement" class="description" placeholder="输入申请内容"></textarea>
+      </div>
+      <button class="send" @click="sendApplication">提 交</button>
   </PersonalBackground>
   <BottomTabbar nowView="user" />
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import axios from 'axios'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+import 'vant/es/toast/style'
+import { showToast } from 'vant'
 
-const router = useRouter()
-const name = localStorage.getItem('name')
-const selfStatement = ref('')
+const router = useRouter();
+const name = localStorage.getItem('name');
+const portrait = localStorage.getItem('portrait');
+const selfStatement=ref('');
 
 const sendApplication = async () => {
-  const token = localStorage.getItem('token')
-  try {
-    const data = {
-      selfStatement: selfStatement.value
-    }
+const token = localStorage.getItem('token');
+if(selfStatement.value===''){
+  showToast('请输入申请内容');
+  return;
+}
+try {
+  const data = {
+    selfStatement:selfStatement.value,
+  };
 
   const response = await axios.post(
     "http://8.136.125.61/api/Volunteer/apply",
@@ -35,17 +42,16 @@ const sendApplication = async () => {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
-    })
-    console.log('Response:', response)
-    if (response.data.success) {
-      router.push({ name: 'User' })
-    } else {
-      alert('更新失败: ' + response.data.message)
     }
-  } catch (error) {
-    console.error('Error updating account:', error)
-    alert('更新失败，请稍后重试')
+  );
+  console.log('Response:', response);
+  if (response.data.success) {
+    router.push({ name: 'User' });
+  } else {
+    showToast('发送失败')
   }
+} catch (error) {
+  showToast('发送失败')
 }
 };
 </script>

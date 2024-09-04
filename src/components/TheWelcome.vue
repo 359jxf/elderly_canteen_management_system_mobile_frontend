@@ -1,7 +1,12 @@
 <template>
   <div class="theHelloContainer">
-    <img :src="portrait" alt="" class="helloImage" />
-    你好，{{ accountName }}
+    <van-image :src="portrait" class="helloImage" round  fit="cover">
+      <template v-slot:loading>
+        <van-loading type="spinner" size="20" />
+      </template>
+    </van-image>
+    <span class="greetingText">你好，{{ accountName }}</span>
+
   </div>
 </template>
 
@@ -29,18 +34,23 @@ const portrait = localStorage.getItem('portrait');
   left: 50%;
   transform: translate(-50%, -50%); /* 使容器在页面中居中 */
 
-  font-size: 0.7rem;
+
 
   background-color: white;
 }
 
 .helloImage {
-  position: relative; /* 相对定位 */
-  left: -15%;
-  top: 0%;
-  width: 15vw;
-  height: 15vw;
+  position: absolute;
+  left: 3vw;
+  top: 10%;
+  width: 20vw;
+  height: 20vw;
   border-radius: 50%; /* 将图片设置为圆形 */
-  object-fit: cover; /* 确保图片覆盖整个高度 */
+
+}
+
+.greetingText {
+  font-size: 0.6rem;
+  margin-left: 20vw;
 }
 </style>
