@@ -65,22 +65,6 @@ const fetchData = async () => {
         Authorization: `Bearer ${token}` // 将 Token 添加到 Authorization 头中
       }
     })
-
-    if (response.data.getSuccess === true) {
-      console.log(response.data.response) // 调试用
-      getSuccess.value = true
-      userData.value = response.data.response
-      preview.value = userData.value.portrait
-        ? `http://8.136.125.61/images/${userData.value.portrait}`
-        : defaultPic
-
-      localStorage.setItem('name', userData.value.name)
-    } else {
-      getSuccess.value = false
-      errorMessage.value = response.data.msg
-    }
-  });
-
   if (response.data.getSuccess === true) {
     console.log(response.data.response); // 调试用
     getSuccess.value = true;
