@@ -6,6 +6,7 @@
       <div class="row">
         <span class="label">手机号码</span> <input class="inputBox" v-model="phoneNum" />
       </div>
+    </div>
   </div>
 </template>
 
@@ -53,68 +54,70 @@ const getIn = async () => {
 
       router.push({ name: 'Home' })
     } else {
-      showToast('注册失败：'+response.data.msg)
+      showToast('注册失败：' + response.data.msg)
     }
   } catch (error) {
     showToast('注册失败')
   }
 }
 
-const getCredit = async ()=> {
+const getCredit = async () => {
   const phoneNumber = String(phoneNum.value).trim(); // 确保是字符串并去除前后空格
   const isValidPhoneNumber = /^\d{11}$/.test(phoneNumber);
 
   if (!isValidPhoneNumber) {
-  alert('手机号无效。必须是11位数字。');
-  return;
+    alert('手机号无效。必须是11位数字。');
+    return;
   }
-try {
-  const response = await axios.post('http://8.136.125.61/api/Account/sendOTP', {
-    phoneNum: phoneNum.value,
-  }, {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
+  try {
+    const response = await axios.post('http://8.136.125.61/api/Account/sendOTP', {
+      phoneNum: phoneNum.value,
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
 
-  if(response.value.success){
-    showToast('发送成功');
-  } else{
+    if (response.value.success) {
+      showToast('发送成功');
+    } else {
+      showToast('发送失败');
+    }
+  } catch (error) {
     showToast('发送失败');
   }
-} catch (error) {
-  showToast('发送失败');
-}
 };
 </script>
 
 <style scoped>
-.background{
+.background {
   display: flex;
   position: relative;
-  flex-direction: column; /* 使子元素按列布局 */
+  flex-direction: column;
+  /* 使子元素按列布局 */
   top: 0;
 
   height: 100vh;
   width: 100vw;
 
-  background-color: wheat ;
+  background-color: wheat;
 }
 
-.registerBox{
+.registerBox {
   position: relative;
   height: 70%;
-  top:9%;
+  top: 9%;
   width: 80%;
   left: 10%;
   background-color: white;
-  border-radius: 20px ;
+  border-radius: 20px;
 
   z-index: 1;
-  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2);
+  /* 阴影效果 */
 }
 
-.headerBox{
+.headerBox {
   position: relative;
   height: 5%;
   top: 10%;
@@ -124,10 +127,11 @@ try {
   font-weight: bold;
   font-size: 80%;
   text-align: center;
-  border-radius: 10px ;
+  border-radius: 10px;
 
   z-index: 3;
-  box-shadow: 0 -7px 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  box-shadow: 0 -7px 10px rgba(0, 0, 0, 0.2);
+  /* 阴影效果 */
 }
 
 .row {
@@ -140,7 +144,7 @@ try {
   height: 12%;
 }
 
-.label{
+.label {
   width: 20%;
   font-weight: bold;
   font-size: 60%;
@@ -148,34 +152,34 @@ try {
   text-align: left;
 }
 
-.inputBox{
+.inputBox {
   width: 50%;
   height: 50%;
-  border-radius: 1vh ;
+  border-radius: 1vh;
   font-size: 0.4rem;
 }
 
-.half{
+.half {
   width: 25%;
   height: 50%;
 }
 
-.verifyBtn{
+.verifyBtn {
   position: relative;
   width: 20%;
   height: 50%;
   left: 5%;
-  border-radius: 5px ;
+  border-radius: 5px;
   font-size: 60%;
 }
 
-.getIn{
+.getIn {
   position: relative;
   width: 40%;
   height: 10%;
   left: 30%;
   top: 10%;
-  border-radius: 20px ;
+  border-radius: 20px;
   font-size: 60%;
   border: none;
   color: white;
