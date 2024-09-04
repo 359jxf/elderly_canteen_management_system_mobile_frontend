@@ -32,15 +32,25 @@ export const postAccpetOrder = async (orderId) => {
   }
 }
 
-export const getPorTrait = async () => {
-  const res = await ins.get('/api/account/getPersonInfo')
+export const getPorTrait = async (token) => {
+  const res = await ins.get('/api/account/getPersonInfo', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  })
   console.log('api:getPortrait url:', res.data.response.portrait)
   return res.data.response.portrait
 }
 
-export const createCart = async () => {
+export const createCart = async (token) => {
   // res
-  const res = await ins.post('/api/cart/createCart')
+  const res = await ins.post('/api/cart/createCart', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  })
   // cartId
   const cartId = res.data.response.cartId
   // log

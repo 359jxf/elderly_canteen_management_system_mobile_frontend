@@ -88,10 +88,12 @@ import { showToast } from 'vant'
 import router from '@/router'
 import { createCart, getCartItem, getMenuToday, updateCartItem, clearCart } from '@/api/api'
 import { onMounted } from 'vue'
+import axios from 'axios'
 const menu = useMenuStore()
 const cartId = ref('')
 const cartItems = ref([])
 const items = ref([])
+const token = localStorage.getItem('token')
 const totalPrice = computed(() => {
   return cartItems.value.reduce((total, item) => total + item.discountPrice * item.quantity, 0)
 })
@@ -111,9 +113,9 @@ const getItems = async () => {
   // }
 }
 
-const getCartId = async () => {
+const getCartId = async (token) => {
   try {
-    cartId.value = await createCart()
+    cartId.value = await createCart(token)
   } catch (error) {
     console.error('生成购物车失败：', error)
     showToast('生成购物车失败，请稍后再试')
@@ -121,7 +123,7 @@ const getCartId = async () => {
 }
 onMounted(async () => {
   await getItems()
-  await getCartId()
+  await getCartId(token)
 })
 const showBottom = ref(false)
 const buttons = ref([

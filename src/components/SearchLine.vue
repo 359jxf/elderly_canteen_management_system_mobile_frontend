@@ -15,16 +15,19 @@ const onClickLeft = () => history.back() //顶部返回键逻辑
 const searchValue = ref('')
 const portrait = ref('')
 const emit = defineEmits(['update:modelValue'])
+const token = localStorage.getItem('token')
 watch(searchValue, (newValue) => {
   emit('update:modelValue', newValue)
 })
-const loadPortrait = async () => {
-  const url = await getPorTrait()
+const loadPortrait = async (token) => {
+  const url = await getPorTrait(token)
   console.log('component:getportrait:url:', url)
   portrait.value = url
   console.log('portrait:', portrait)
 }
-onMounted(loadPortrait)
+onMounted(async () => {
+  await loadPortrait(token)
+})
 
 const router = useRouter()
 const clickPortrait = () => {
