@@ -1,6 +1,10 @@
 <template>
   <div class="background">
-    <img src="../assets/Yui.jpg" alt="头像" class="headImage" />
+    <van-image :src="props.ava" alt="头像" class="headImage" round  fit="cover">
+      <template v-slot:loading>
+        <van-loading type="spinner" size="20" />
+      </template>
+    </van-image>
     <div class="textBox">
       <slot></slot>
     </div>
@@ -8,7 +12,9 @@
 </template>
 
 <script setup>
-//const portrait = localStorage.getItem('portrait');
+const props = defineProps({
+    ava: String
+})
 </script>
 
 <style scoped>
@@ -29,10 +35,9 @@
   position: relative;
   top: 15%;
 
-  height: 15%;
-  width: auto;
+  height: 30vw;
+  width: 30vw;
 
-  border-radius: 50%; /* 将图片设置为圆形 */
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1); /* 阴影效果 */
 }
 

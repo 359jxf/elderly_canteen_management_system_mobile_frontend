@@ -1,14 +1,10 @@
 <template>
   <ReturnButton :targetRoute="{ name: 'Login' }" />
   <div class="background">
-      <div class="headerBox">新用户注册</div>
-      <div class="registerBox">
-          <div class="row"><span class="label">手机号码</span> <input class="inputBox" v-model="phoneNum"/></div>
-          <div class="row"><span class="label">账户名称</span> <input class="inputBox" v-model="userName"/></div>
-          <div class="row"><span class="label">账户密码</span> <input class="inputBox" v-model="password"/></div>
-          <div class="row"><span class="label">性    别</span> <input class="inputBox" v-model="gender"/></div>
-          <div class="row"><span class="label">验证码</span> <input class="inputBox half" v-model="verificationCode"/><button class=verifyBtn @click="getCredit">发送</button></div>
-          <button class="getIn" @click="getIn">注册</button>
+    <div class="headerBox">新用户注册</div>
+    <div class="registerBox">
+      <div class="row">
+        <span class="label">手机号码</span> <input class="inputBox" v-model="phoneNum" />
       </div>
   </div>
 </template>
@@ -17,36 +13,52 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import 'vant/es/toast/style'
+import { showToast } from 'vant'
 
 const router = useRouter()
 
-const phoneNum = ref('');
-const userName = ref('');
-const password = ref('');
-const gender = ref('');
-const verificationCode = ref('');
+const phoneNum = ref('')
+const userName = ref('')
+const password = ref('')
+const gender = ref('')
+const verificationCode = ref('')
 
-const getIn = async ()=> {
+const getIn = async () => {
   try {
-  const response = await axios.post('http://8.136.125.61/api/account/register', {
-    phoneNum: phoneNum.value,
-    verificationCode: verificationCode.value,
-  });
-  if (response.data.loginSuccess) {
-    const { token, identity, accountName } = response.data.response;
+    const formData = new FormData();
+    formData.append('userName', userName.value);
+    formData.append('gender', gender.value);
+    formData.append('verificationCode', verificationCode.value);
+    formData.append('phoneNum', phoneNum.value);
+    formData.append('password', password.value);
+    const response = await axios.post(
+      'http://8.136.125.61/api/account/register',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
 
-    localStorage.setItem('token', token);
-    localStorage.setItem('identity', identity);
-    localStorage.setItem('accountName', accountName);
+    if (response.data.registerSuccess) {
+      if (userName.value !== '') {
+        localStorage.setItem('accountName', userName.value);
+      }
+      const { token, identity, accountName } = response.data.response;
+      localStorage.setItem('token', token);
+      localStorage.setItem('identity', identity);
+      localStorage.setItem('accountName', accountName);
 
-    router.push({ name: 'Home' });
-  } else {
-    alert('注册失败：' + response.data.msg);
+      router.push({ name: 'Home' })
+    } else {
+      showToast('注册失败：'+response.data.msg)
+    }
+  } catch (error) {
+    showToast('注册失败')
   }
-} catch (error) {
-  alert('An error occurred during login.');
 }
-};
 
 const getCredit = async ()=> {
   const phoneNumber = String(phoneNum.value).trim(); // 确保是字符串并去除前后空格
@@ -66,17 +78,17 @@ try {
   });
 
   if(response.value.success){
-    alert('发送成功')
+    showToast('发送成功');
   } else{
-    alert('发送失败')
+    showToast('发送失败');
   }
 } catch (error) {
-  console.error('请求失败:', error);
+  showToast('发送失败');
 }
 };
 </script>
 
-<style>
+<style scoped>
 .background{
   display: flex;
   position: relative;
@@ -138,8 +150,9 @@ try {
 
 .inputBox{
   width: 50%;
-  height: 60%;
-  border-radius: 10px ;
+  height: 50%;
+  border-radius: 1vh ;
+  font-size: 0.4rem;
 }
 
 .half{
@@ -153,7 +166,7 @@ try {
   height: 50%;
   left: 5%;
   border-radius: 5px ;
-  font-size: 70%;
+  font-size: 60%;
 }
 
 .getIn{
@@ -164,5 +177,9 @@ try {
   top: 10%;
   border-radius: 20px ;
   font-size: 60%;
+  border: none;
+  color: white;
+  font-weight: bold;
+  background-color: #ffa822;
 }
 </style>

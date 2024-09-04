@@ -1,8 +1,12 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 export const useUserStore = defineStore('user', () => {
-  const defaultaddr = ref('')
+  const addr = ref('')
+  const setDefault = ref(false)
+  const note = ref('')
   return {
-    defaultaddr
+    addr,
+    setDefault,
+    note
   }
 })

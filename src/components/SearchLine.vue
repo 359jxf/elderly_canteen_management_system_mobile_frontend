@@ -1,61 +1,59 @@
 <template>
-  <van-row>
-    <van-col span="3" class="search-line-icon">
-      <button class="arrow-button" @click="goBack">
-        <van-icon name="arrow-left" />
-      </button>
-    </van-col>
-    <van-col span="18">
-      <van-search v-model="searchValue" placeholder="请输入搜索关键词" />
-    </van-col>
-    <van-col span="3" class="search-line-icon">
-      <div class="search-line-icon">
-        <img :src="portrait" @click="clickPortrait" />
-      </div>
-    </van-col>
-  </van-row>
+  <div class="top">
+    <van-icon name="arrow-left" @click="onClickLeft" />
+    <van-search v-model="searchValue" placeholder="请输入搜索关键词" class="fixed-width-search" />
+    <img :src="portrait" @click="clickPortrait" />
+  </div>
 </template>
-
 <script setup>
-import { ref } from 'vue'
-
-import { defineEmits } from 'vue'
-import { watch } from 'vue'
-import { useRoute } from 'vue-router'
 import { getPorTrait } from '../api/api'
+import { ref } from 'vue'
+import { watch } from 'vue'
 import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+const onClickLeft = () => history.back() //顶部返回键逻辑
 const searchValue = ref('')
+const portrait = ref('')
 const emit = defineEmits(['update:modelValue'])
-const router = useRoute()
-const goBack = () => {
-  router.back()
-}
-
+const token = localStorage.getItem('token')
 watch(searchValue, (newValue) => {
   emit('update:modelValue', newValue)
 })
-
-const portrait = ref()
-const loadPortrait = async () => {
-  const url = await getPorTrait()
-  console.log('component get url:', url)
+const loadPortrait = async (token) => {
+  const url = await getPorTrait(token)
+  console.log('component:getportrait:url:', url)
   portrait.value = url
   console.log('portrait:', portrait)
 }
-onMounted(loadPortrait)
+onMounted(async () => {
+  await loadPortrait(token)
+})
+
+const router = useRouter()
 const clickPortrait = () => {
   router.push({ path: '/User' })
 }
 </script>
 
 <style scoped>
-.arrow-button {
-  background: none;
-  border: none;
+.top img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  margin-right: 10px;
 }
-.search-line-icon {
-  display: flex;
+
+.top .van-icon {
+  margin-left: 10px;
+}
+
+.top {
+  height: 5vh;
+  width: 100%;
   align-items: center;
-  justify-content: center;
+  display: flex;
+}
+.fixed-width-search {
+  width: 80vw; /* 或其他固定宽度值 */
 }
 </style>

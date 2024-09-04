@@ -52,8 +52,6 @@
 </template>
 
 <script setup>
-import { useMenuStore } from '@/store/modules/menu'
-const menu = useMenuStore();
 const props = defineProps({
   order_detail: Object
 })
@@ -67,9 +65,11 @@ const props = defineProps({
   padding: 3% 6%;
 }
 
+
 .card-header .text {
   margin-bottom: 5%;
 }
+
 
 .card-header .text .title {
   font-weight: bold;
@@ -77,10 +77,13 @@ const props = defineProps({
   letter-spacing: 3px;
 }
 
+
 .card-header .info {
   font-size: small;
   margin-left: 8px;
+  margin-left: 8px;
 }
+
 
 .hr-solid {
   border: 0;
@@ -89,18 +92,22 @@ const props = defineProps({
   margin-bottom: 10px;
 }
 
+
 .card-mid .text {
   margin-bottom: 5%;
 }
+
 
 .card-mid .text .title {
   font-weight: bold;
   font-size: small;
 }
 
+
 .card-mid .info {
   font-size: small;
 }
+
 
 .card-footer {
   display: flex;
@@ -108,10 +115,12 @@ const props = defineProps({
   align-items: center;
 }
 
+
 .card-footer .left {
   display: flex;
   align-items: center;
 }
+
 
 .card-footer .left .text {
   font-weight: bold;
@@ -124,6 +133,7 @@ const props = defineProps({
   color: red;
   font-size: medium;
 }
+
 
 ul {
   list-style-type: none;

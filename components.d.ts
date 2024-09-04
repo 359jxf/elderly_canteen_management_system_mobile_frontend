@@ -10,6 +10,7 @@ declare module 'vue' {
     404: typeof import('./src/views/404.vue')['default']
     AccpetOrder: typeof import('./src/views/AccpetOrder.vue')['default']
     AddressCard: typeof import('./src/components/AddressCard.vue')['default']
+    Alert: typeof import('./src/components/Alert.vue')['default']
     AlterInfor: typeof import('./src/views/AlterInfor.vue')['default']
     AlterPassword: typeof import('./src/views/AlterPassword.vue')['default']
     Authentication: typeof import('./src/views/Authentication.vue')['default']
@@ -60,5 +61,6 @@ declare module 'vue' {
     ViewCommentDialog: typeof import('./src/components/ViewCommentDialog.vue')['default']
     VolunteerApply: typeof import('./src/views/VolunteerApply.vue')['default']
     VolunteerCard: typeof import('./src/components/VolunteerCard.vue')['default']
+    VolunteerInfor: typeof import('./src/views/VolunteerInfor.vue')['default']
   }
 }

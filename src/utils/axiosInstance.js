@@ -1,8 +1,9 @@
-import axios from 'axios';
+import axios from 'axios'
 
 const axiosInstance = axios.create({
   // 网络请求的公共配置
-  baseURL: 'http://127.0.0.1:4523/m1/4808550-4462943-default',
+  //baseURL: 'http://127.0.0.1:4523/m1/4808550-4462943-default',
+  baseURL: 'http://8.136.125.61',
   timeout: 10000 // 请求超时时间
 })
 
