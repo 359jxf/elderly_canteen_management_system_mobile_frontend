@@ -1,6 +1,6 @@
 <template>
   <ReturnButton :targetRoute="{ name: 'User' }" />
-  <PersonalBackground>
+  <PersonalBackground  :ava="portrait">
       <div class="header">志愿者申请</div>
       <div class="realname">真实姓名：{{ name }}</div>
       <div class="container">
@@ -15,20 +15,27 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import 'vant/es/toast/style'
+import { showToast } from 'vant'
 
 const router = useRouter();
 const name = localStorage.getItem('name');
+const portrait = localStorage.getItem('portrait');
 const selfStatement=ref('');
 
 const sendApplication = async () => {
 const token = localStorage.getItem('token');
+if(selfStatement.value===''){
+  showToast('请输入申请内容');
+  return;
+}
 try {
   const data = {
     selfStatement:selfStatement.value,
   };
 
   const response = await axios.post(
-    'http://8.136.125.61/api/Account/volunteerApply',
+    "http://8.136.125.61/api/Volunteer/apply",
     data,
     {
       headers: {
@@ -41,18 +48,16 @@ try {
   if (response.data.success) {
     router.push({ name: 'User' });
   } else {
-    alert('更新失败: ' + response.data.message);
+    showToast('发送失败')
   }
 } catch (error) {
-  console.error('Error updating account:', error);
-  alert('更新失败，请稍后重试');
+  showToast('发送失败')
 }
 };
-
 </script>
 
 <style scoped>
-.container{
+.container {
   position: relative;
   top: 20%;
   left: 10%;
@@ -64,7 +69,7 @@ try {
   color: black;
 }
 
-.description{
+.description {
   position: relative;
 
   height: 90%;
@@ -76,7 +81,7 @@ try {
   font-size: 60%;
 }
 
-.header{
+.header {
   position: relative;
   font-weight: bold;
   font-size: 80%;
@@ -84,7 +89,7 @@ try {
   top: 10%;
 }
 
-.send{
+.send {
   position: relative;
   font-size: 60%;
 
@@ -102,7 +107,7 @@ try {
   background-color: #ffa822;
 }
 
-.realname{
+.realname {
   position: relative;
 
   top: 15%;

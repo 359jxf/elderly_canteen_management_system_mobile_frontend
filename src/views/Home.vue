@@ -27,12 +27,10 @@
         <div class="button button1" @click="getVolunteerOrder">志愿接单</div>
         <div class="button button2" @click="getVolunteerInfor">志愿信息</div>
       </div>
-      <div class="titleLine line2">
-        食堂信息
-      </div>
+      <div class="titleLine line2">食堂信息</div>
       <div class="informationBox">
-        名称：老人食堂<br>
-        地址：上海市嘉定区曹安公路xxx号y栋<br>
+        名称：老人食堂<br />
+        地址：上海市嘉定区曹安公路xxx号y栋<br />
         联系电话：123-4567-8910
       </div>
     </div>
@@ -41,28 +39,62 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
+import 'vant/es/toast/style'
+import { showToast } from 'vant'
 
-const identity = localStorage.getItem('identity');
-const router = useRouter();
+import defaultPic from '@/assets/testpic.jpg';
 
-const getVolunteerOrder = () => {
-router.push({ name: 'AccpetOrder' });
+const ava=ref('')
+
+onMounted(() => {
+  fetchData();
+});
+
+const fetchData = async () => {
+try {
+  // 从 localStorage 中获取保存的 Token
+  const token = localStorage.getItem('token');
+
+  // 使用 axios 发起 GET 请求，附带 Authorization 头
+  const response = await axios.get('http://8.136.125.61/api/account/getPersonInfo', {
+    headers: {
+      Authorization: `Bearer ${token}`  // 将 Token 添加到 Authorization 头中
+    }
+  });
+
+  if (response.data.getSuccess === true) {
+    console.log(response.data.response); // 调试用
+    ava.value = response.data.response.portrait ? response.data.response.portrait : defaultPic;
+    localStorage.setItem('portrait', ava.value);
+  } else {
+    showToast('获取信息失败')
+  }
+} catch (error) {
+  showToast('获取信息失败')
+}
 };
 
+const identity = localStorage.getItem('identity')
+const router = useRouter()
+
+const getVolunteerOrder = () => {
+  router.push({ name: 'AccpetOrder' })
+}
+
 const getVolunteerInfor = () => {
-router.push({ name: 'MyOrders' });
+router.push({ name: 'VolunteerInfor' });
 };
 
 const resturant = () => {
-router.push({ name: 'OrderPage' });
-};
+  router.push({ name: 'OrderPage' })
+}
 
 const deliver = () => {
-router.push({ name: 'OrderPage' });
-};
+  router.push({ name: 'OrderPage' })
+}
 </script>
 
 <style scoped>
@@ -118,7 +150,7 @@ router.push({ name: 'OrderPage' });
   height: auto;
 }
 
-.informationContainer{
+.informationContainer {
   position: relative;
   width: 100vw;
   height: 47%;
@@ -128,14 +160,14 @@ router.push({ name: 'OrderPage' });
   background-color: white;
 }
 
-.titleLine{
+.titleLine {
   position: relative;
   top: 10%;
 
   height: 0.8rem;
   width: 100vw;
 
-  background-color: wheat ;
+  background-color: wheat;
 
   font-size: 0.5rem;
   padding-left: 10%;
@@ -146,8 +178,8 @@ router.push({ name: 'OrderPage' });
   letter-spacing: 0.15rem;
 }
 
-.line2{
-  top:14%
+.line2 {
+  top: 14%;
 }
 
 .buttonContainer {
@@ -175,9 +207,9 @@ router.push({ name: 'OrderPage' });
   background-color: rgb(199, 228, 134); /* 按钮2的背景色 */
 }
 
-.informationBox{
+.informationBox {
   position: relative;
-  top :15%;
+  top: 15%;
 
   font-size: 0.4rem;
   padding-left: 15%;
@@ -187,7 +219,7 @@ router.push({ name: 'OrderPage' });
   line-height: 0.8rem;
 }
 
-.tip{
+.tip {
   position: relative;
   left: 4%;
   top: 3%;
@@ -196,7 +228,7 @@ router.push({ name: 'OrderPage' });
   justify-content: center; /* 保持内容的水平对齐 */
   height: 4%;
   width: 90%;
-  font-size: 60%;
+  font-size: 0.4rem;
   line-height: 5%; /* 确保行高与容器高度一致 */
 }
 </style>

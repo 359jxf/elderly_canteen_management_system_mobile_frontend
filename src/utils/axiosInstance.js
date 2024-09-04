@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 
 const axiosInstance = axios.create({
   // 网络请求的公共配置

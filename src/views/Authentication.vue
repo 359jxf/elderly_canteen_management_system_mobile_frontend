@@ -1,6 +1,6 @@
 <template>
   <ReturnButton :targetRoute="{ name: 'User' }" />
-  <PersonalBackground>
+  <PersonalBackground  :ava="portrait">
       <div class="header">实名认证</div>
       <div class="inputBox">
           <div class="row"><span class="label">真实姓名</span><input class="input" v-model="name"></div>
@@ -14,17 +14,25 @@
 </template>
 
 <script setup>
+import 'vant/es/toast/style'
+import { showToast } from 'vant'
 import { ref } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
+const portrait = localStorage.getItem('portrait');
 
 const name = ref(null);
-const IDCard = ref(null);
+const IDCard = ref('');
 
 const sendApplication = async () => {
+  const isValidIDCard = /^\d{17}[\dXx]$/.test(IDCard.value);
+  if (!isValidIDCard) {
+    showToast('身份证号无效。');
+    return;
+  }
 const token = localStorage.getItem('token');
 try {
   const data = {
@@ -44,20 +52,33 @@ try {
   );
   console.log('Response:', response);
   if (response.data.success) {
+
     router.push({ name: 'User' });
   } else {
-    alert('更新失败: ' + response.data.message);
+    showToast('实名失败，'+response.value.msg)
   }
 } catch (error) {
-  console.error('Error updating account:', error);
-  alert('更新失败，请稍后重试');
+  if (error.response) {
+      const statusCode = error.response.status;
+      if(statusCode===400){
+        showToast(`实名失败，此账号已实名`);
+      }
+      if(statusCode===404){
+        showToast(`实名失败`);
+      }
+    } else if (error.request) {
+      showToast('登录失败，未收到响应');
+    } else {
+      // 其他错误
+      showToast('登录失败，发生错误');
+    }
 }
 };
 
 </script>
 
 <style scoped>
-.header{
+.header {
   position: relative;
   font-weight: bold;
   font-size: 80%;
@@ -65,36 +86,34 @@ try {
   top: 10%;
 }
 
-.inputBox{
+.inputBox {
   position: relative;
   height: 40%;
   top: 15%;
 
   width: 80%;
   left: 10%;
-
-
 }
 
 .row {
-position: relative;
+  position: relative;
 
-top: 10%;
-left: 0%; 
+  top: 10%;
+  left: 0%;
 
-display: flex;
-height: 30%;
-width: 100%;
+  display: flex;
+  height: 30%;
+  width: 100%;
 }
 
-.label{
+.label {
   font-size: 0.4rem;
   font-weight: bold;
   width: 30%;
   height: 10%;
 }
 
-.input{
+.input {
   width: 70%;
   height: 50%;
   font-size: 60%;
@@ -106,7 +125,7 @@ width: 100%;
   background-color: wheat;
 }
 
-.send{
+.send {
   position: relative;
   font-size: 80%;
   color: white;
@@ -125,7 +144,7 @@ width: 100%;
   border: none;
 }
 
-.tips{
+.tips {
   position: relative;
   top: 0%;
   left: 10%;
@@ -139,7 +158,7 @@ width: 100%;
   color: red;
 }
 
-.second{
+.second {
   left: 20%;
   top: 10%;
 }
