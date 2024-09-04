@@ -268,3 +268,57 @@ export const getDiningComment = async (orderId) => {
     throw error
   }
 }
+
+export const createCart = async () => {
+  // res
+  const res = await ins.post('/api/cart/createCart')
+  // cartId
+  const cartId = res.data.response.cartId
+  // log
+  console.log('api:CartId:', cartId)
+  return cartId
+}
+
+export const getMenuToday = async () => {
+  const res = await ins.get('/api/order/getMenuToday')
+  // cartId
+  const items = res.data.menu
+  // log
+  console.log('api:items:', items)
+  return items
+}
+
+export const getCartItem = async () => {
+  const res = await ins.get('/api/cart/getCartItem')
+  // cartItems
+  const cartItems = res.data.menu
+  console.log('api:cartItems:', cartItems)
+  return cartItems
+}
+
+export const updateCartItem = async (cartId, dishId, quantity) => {
+  try {
+    const res = await ins.post('/api/cart/updateCartItem', {
+      CART_ID: cartId,
+      DISH_ID: dishId,
+      QUANTITY: quantity
+    })
+    console.log(res.data.success)
+    return res.data.success
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const clearCart = async (cartId) => {
+  try {
+    const res = await ins.post('/api/cart/clearCart', {
+      CART_ID: cartId
+    })
+    console.log(res.data.success)
+    return res.data.success
+  } catch (error) {
+    console.log(error)
+  }
+}
+

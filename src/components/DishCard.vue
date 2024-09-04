@@ -1,26 +1,24 @@
 <template>
   <div class="dishcard">
     <div class="card-left">
-      <img src="../assets/beef.png" height="75px" />
+      <img :src="props.imageUrl" height="75px" />
     </div>
     <div class="card-right">
       <div class="card-right-top">
-        <span class="text">{{ props.name }}</span>
+        <span class="text">{{ props.dishName }}</span>
       </div>
       <div class="card-right-bottom">
         <div class="card-right-bottom-left">
-          <span class="text"
-            >￥{{ (parseFloat(props.price.replace('￥', '')) * props.discount).toFixed(2) }}</span
-          >
+          <div class="item-price-info">
+            <!-- 只有在打折前价格大于打折后价格时显示原价 -->
+            <span v-if="props.dishPrice > props.discountPrice" class="original-price">
+              ￥{{ props.dishPrice }}
+            </span>
+            <span class="discount-price">￥{{ props.discountPrice }}</span>
+          </div>
         </div>
         <div class="card-right-bottom-right">
-          <button class="icon-button" @click="decreaseQuantity">
-            <img src="../assets/minus.png" />
-          </button>
-          <span class="num">&nbsp;{{ props.quantity }}&nbsp;</span>
-          <button class="icon-button" @click="increaseQuantity">
-            <img src="../assets/plus.png" />
-          </button>
+          <span class="num">&nbsp;×{{ props.quantity }}&nbsp;</span>
         </div>
       </div>
     </div>
@@ -29,22 +27,13 @@
 
 <script setup>
 import { defineProps } from 'vue'
-import { useMenuStore } from '@/store/modules/menu'
-const menu = useMenuStore()
 const props = defineProps({
-  img: String,
-  name: String,
-  price: String,
-  category: String,
-  quantity: String,
-  discount: Number
+  imageUrl: String,
+  dishName: String,
+  dishPrice: Number,
+  discountPrice: Number,
+  quantity: Number
 })
-const increaseQuantity = () => {
-  menu.addcount(props.name)
-}
-const decreaseQuantity = () => {
-  menu.minuscount(props.name)
-}
 </script>
 
 <style scoped>
@@ -99,5 +88,20 @@ const decreaseQuantity = () => {
   border: none;
   cursor: pointer;
   padding: 0;
+}
+.item-price-info {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+.original-price {
+  font-size: 14px;
+  color: #999;
+  text-decoration: line-through; /* 显示划线 */
+  margin-right: 10px;
+}
+.discount-price {
+  font-size: 16px;
+  color: #ff5722;
 }
 </style>
