@@ -129,6 +129,7 @@ const rebindPhone = () => {
 
 
 <style scoped>
+
 .background {
   position: relative;
   top: 0;
@@ -272,3 +273,4 @@ const rebindPhone = () => {
   margin-right: 14vw;
   /* 设置右边距 */
 }
+</style>
