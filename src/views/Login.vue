@@ -1,8 +1,11 @@
 <template>
   <div class="background">
     <div class="heading">老人食堂</div>
-    <div class="header" :class="{ password: true, selected: isPassword, unselected: !isPassword }" 
-      @click="selectPassword">
+    <div
+      class="header"
+      :class="{ password: true, selected: isPassword, unselected: !isPassword }"
+      @click="selectPassword"
+    >
       密码登录
     </div>
     <div
@@ -13,22 +16,21 @@
       验证码登录
     </div>
     <div class="whiteBox"></div>
-    <div class="loginBox" v-if=isPassword>
+    <div class="loginBox" v-if="isPassword">
       <input class="input-item" v-model="phoneNum" placeholder="输入手机号" />
       <input class="input-item" v-model="password" type="password" placeholder="输入密码" />
       <button class="loginBtn" @click="loginWithPassword">登 录</button>
       <p class="forgetPassword" @click="forgetPassword">忘记密码？</p>
       <div class="icon-container">
         <div class="left-box">
-          <van-icon name="add-o" class="symbol" size="5vh" color="#ffa822" @click="register"/>
+          <van-icon name="add-o" class="symbol" size="5vh" color="#ffa822" @click="register" />
           <span class="text">注册</span>
         </div>
         <div class="right-box">
-          <van-icon name="close" class="symbol" size="5vh" color="#ffa822"/>
+          <van-icon name="close" class="symbol" size="5vh" color="#ffa822" />
           <span class="text">退出</span>
         </div>
       </div>
-
     </div>
     <div class="loginBox" v-else>
       <input class="input-item" v-model="phoneNum" placeholder="输入手机号" />
@@ -38,31 +40,27 @@
       <p class="forgetPassword" @click="forgetPassword">忘记密码？</p>
       <div class="icon-container">
         <div class="left-box">
-          <van-icon name="add-o" class="symbol" size="5vh" color="#ffa822" @click="register"/>
+          <van-icon name="add-o" class="symbol" size="5vh" color="#ffa822" @click="register" />
           <span class="text">注册</span>
         </div>
         <div class="right-box">
-          <van-icon name="close" class="symbol" size="5vh" color="#ffa822"/>
+          <van-icon name="close" class="symbol" size="5vh" color="#ffa822" />
           <span class="text">退出</span>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script setup>
-
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import axios from 'axios';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
 import 'vant/es/toast/style'
 import { showToast } from 'vant'
 
-
-
-const router = useRouter();
-const isPassword = ref(true);
+const router = useRouter()
+const isPassword = ref(true)
 
 const phoneNum = ref('')
 const password = ref('')
@@ -72,21 +70,20 @@ const selectPassword = () => {
   isPassword.value = true
 }
 const selectCredit = () => {
-  isPassword.value = false;
-};
-
-if (!sessionStorage.getItem('hasRefreshed')) {
-    // 如果没有刷新过页面，则刷新页面
-    sessionStorage.setItem('hasRefreshed', 'true');
-    window.location.reload();
+  isPassword.value = false
 }
 
+if (!sessionStorage.getItem('hasRefreshed')) {
+  // 如果没有刷新过页面，则刷新页面
+  sessionStorage.setItem('hasRefreshed', 'true')
+  window.location.reload()
+}
 
 const loginWithPassword = async () => {
-  const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value);
+  const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value)
   if (!isValidPhoneNumber) {
-    showToast('手机号无效。必须是11位数字。');
-    return;
+    showToast('手机号无效。必须是11位数字。')
+    return
   }
   try {
     const response = await axios.post('http://8.136.125.61/api/account/login', {
@@ -100,35 +97,36 @@ const loginWithPassword = async () => {
       localStorage.setItem('identity', identity)
       localStorage.setItem('accountName', accountName)
 
+      console.log(response.data.response)
       router.push({ name: 'Home' })
     } else {
-      showToast('登录失败'+response.value.msg)
+      showToast('登录失败' + response.value.msg)
     }
   } catch (error) {
     if (error.response) {
       // 请求已发出，但服务器响应了状态码
       // 不是2xx范围内的状态码
-      const statusCode = error.response.status;
-      if(statusCode===400){
-        showToast(`登录失败，密码错误`);
+      const statusCode = error.response.status
+      if (statusCode === 400) {
+        showToast(`登录失败，密码错误`)
       }
-      if(statusCode===404){
-        showToast(`登录失败，用户名未找到`);
+      if (statusCode === 404) {
+        showToast(`登录失败，用户名未找到`)
       }
     } else if (error.request) {
-      showToast('登录失败，未收到响应');
+      showToast('登录失败，未收到响应')
     } else {
       // 其他错误
-      showToast('登录失败，发生错误');
+      showToast('登录失败，发生错误')
     }
   }
 }
 
 const loginWithCredit = async () => {
-  const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value);
+  const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value)
   if (!isValidPhoneNumber) {
-    showToast('手机号无效。必须是11位数字。');
-    return;
+    showToast('手机号无效。必须是11位数字。')
+    return
   }
   try {
     const response = await axios.post('http://8.136.125.61/api/Account/verifiationCodeLogin', {
@@ -136,31 +134,31 @@ const loginWithCredit = async () => {
       verifyCode: verifyCode.value
     })
     if (response.data.loginSuccess) {
-      const { token, identity, accountName } = response.data.response;
-      localStorage.setItem('token', token);
-      localStorage.setItem('identity', identity);
-      localStorage.setItem('accountName', accountName);
+      const { token, identity, accountName } = response.data.response
+      localStorage.setItem('token', token)
+      localStorage.setItem('identity', identity)
+      localStorage.setItem('accountName', accountName)
 
       router.push({ name: 'Home' })
     } else {
-      showToast(`登录失败`);
+      showToast(`登录失败`)
     }
   } catch (error) {
     if (error.response) {
       // 请求已发出，但服务器响应了状态码
       // 不是2xx范围内的状态码
-      const statusCode = error.response.status;
-      if(statusCode===400){
-        showToast(`登录失败，密码错误`);
+      const statusCode = error.response.status
+      if (statusCode === 400) {
+        showToast(`登录失败，密码错误`)
       }
-      if(statusCode===404){
-        showToast(`登录失败，用户名未找到`);
+      if (statusCode === 404) {
+        showToast(`登录失败，用户名未找到`)
       }
     } else if (error.request) {
-      showToast('登录失败，未收到响应');
+      showToast('登录失败，未收到响应')
     } else {
       // 其他错误
-      showToast('登录失败，发生错误', error);
+      showToast('登录失败，发生错误', error)
     }
   }
 }
@@ -168,8 +166,8 @@ const loginWithCredit = async () => {
 const getCredit = async () => {
   const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value)
   if (!isValidPhoneNumber) {
-    showToast('手机号无效。必须是11位数字。');
-    return;
+    showToast('手机号无效。必须是11位数字。')
+    return
   }
   try {
     const response = await axios.post(
@@ -184,19 +182,19 @@ const getCredit = async () => {
       }
     )
 
-    if(response.value.success){
-      showToast('发送成功');
-    } else{
-      showToast('发送失败');
+    if (response.value.success) {
+      showToast('发送成功')
+    } else {
+      showToast('发送失败')
     }
   } catch (error) {
-    showToast('发送成功');
+    showToast('发送成功')
   }
-};
+}
 
 const forgetPassword = () => {
-router.push({ name: 'AlterPassword' });
-};
+  router.push({ name: 'AlterPassword' })
+}
 
 const register = () => {
   router.push({ name: 'Register' })
@@ -204,11 +202,11 @@ const register = () => {
 </script>
 
 <style scoped>
-.whiteBox{
+.whiteBox {
   position: absolute;
   top: 24.5%;
 
-  height: 5%;
+  height: 7%;
   width: 80vw;
   left: 10vw;
 
@@ -227,28 +225,29 @@ const register = () => {
   top: 5vh;
 }
 
-.left-box, .right-box {
+.left-box,
+.right-box {
   display: flex;
-  justify-content:center;
+  justify-content: center;
   width: 50%;
 }
 
-.text{
+.text {
   position: relative;
   height: 10vh;
   font-size: 0.4rem;
-  color: #ffa822; 
+  color: #ffa822;
   top: 15vh;
   left: -5.5vw;
 }
 
-.symbol{
+.symbol {
   top: 10vh;
   left: 4vw;
   z-index: 10;
 }
 
-.heading{
+.heading {
   position: relative;
 
   z-index: 10;
@@ -261,20 +260,18 @@ const register = () => {
   color: #ffa822;
 }
 
-
-.background{
-  
+.background {
   height: 100vh;
   width: 100vw;
 
   position: relative;
 
   background-image: url('@/assets/loginBack.jpg'); /* 使用本地图片作为背景 */
-  
+
   background-size: cover; /* 确保背景图片覆盖整个容器 */
 
   overflow: hidden;
-  background-color: white;  
+  background-color: white;
 }
 
 .background::before {
@@ -290,8 +287,8 @@ const register = () => {
 }
 
 .loginBox {
-  position: relative;
-  top: 20%;
+  position: absolute;
+  top: 25%;
   left: 10%;
 
   height: 50%;
@@ -299,7 +296,7 @@ const register = () => {
 
   background-color: white;
 
-  border-radius: 20px ;
+  border-radius: 20px;
   box-shadow: 0 3px 20px rgba(0, 0, 0, 0.5); /* 阴影效果 */
 
   text-align: center;
@@ -316,10 +313,10 @@ const register = () => {
 
   text-align: center;
   font-weight: bold;
-  font-size: 60%;
+  font-size: 55%;
   background-color: white;
   box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5); /* 阴影效果 */
-  border-radius: 1vh  ;
+  border-radius: 1vh;
 }
 
 .password {
@@ -343,7 +340,7 @@ const register = () => {
   top: 10%;
 
   width: 80%;
-  height: 13%;;
+  height: 13%;
   z-index: 6;
 
   margin-top: 5%;
@@ -362,7 +359,7 @@ const register = () => {
   top: 15%;
   height: 13%;
   width: 60%;
-  border-radius: 10px ; 
+  border-radius: 10px;
   background-color: rgb(232, 255, 195);
   font-size: 70%;
   border: none;
@@ -389,7 +386,7 @@ const register = () => {
   left: 0%;
   width: 40%;
   height: 15%;
-  border-radius: 20px ; 
+  border-radius: 20px;
   font-size: 60%;
   border: none;
   color: white;
