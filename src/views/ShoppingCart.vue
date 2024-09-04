@@ -6,40 +6,108 @@
       <OrderList />
       <RemarkItem />
     </div>
-    <PayFooter />
+    <div class="footer">
+      <van-button type="primary" class="order-button" @click="jumpToPay"> 立即下单 </van-button>
+    </div>
   </div>
+  <van-popup
+    v-model:show="show"
+    closeable
+    :close-on-click-overlay="false"
+    :style="{ height: '40%', width: '90%', padding: '20px', boxSizing: 'border-box' }"
+    round
+  >
+    <div class="payment-container">
+      <h3 class="balance">账户余额: <span>88 元</span></h3>
+      <div class="payment-methods">
+        <van-radio-group v-model="selectedMethod">
+          <van-radio name="wechat" class="payment-option">
+            <span class="icon">微信</span>
+            <van-icon name="wechat-pay" class="icon-image" />
+          </van-radio>
+          <van-radio name="alipay" class="payment-option">
+            <span class="icon">支付宝</span>
+            <van-icon name="alipay" class="icon-image" />
+          </van-radio>
+        </van-radio-group>
+      </div>
+
+      <van-button type="primary" class="pay-button" @click="handlePay">支付</van-button>
+    </div>
+  </van-popup>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+const show = ref(false)
+const selectedMethod = ref('wechat')
+const jumpToPay = () => {
+  show.value = true
+}
+</script>
 
 <style scoped>
 .container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  padding-top: 60px; /* 确保内容不会被固定的 Nav 覆盖 */
+  padding-top: 30px;
 }
-
 .content {
   flex: 1;
 }
-
 /* 固定在顶部的导航 */
 .fixed-nav {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 60px; /* 可以根据需要调整高度 */
-  background-color: #fff; /* 背景颜色可以根据设计调整 */
-  z-index: 1000; /* 确保 Nav 在其他内容之上 */
-  border-bottom: 1px solid #ddd; /* 可选的边框 */
+  z-index: 1000;
 }
 
-/* 页面底部的支付页脚，不固定 */
-.pay-footer {
-  margin-top: 20px; /* 确保底部距离内容有一定的间距 */
-  padding: 10px; /* 内边距可以根据需要调整 */
-  background-color: #f8f8f8; /* 背景颜色可以根据设计调整 */
+.order-button {
+  background-color: #ff9f00;
+  color: #fff;
+  border: none;
+  width: 35%;
+  margin-left: 60%;
+  margin-bottom: 2%;
+}
+.payment-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.balance {
+  margin-top: 30px;
+  font-size: 18px;
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+
+.payment-methods {
+  margin-top: 16px;
+  flex: 1;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px; /* 增加底部间距 */
+  font-size: 20px; /* 增加字体大小 */
+}
+
+.icon {
+  font-size: 20px; /* 增加图标字体大小 */
+  margin-right: 12px; /* 增加右侧间距 */
+}
+
+.icon-image {
+  font-size: 32px; /* 增加图标大小 */
+}
+
+.pay-button {
+  width: 100%;
+  padding: 12px;
 }
 </style>

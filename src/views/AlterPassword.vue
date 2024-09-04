@@ -30,6 +30,8 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import 'vant/es/toast/style'
+import { showToast } from 'vant'
 
 const router = useRouter()
 const phoneNum = ref('')
@@ -46,21 +48,24 @@ const Ensure = async () => {
       newPassword: newPassword.value
     }
 
-    const response = await axios.post('http://8.136.125.61/api/Account/changePassword', data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
+    const response = await axios.post(
+      `http://8.136.125.61/api/Account/changePassword?pswd=${this.newPassword}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       }
-    })
+    )
     console.log('Response:', response)
     if (response.data.success) {
       router.push({ name: 'User' })
     } else {
-      alert('更新失败: ' + response.data.message)
+      showToast('更新失败: ' + response.data.message)
     }
   } catch (error) {
-    console.error('Error updating account:', error)
-    alert('更新失败，请稍后重试')
+    showToast('更新失败，请稍后重试', error)
   }
 }
 
@@ -74,7 +79,7 @@ const getCredit = async () => {
     const response = await axios.post(
       'http://8.136.125.61/api/Account/sendOTP',
       {
-        phone: phoneNum.value
+        PhoneNum: phoneNum.value
       },
       {
         headers: {
@@ -83,13 +88,13 @@ const getCredit = async () => {
       }
     )
 
-    if (response.value.success) {
-      alert('发送成功')
+    if (response.data.success) {
+      showToast('发送成功')
     } else {
-      alert('发送失败')
+      showToast('发送失败')
     }
   } catch (error) {
-    console.error('请求失败:', error)
+    showToast('请求失败:', error)
   }
 }
 </script>

@@ -7,7 +7,7 @@ const routes = [
     path: '/',
     component: App,
     children: [
-      { path: '', redirect: '/OrderPage' },
+      { path: '', redirect: '/Login' },
       {
         path: '/test',
         name: 'test',
@@ -92,6 +92,11 @@ const routes = [
         path: '/Rebind',
         name: 'Rebind',
         component: () => import('../views/Rebind.vue')
+      },
+      {
+        path: '/VolunteerInfor',
+        name: 'VolunteerInfor',
+        component: () => import('../views/VolunteerInfor.vue')
       },
       {
         // vue-router@4的变化，舍弃*通配符

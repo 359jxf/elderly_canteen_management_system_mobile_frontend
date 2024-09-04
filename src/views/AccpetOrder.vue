@@ -6,32 +6,16 @@ import {
   , postAccpetOrder, getPorTrait
 } from '../api/api';
 
-//头像加载（渲染阶段）、点击跳转用户页
-//#region
-const portrait = ref();
-const loadPortrait = async () => {
-  const url = await getPorTrait();
-  console.log("url:", url);
-  portrait.value = url;
-  console.log("portrait:", portrait);
-}
-onMounted(loadPortrait);
-
-const router = useRouter();
-const clickPortrait = () => {
-  router.push({ path: '/User' });
-}
-//#endregion
 
 //标签页-待送订单
 //#region
-const onClickLeft = () => history.back();
 const listReady = ref(false); // 添加一个布尔变量以确保数据准备好
 const orderList = ref([]);
 const acceptedOrder = ref({});
 const isAccepted = ref();//false表示当前没接单
 const fetchOrders = async () => {
   try {
+    console.log('fetchOrders尝试执行')
     const response = await getAcceptableOrder();//待送订单
     orderList.value = response;
     const response2 = await getAcceptedOrder();//当前订单
@@ -66,9 +50,10 @@ let currentIndex = 0; // 当前已加载的索引
 
 const onLoad = () => {
   // 确保数据准备好之后再加载。否则在页面刚打开时，onLoad会先于fetch以空数据加载
+  console.log('判断数据是否获取成功')
   if (!listReady.value) return;
 
-  console.log("use", orderList.value);
+  console.log("orderList获取成功，use", orderList.value);
   loading.value = true;
 
   try {
@@ -170,29 +155,31 @@ watch(active, (newActive) => {
 
 //接单逻辑（发送请求，弹窗，刷新）
 // #region 
-const showAlert = ref(false);
-const alertMessage = ref('');
-
+import { showLoadingToast, showSuccessToast, showFailToast } from 'vant';
 const accpetOrder = async (accpeted_order) => {
   console.log("接单");
   const status = await postAccpetOrder(accpeted_order.ORDER_ID);
-  console.log(status);
+  console.log('status:', status);
   switch (status) {
     case 200:
-      alertMessage.value = '接单成功！';
+      showSuccessToast({
+        message: '接单成功！',
+        onClose: () => {
+          console.log('确认接单foast消失')
+          onRefresh();
+        }
+      })
       break;
-    case 403:
-      alertMessage.value = '订单无法接受！';
+    case 400:
+      showFailToast({
+        message: '接单失败，请重试',
+        onClose: () => {
+          console.log('确认接单foast消失')
+          onRefresh();
+        }
+      })
       break;
-    case 500:
-      alertMessage.value = '服务器错误，请稍后再试！';
-      break;
-    default:
-      alertMessage.value = '未知错误，错误代码' + status + ',请稍后再试！';
   }
-  showAlert.value = true;
-  showDialog({ message: alertMessage.value, width: 300 })
-    .then(() => { onRefresh(); });
 
 }
 // #endregion
@@ -215,6 +202,7 @@ const accpetOrder = async (accpeted_order) => {
     </div>
 
 
+
     <div class="pageContent">
       <div class="acceptable" v-if="active === '待送订单'">
         <van-pull-refresh v-model="refreshing" @refresh="onRefresh" v-if="active === '待送订单'">
@@ -223,6 +211,7 @@ const accpetOrder = async (accpeted_order) => {
 
             <OrderToAccept :order_detail="acceptedOrder" :isAccepted="isAccepted" />
           </div>
+
 
           <div class="orders">
             <div class="order-title">可接订单</div>
@@ -237,9 +226,6 @@ const accpetOrder = async (accpeted_order) => {
         </van-pull-refresh>
 
       </div>
-
-
-
       <div v-else class="finishedOrders">
         <van-pull-refresh v-model="refreshingFinished" @refresh="onRefreshFinished">
           <div class="finishedScroll">
@@ -250,8 +236,6 @@ const accpetOrder = async (accpeted_order) => {
         </van-pull-refresh>
       </div>
     </div>
-
-
 
   </div>
 
@@ -319,6 +303,7 @@ const accpetOrder = async (accpeted_order) => {
   font-weight: bold;
   letter-spacing: 0.2vh;
 }
+
 
 /*#endregion*/
 

@@ -1,24 +1,31 @@
 <template>
   <div class="item">
     <div class="pic">
-      <img :src="`/src/assets/${img}`" height="100px" width="130px" />
+      <img :src="props.imageUrl" height="100px" width="130px" />
       <div v-if="badgeCount > 0" class="badge">{{ badgeCount }}</div>
     </div>
-    <div class="bottom">
+    <div class="right">
       <div class="text">
         <div class="name">
-          <span>{{ name }}</span>
+          <span>{{ props.dishName }}</span>
         </div>
         <div class="price">
-          <span v-if="props.discount < 1" class="original-price"
-            >￥{{ originalPrice.toFixed(2) }}</span
-          >
-          <span v-if="props.discount < 1" class="discount-price">￥{{ discountPrice }}</span>
-          <span v-else>￥{{ originalPrice.toFixed(2) }}</span>
+          <span v-if="props.dishPrice !== props.discountPrice" class="original-price">
+            ￥{{ props.dishPrice.toFixed(2) }}
+          </span>
+          <span v-if="props.dishPrice !== props.discountPrice" class="discount-price">
+            ￥{{ props.discountPrice.toFixed(2) }}
+          </span>
+          <span v-else> ￥{{ props.dishPrice.toFixed(2) }} </span>
         </div>
       </div>
-      <div class="button">
-        <button class="plus-button" @click="addItem">＋</button>
+      <div class="bottom">
+        <div class="sale">
+          <span>销量：{{ props.sales }}</span>
+        </div>
+        <div class="button">
+          <button class="plus-button" @click="addItem">＋</button>
+        </div>
       </div>
     </div>
   </div>
@@ -28,39 +35,32 @@ import { useMenuStore } from '@/store/modules/menu'
 import { computed } from 'vue'
 const menu = useMenuStore()
 const badgeCount = computed(() => {
-  return menu.getItemCount(props.name)
+  return menu.getItemCount(props.dishName)
 })
 const props = defineProps({
-  img: String,
-  name: String,
-  price: String,
+  imageUrl: String,
+  dishId: String,
+  dishName: String,
+  dishPrice: Number,
+  discountPrice: Number,
   category: String,
-  discount: Number
+  sales: Number
 })
 const addItem = () => {
   const item = {
-    name: props.name,
-    price: props.price,
-    category: props.category,
-    img: props.img,
-    discount: props.discount,
+    dishName: props.dishName,
     quantity: 1
   }
-  // 将菜品添加到菜单中
   menu.addItem(item)
-  console.log(menu.items)
+  console.log(badgeCount.value)
 }
-const originalPrice = parseFloat(props.price.replace('￥', '')) // 移除人民币符号并转换为数字
-const discountPrice = computed(() => {
-  return props.discount < 1 ? (originalPrice * props.discount).toFixed(2) : originalPrice.toFixed(2)
-})
 </script>
 <style scoped>
 .item {
   width: 100%;
   border-radius: 10px;
   margin: 3%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(255, 154, 58, 0.5);
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
@@ -88,7 +88,7 @@ const discountPrice = computed(() => {
   justify-content: center;
   font-size: 12px;
 }
-.bottom {
+.right {
   width: 80%;
 }
 .text {
@@ -96,22 +96,20 @@ const discountPrice = computed(() => {
   width: 100%;
   margin-left: 4%;
 }
-.name {
-  margin-left: 7%;
-}
 .name span {
   font-size: medium;
   font-weight: bold;
-}
-.price {
-  margin-left: 7%;
 }
 .price span {
   font-size: medium;
   font-weight: bold;
 }
-.button {
-  margin-left: 60%;
+.right .bottom {
+  margin-top: 1vh;
+  display: flex;
+}
+.sale {
+  margin-right: 5vw;
 }
 .plus-button {
   background-color: orange;

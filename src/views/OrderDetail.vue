@@ -3,10 +3,15 @@
     <div class="head">
       <Nav nav_text="订单详情" />
     </div>
+
+    <!-- 志愿者信息与订单内容 -->
     <div class="order_content">
+      <!-- 配送地址 -->
       <div v-if="orderDetail.DELIVER_OR_DINING === true">
         <SimpleAddressCard :order_address="orderDetail.CUS_ADDRESS" />
       </div>
+
+      <!-- 志愿者信息 -->
       <div>
         <VolunteerCard
           :orderId="orderDetail.ORDER_ID"
@@ -16,9 +21,13 @@
           ref="volunteerCard"
         />
       </div>
+
+      <!-- 订单信息 -->
       <div>
         <OrderCard :order_detail="orderDetail" />
       </div>
+
+      <!-- 备注信息 -->
       <div class="remark">
         <div class="header">
           <span style="font-weight: bold">用户备注</span>
@@ -37,6 +46,7 @@
       </div>
     </div>
 
+    <!-- 按钮与投诉电话 -->
     <div class="footer">
       <div class="info">
         <div class="hotline">
@@ -57,9 +67,9 @@
 
         <!-- ref="commentDialog"：获取子组件的引用。在 setup 中，可以使用commentDialog.value.showDialog();来访问子组件 -->
         <CommentDialog
-          @confirm="handleCommentConfirm"
-          @cancel="handleCommentCancel"
+          @exit="handleCommentExit"
           ref="commentDialog"
+          :deliverOrDining="orderDetail.DELIVER_OR_DINING"
         />
       </div>
     </div>
@@ -67,10 +77,9 @@
 </template>
 
 <script setup>
-// 由于mock的订单信息快速过期哦，无法通过订单号查询，故暂时无法使用实际的刷新逻辑
+// 由于mock的订单信息快速过期，无法通过订单号查询，故暂时无法使用实际的刷新逻辑
 // 按钮的逻辑同样无法彻底实现
 
-import { useRemarkstore } from '@/store/modules/remark'
 import { onMounted } from 'vue'
 import { postAccpetOrder } from '../api/api'
 
@@ -162,7 +171,7 @@ const showButton = () => {
   }
 
   // 按钮的测试示例
-  buttonText.value = '确认送达'
+  buttonText.value = '去评价'
   canClick.value = true
 }
 onMounted(showButton)
@@ -188,30 +197,30 @@ const buttonStyle = computed(() => {
 import { postConfirmOrder, getOrderMsg, postConfirmDelivered } from '../api/api'
 // 确认接单
 // #region
-const showAlert = ref(false)
-const alertMessage = ref('')
-
 const accpetOrder = async () => {
   console.log('接单')
   const status = await postAccpetOrder(orderDetail.value.ORDER_ID)
-  console.log(status)
+  console.log('status:', status)
   switch (status) {
     case 200:
-      alertMessage.value = '接单成功！'
+      showSuccessToast({
+        message: '接单成功！',
+        onClose: () => {
+          console.log('确认接单foast消失')
+          onRefresh()
+        }
+      })
       break
-    case 403:
-      alertMessage.value = '订单无法接受！'
+    case 400:
+      showFailToast({
+        message: '接单失败，请重试',
+        onClose: () => {
+          console.log('确认接单foast消失')
+          onRefresh()
+        }
+      })
       break
-    case 500:
-      alertMessage.value = '服务器错误，请稍后再试！'
-      break
-    default:
-      alertMessage.value = '未知错误，错误代码' + status + ',请稍后再试！'
   }
-  showAlert.value = true
-  showDialog({ message: alertMessage.value, width: 300 }).then(() => {
-    onRefresh()
-  })
 }
 // #endregion
 
@@ -219,16 +228,12 @@ const accpetOrder = async () => {
 // #region
 const commentDialog = ref(null)
 
-// 处理确认事件
-const handleCommentConfirm = ({ rate, comment }) => {
-  console.log('评价星级:', rate)
-  console.log('评价内容:', comment)
+// 处理评价弹窗退出事件
+const handleCommentExit = () => {
+  console.log('检测到弹窗关闭')
+  onRefresh()
 }
 
-// 处理取消事件
-const handleCommentCancel = () => {
-  console.log('取消评价')
-}
 // #endregion
 
 // 目前的刷新无效，等待设定完善
@@ -250,36 +255,55 @@ const onRefresh = () => {
 // #region
 const confirmOrder = async () => {
   const status = await postConfirmOrder(orderDetail.ORDER_ID)
+  console.log('status:', status)
   switch (status) {
     case 200:
-      alertMessage.value = '确认成功！'
+      showSuccessToast({
+        message: '确认取餐成功',
+        onClose: () => {
+          console.log('确认取餐foast消失')
+          onRefresh()
+        }
+      })
       break
     case 400:
-      alertMessage.value = '确认失败，请退出重试'
+      showFailToast({
+        message: '确认失败，请重试',
+        onClose: () => {
+          console.log('确认取餐foast消失')
+          onRefresh()
+        }
+      })
       break
   }
-  showAlert.value = true
-  showDialog({ message: alertMessage.value, width: 300 }).then(() => {
-    onRefresh()
-  })
 }
 // #endregion
 
+import { showLoadingToast, showSuccessToast, showFailToast } from 'vant'
 // 确认送达
 const confirmDelivered = async () => {
   const status = await postConfirmDelivered(orderDetail.ORDER_ID)
+  console.log('status:', status)
   switch (status) {
     case 200:
-      alertMessage.value = '确认成功！'
+      showSuccessToast({
+        message: '确认成功！',
+        onClose: () => {
+          console.log('确认送达foast消失')
+          onRefresh()
+        }
+      })
       break
     case 400:
-      alertMessage.value = '确认失败，请退出重试'
+      showFailToast({
+        message: '确认失败，请重试',
+        onClose: () => {
+          console.log('确认送达foast消失')
+          onRefresh()
+        }
+      })
       break
   }
-  showAlert.value = true
-  showDialog({ message: alertMessage.value, width: 300 }).then(() => {
-    onRefresh()
-  })
 }
 
 const buttonEvent = () => {
@@ -375,9 +399,7 @@ const buttonEvent = () => {
   color: black;
   border: none;
   font-size: 20px;
-  font-weight: 600 !important;
   letter-spacing: 3px;
-  /* 字间距*/
   border-radius: 12px;
   cursor: pointer;
 }
@@ -391,5 +413,8 @@ const buttonEvent = () => {
 .hotline .phone {
   color: rgb(144, 149, 153);
   /* 设置电话号码的颜色为黑色 */
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 </style>
