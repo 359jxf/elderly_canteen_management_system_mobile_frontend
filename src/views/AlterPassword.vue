@@ -73,7 +73,7 @@ const Ensure = async () => {
 const getCredit = async () => {
   const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value)
   if (!isValidPhoneNumber) {
-    alert('手机号无效。必须是11位数字。')
+    showToast('手机号无效。必须是11位数字。')
     return
   }
   try {
@@ -100,7 +100,7 @@ const getCredit = async () => {
 }
 </script>
 
-<style>
+<style scoped>
 .background {
   position: relative;
   top: 0;

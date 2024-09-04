@@ -4,14 +4,14 @@
     <div class="headerBox">修改信息</div>
     <div class="registerBox">
       <div class="row">
-        <span class="label">账户名称</span> <input class="inputbox" v-model="accountName" />
+        <span class="label">账户名称</span> <input class="inputBox" v-model="accountName" />
       </div>
       <div class="row">
-        <span class="label">地址</span> <input class="inputbox" v-model="address" />
+        <span class="label">地址</span> <input class="inputBox" v-model="address" />
       </div>
       <div class="row">
         <span class="label">性别</span>
-        <select v-model="gender" class="inputbox">
+        <select v-model="gender" class="inputBox">
           <option value="">选择性别</option>
           <option value="male">男</option>
           <option value="female">女</option>
@@ -19,7 +19,7 @@
       </div>
       <div class="row">
         <span class="label">出生日期</span>
-        <input class="inputbox" type="date" v-model="birthDate" :readonly="isNameNotEmpty" />
+        <input class="inputBox" type="date" v-model="birthDate" :readonly="isNameNotEmpty" />
       </div>
       <div class="row">
         <span class="label">更改头像</span>
@@ -135,11 +135,10 @@ const Ensure = async () => {
       localStorage.removeItem('portrait')
       router.push({ name: 'User' })
     } else {
-      alert('更新失败: ' + response.data.msg)
+      showToast('修改失败: ' + response.data.msg)
     }
   } catch (error) {
-    console.error('Error updating account:', error)
-    alert('更新失败，请稍后重试')
+    showToast('修改失败：', error)
   }
 }
 
@@ -225,17 +224,6 @@ const rebindPhone = () => {
   align-content: center;
 }
 
-.inputbox {
-  position: relative;
-  width: 50%;
-  height: 60%;
-  border-radius: 10px;
-  font-size: 60%;
-  padding-left: 5px;
-  border: 2px solid #000;
-  align-self: center;
-}
-
 .inputBox {
   position: relative;
   width: 50%;
@@ -244,6 +232,7 @@ const rebindPhone = () => {
   font-size: 60%;
   padding-left: 5px;
   align-self: center;
+  border: 2px solid #000;
 }
 
 .no-border {

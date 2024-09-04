@@ -44,7 +44,7 @@
           <span class="text">注册</span>
         </div>
         <div class="right-box">
-          <van-icon name="close" class="symbol" size="5vh" color="#ffa822" />
+          <van-icon name="close" class="symbol" size="5vh" color="#ffa822" @click="quitApp" />
           <span class="text">退出</span>
         </div>
       </div>
@@ -73,6 +73,10 @@ const selectCredit = () => {
   isPassword.value = false
 }
 
+const quitApp = () => {
+  navigator.app.exitApp() // 退出应用
+}
+
 if (!sessionStorage.getItem('hasRefreshed')) {
   // 如果没有刷新过页面，则刷新页面
   sessionStorage.setItem('hasRefreshed', 'true')
@@ -82,7 +86,7 @@ if (!sessionStorage.getItem('hasRefreshed')) {
 const loginWithPassword = async () => {
   const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value)
   if (!isValidPhoneNumber) {
-    showToast('手机号无效。必须是11位数字。')
+    showToast('手机号无效，必须是11位数字。')
     return
   }
   try {
@@ -100,12 +104,10 @@ const loginWithPassword = async () => {
       console.log(response.data.response)
       router.push({ name: 'Home' })
     } else {
-      showToast('登录失败' + response.value.msg)
+      showToast('登录失败，' + response.value.msg)
     }
   } catch (error) {
     if (error.response) {
-      // 请求已发出，但服务器响应了状态码
-      // 不是2xx范围内的状态码
       const statusCode = error.response.status
       if (statusCode === 400) {
         showToast(`登录失败，密码错误`)
@@ -116,7 +118,6 @@ const loginWithPassword = async () => {
     } else if (error.request) {
       showToast('登录失败，未收到响应')
     } else {
-      // 其他错误
       showToast('登录失败，发生错误')
     }
   }
@@ -125,7 +126,7 @@ const loginWithPassword = async () => {
 const loginWithCredit = async () => {
   const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value)
   if (!isValidPhoneNumber) {
-    showToast('手机号无效。必须是11位数字。')
+    showToast('手机号无效，必须是11位数字。')
     return
   }
   try {
@@ -145,8 +146,6 @@ const loginWithCredit = async () => {
     }
   } catch (error) {
     if (error.response) {
-      // 请求已发出，但服务器响应了状态码
-      // 不是2xx范围内的状态码
       const statusCode = error.response.status
       if (statusCode === 400) {
         showToast(`登录失败，密码错误`)
@@ -166,7 +165,7 @@ const loginWithCredit = async () => {
 const getCredit = async () => {
   const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value)
   if (!isValidPhoneNumber) {
-    showToast('手机号无效。必须是11位数字。')
+    showToast('手机号无效，必须是11位数字。')
     return
   }
   try {
@@ -222,7 +221,7 @@ const register = () => {
   position: relative;
   display: flex;
   justify-content: space-between; /* 左右分布 */
-  top: 5vh;
+  top: 4vh;
 }
 
 .left-box,
@@ -291,7 +290,7 @@ const register = () => {
   top: 25%;
   left: 10%;
 
-  height: 50%;
+  height: 55%;
   width: 80%;
 
   background-color: white;
@@ -400,5 +399,6 @@ const register = () => {
   font-weight: bold;
   top: 20%;
   font-size: 60%;
+  z-index: 10;
 }
 </style>
