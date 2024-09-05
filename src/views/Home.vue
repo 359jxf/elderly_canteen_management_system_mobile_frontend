@@ -39,44 +39,44 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
 import 'vant/es/toast/style'
 import { showToast } from 'vant'
 
-import defaultPic from '@/assets/testpic.jpg';
+import defaultPic from '@/assets/testpic.jpg'
 
-const ava=ref('')
+const ava = ref('')
 
 onMounted(() => {
-  fetchData();
-});
+  fetchData()
+})
 
 const fetchData = async () => {
-try {
-  // 从 localStorage 中获取保存的 Token
-  const token = localStorage.getItem('token');
+  try {
+    // 从 localStorage 中获取保存的 Token
+    const token = localStorage.getItem('token')
 
-  // 使用 axios 发起 GET 请求，附带 Authorization 头
-  const response = await axios.get('http://8.136.125.61/api/account/getPersonInfo', {
-    headers: {
-      Authorization: `Bearer ${token}`  // 将 Token 添加到 Authorization 头中
+    // 使用 axios 发起 GET 请求，附带 Authorization 头
+    const response = await axios.get('http://8.136.125.61/api/account/getPersonInfo', {
+      headers: {
+        Authorization: `Bearer ${token}` // 将 Token 添加到 Authorization 头中
+      }
+    })
+
+    if (response.data.getSuccess === true) {
+      console.log(response.data.response) // 调试用
+      ava.value = response.data.response.portrait ? response.data.response.portrait : defaultPic
+      localStorage.setItem('portrait', ava.value)
+    } else {
+      showToast('获取信息失败')
     }
-  });
-
-  if (response.data.getSuccess === true) {
-    console.log(response.data.response); // 调试用
-    ava.value = response.data.response.portrait ? response.data.response.portrait : defaultPic;
-    localStorage.setItem('portrait', ava.value);
-  } else {
+  } catch (error) {
     showToast('获取信息失败')
   }
-} catch (error) {
-  showToast('获取信息失败')
 }
-};
-
+const deliver_or_dining = ref('true')
 const identity = localStorage.getItem('identity')
 const router = useRouter()
 
@@ -85,15 +85,18 @@ const getVolunteerOrder = () => {
 }
 
 const getVolunteerInfor = () => {
-router.push({ name: 'VolunteerInfor' });
-};
+  router.push({ name: 'VolunteerInfor' })
+}
 
 const resturant = () => {
   router.push({ name: 'OrderPage' })
+  localStorage.setItem('deliver_or_dining', deliver_or_dining)
 }
 
 const deliver = () => {
   router.push({ name: 'OrderPage' })
+  deliver_or_dining.value = false
+  localStorage.setItem('deliver_or_dining', deliver_or_dining)
 }
 </script>
 

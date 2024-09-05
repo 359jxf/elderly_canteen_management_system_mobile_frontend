@@ -1,6 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
 
-
 import vueDevTools from 'vite-plugin-vue-devtools'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -13,7 +12,6 @@ import {
   VueUseDirectiveResolver
 } from 'unplugin-vue-components/resolvers'
 
-
 export default defineConfig({
   plugins: [
     vue(),
@@ -25,11 +23,7 @@ export default defineConfig({
     Components({
       dts: true,
       dirs: ['src/components', 'src/views'], // 按需加载的文件夹
-      resolvers: [
-        VantResolver(),
-        VueUseComponentsResolver(),
-        VueUseDirectiveResolver()
-      ]
+      resolvers: [VantResolver(), VueUseComponentsResolver(), VueUseDirectiveResolver()]
     })
   ],
   css: {
@@ -46,5 +40,6 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  base: './'
 })

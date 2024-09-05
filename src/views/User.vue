@@ -1,16 +1,31 @@
 <template>
   <PersonalBackground :ava="preview">
-  <div class="textContainer">
+    <div class="textContainer">
       <span class="head">个人信息</span>
       <button class="info-button" @click="alterInformation">🖊</button>
       <div class="space"></div>
-      <div class="row"><span class="label">ID:</span> <span class="value">{{ userData.accountId }}</span></div>
-      <div class="row"><span class="label">姓名:</span> <span class="value">{{ userData.name }}</span></div>
-      <div class="row"><span class="label">联系方式:</span> <span class="value">{{ userData.phoneNum }}</span></div>
-      <div class="row"><span class="label">性别:</span> <span class="value">{{ userData.gender }}</span></div>
-      <div class="row"><span class="label">出生日期:</span> <span class="value">{{ userData.birthDate }}</span></div>
-      <div class="row"><span class="label">地址:</span> <span class="value">{{ userData.address }}</span></div>
-      <div class="row"><span class="label">账户余额</span> <span class="value">{{ userData.money }}</span><van-icon name="gold-coin-o" class="prePaid" size="7vw" @click="prePaid"/></div>
+      <div class="row">
+        <span class="label">ID:</span> <span class="value">{{ userData.accountId }}</span>
+      </div>
+      <div class="row">
+        <span class="label">姓名:</span> <span class="value">{{ userData.name }}</span>
+      </div>
+      <div class="row">
+        <span class="label">联系方式:</span> <span class="value">{{ userData.phoneNum }}</span>
+      </div>
+      <div class="row">
+        <span class="label">性别:</span> <span class="value">{{ userData.gender }}</span>
+      </div>
+      <div class="row">
+        <span class="label">出生日期:</span> <span class="value">{{ userData.birthDate }}</span>
+      </div>
+      <div class="row">
+        <span class="label">地址:</span> <span class="value">{{ userData.address }}</span>
+      </div>
+      <div class="row">
+        <span class="label">账户余额</span> <span class="value">{{ userData.money }}</span
+        ><van-icon name="gold-coin-o" class="prePaid" size="7vw" @click="prePaid" />
+      </div>
     </div>
     <div class="buttonContainer">
       <button class="buttonType authen" @click="authen">实名认证</button>
@@ -18,7 +33,7 @@
     </div>
     <van-dialog v-model:show="show" title="账户充值" show-cancel-button @confirm="ensurePrepaid">
       <div class="input-container">
-        <input v-model="prePaidMoney" placeholder="输入充值金额" class="prePaidInput"/>
+        <input v-model="prePaidMoney" placeholder="输入充值金额" class="prePaidInput" />
       </div>
     </van-dialog>
   </PersonalBackground>
@@ -27,18 +42,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
 import 'vant/es/toast/style'
 import { showToast } from 'vant'
 
-import defaultPic from '@/assets/testpic.jpg';
+import defaultPic from '@/assets/testpic.jpg'
 
-const router = useRouter();
-const getSuccess = ref(false);
-const preview = ref('');
-const show = ref(false);
+const router = useRouter()
+const getSuccess = ref(false)
+const preview = ref('')
+const show = ref(false)
 const prePaidMoney = ref('')
 
 const userData = ref({
@@ -52,7 +67,7 @@ const userData = ref({
   address: '',
   name: '',
   money: ''
-});
+})
 
 const fetchData = async () => {
   try {
@@ -66,68 +81,61 @@ const fetchData = async () => {
       }
     })
 
-    if (response.data.getSuccess === true) {
-      console.log(response.data.response) // 调试用
-      getSuccess.value = true
-      userData.value = response.data.response
-      preview.value = userData.value.portrait
-        ? `http://8.136.125.61/images/${userData.value.portrait}`
-        : defaultPic
+    // if (response.data.getSuccess === true) {
+    //   console.log(response.data.response) // 调试用
+    //   getSuccess.value = true
+    //   userData.value = response.data.response
+    //   preview.value = userData.value.portrait
+    //     ? `http://8.136.125.61/images/${userData.value.portrait}`
+    //     : defaultPic
 
-      localStorage.setItem('name', userData.value.name)
-    } else {
-      getSuccess.value = false
-      errorMessage.value = response.data.msg
-    }
-  });
+    //   localStorage.setItem('name', userData.value.name)
+    // } else {
+    //   getSuccess.value = false
+    //   errorMessage.value = response.data.msg
+    // }
+  } catch (error) {
+    // if (response.data.getSuccess === true) {
+    //   console.log(response.data.response); // 调试用
+    //   getSuccess.value = true;
+    //   userData.value = response.data.response;
+    //   preview.value = userData.value.portrait ? userData.value.portrait : defaultPic;
 
-  if (response.data.getSuccess === true) {
-    console.log(response.data.response); // 调试用
-    getSuccess.value = true;
-    userData.value = response.data.response;
-    preview.value = userData.value.portrait ? userData.value.portrait : defaultPic;
-    
-    localStorage.setItem('portrait', preview.value);
-    localStorage.setItem('name', userData.value.name);
-  } else {
-    showToast('获取信息失败'+response.data.msg)
+    //   localStorage.setItem('portrait', preview.value);
+    //   localStorage.setItem('name', userData.value.name);
+    // } else {
+    //   showToast('获取信息失败'+response.data.msg)
+    // }
+    showToast('获取信息失败')
   }
-} catch (error) {
-  showToast('获取信息失败')
 }
-};
 
 const ensurePrepaid = async () => {
-  const token = localStorage.getItem('token');
-  if(prePaidMoney.value===''){
-    showToast('请输入充值金额');
-    return;
+  const token = localStorage.getItem('token')
+  if (prePaidMoney.value === '') {
+    showToast('请输入充值金额')
+    return
   }
   try {
     const data = {
-      money:prePaidMoney.value,
-    };
+      money: prePaidMoney.value
+    }
 
-    const response = await axios.post(
-      "http://8.136.125.61/api/Account/prePaid",
-      data,
-      {
-        headers: {
+    const response = await axios.post('http://8.136.125.61/api/Account/prePaid', data, {
+      headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
-        }
       }
-    );
+    })
     if (response.data.success) {
       showToast('充值成功')
     } else {
       showToast('充值失败')
     }
   } catch (error) {
-  showToast('充值失败')
+    showToast('充值失败')
   }
-};
-
+}
 
 onMounted(() => {
   fetchData()
@@ -138,43 +146,43 @@ const alterInformation = () => {
 }
 
 const authen = () => {
-router.push({ name: 'Authen' });
-};
+  router.push({ name: 'Authen' })
+}
 
 const prePaid = () => {
-  show.value = true;
-};
+  show.value = true
+}
 
 const apply = () => {
   const name = localStorage.getItem('name')
-  if(name === null){
+  if (name === null) {
     showToast('未实名用户不能进行志愿者申请')
-    return;
+    return
   }
-  router.push({ name: 'Apply' });
-};
+  router.push({ name: 'Apply' })
+}
 </script>
 
 <style scoped>
-.prePaid{
+.prePaid {
   position: relative;
   left: 20vw;
 }
 
-.input-container{
+.input-container {
   height: 10vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.prePaidInput{
+.prePaidInput {
   height: 5vh;
 }
 
-.head{
-font-weight: bold;
-font-size: 120%;
+.head {
+  font-weight: bold;
+  font-size: 120%;
 }
 
 .space {
@@ -182,12 +190,12 @@ font-size: 120%;
 }
 
 .row {
-left: 0%;
-top: 0%;
-display: flex;
-flex-direction: row;
-width: 80vw;
-height: 10%;
+  left: 0%;
+  top: 0%;
+  display: flex;
+  flex-direction: row;
+  width: 80vw;
+  height: 10%;
 }
 
 .label {
@@ -198,9 +206,8 @@ height: 10%;
 }
 
 .value {
-text-align: left;
-font-size: 100%;
-
+  text-align: left;
+  font-size: 100%;
 }
 
 .info-button {

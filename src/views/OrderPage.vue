@@ -2,10 +2,10 @@
   <div class="floating-cart-bar">
     <div class="cart-icon">
       <van-badge :content="menu.totalNum" v-if="menu.totalNum !== 0">
-        <van-icon name="cart-o" color="#ffb94a" size="38px" @click="onClickIcon" />
+        <van-icon name="cart-o" color="#ffb94a" size="4vh" @click="onClickIcon" />
       </van-badge>
       <template v-else>
-        <van-icon name="cart-o" color="#ffb94a" size="38px" @click="onClickIcon" />
+        <van-icon name="cart-o" color="#ffb94a" size="4vh" @click="onClickIcon" />
       </template>
     </div>
     <div class="text" @click="onClickIcon">
@@ -19,17 +19,67 @@
   </div>
   <div class="container">
     <div class="button-list">
-      <button
-        class="menu-button"
-        :class="{ focus: button.focus }"
-        v-for="button in buttons"
-        :key="button.id"
-        @click="onClickMenuButton(button.name)"
-      >
-        <img :src="`/src/assets/image/${button.imageUrl}`" height="25px" width="25px" />
-        <br />
-        {{ button.name }}
-      </button>
+      <div class="menu">
+        <button
+          class="menu-button"
+          @click="onClickMenuButton('促销')"
+          :class="{ focus: buttons[0].focus }"
+        >
+          <img src="/src/assets/image/tag.png" height="25px" width="25px" />
+          <br />
+          促销
+        </button>
+
+        <button
+          class="menu-button"
+          @click="onClickMenuButton('素类')"
+          :class="{ focus: buttons[1].focus }"
+        >
+          <img src="/src/assets/image/vegetable.png" height="25px" width="25px" />
+          <br />
+          素类
+        </button>
+
+        <button
+          class="menu-button"
+          @click="onClickMenuButton('荤类')"
+          :class="{ focus: buttons[2].focus }"
+        >
+          <img src="/src/assets/image/meat.png" height="25px" width="25px" />
+          <br />
+          荤类
+        </button>
+
+        <button
+          class="menu-button"
+          @click="onClickMenuButton('主食')"
+          :class="{ focus: buttons[3].focus }"
+        >
+          <img src="/src/assets/image/meat.png" height="25px" width="25px" />
+          <br />
+          主食
+        </button>
+
+        <button
+          class="menu-button"
+          @click="onClickMenuButton('汤类')"
+          :class="{ focus: buttons[4].focus }"
+        >
+          <img src="/src/assets/image/hot-soup.png" height="25px" width="25px" />
+          <br />
+          汤类
+        </button>
+
+        <button
+          class="menu-button"
+          @click="onClickMenuButton('饮料')"
+          :class="{ focus: buttons[5].focus }"
+        >
+          <img src="/src/assets/image/drink.png" height="25px" width="25px" />
+          <br />
+          饮料
+        </button>
+      </div>
     </div>
     <div class="item-list">
       <DishItem v-bind="item" v-for="(item, id) in filteredItems" :key="id" class="dish-item" />
@@ -50,10 +100,13 @@
           <div class="cart-item-info">
             <span class="item-name">{{ item.dishName }}</span>
             <div class="item-price-info">
-              <span v-if="item.dishPrice > item.discountPrice" class="original-price">
-                ￥{{ item.dishPrice }}
+              <span v-if="item.discountPrice !== 0" class="original-price">
+                ￥{{ item.dishPrice.toFixed(2) }}
               </span>
-              <span class="discount-price"> ￥{{ item.discountPrice }} </span>
+              <span v-if="item.discountPrice !== 0" class="discount-price">
+                ￥{{ item.discountPrice.toFixed(2) }}
+              </span>
+              <span v-else class="price"> ￥{{ item.dishPrice.toFixed(2) }} </span>
             </div>
             <div class="item-quantity-control">
               <van-button size="small" type="default" @click="decreaseQuantity(index)"
@@ -86,16 +139,23 @@ import { ref } from 'vue'
 import { computed } from 'vue'
 import { showToast } from 'vant'
 import router from '@/router'
-import { createCart, getCartItem, getMenuToday, updateCartItem, clearCart } from '@/api/api'
+import {
+  createCart,
+  getCartItem,
+  getMenuToday,
+  updateCartItem,
+  clearCart,
+  deleteCartItem
+} from '@/api/api'
 import { onMounted } from 'vue'
-import axios from 'axios'
 const menu = useMenuStore()
-const cartId = ref('')
 const cartItems = ref([])
 const items = ref([])
-const token = localStorage.getItem('token')
 const totalPrice = computed(() => {
-  return cartItems.value.reduce((total, item) => total + item.discountPrice * item.quantity, 0)
+  return cartItems.value.reduce((total, item) => {
+    const price = item.discountPrice > 0 ? item.discountPrice : item.dishPrice
+    return total + price * item.quantity
+  }, 0)
 })
 const getItems = async () => {
   try {
@@ -104,18 +164,13 @@ const getItems = async () => {
     console.error('获取当日菜品失败：', error)
     showToast('获取当日菜品失败，请稍后再试')
   }
-  // try {
-  //   const response = await axios.get('http://8.136.125.61/api/order/getMenuToday')
-  //   items.value = response.data.menu
-  //   console.log(response.data.menu)
-  // } catch (error) {
-  //   console.error('Error logging in with password:', error)
-  // }
 }
 
-const getCartId = async (token) => {
+const getCartId = async () => {
   try {
-    cartId.value = await createCart(token)
+    const cartId = await createCart()
+    console.log(cartId)
+    localStorage.setItem('cartId', cartId)
   } catch (error) {
     console.error('生成购物车失败：', error)
     showToast('生成购物车失败，请稍后再试')
@@ -123,23 +178,24 @@ const getCartId = async (token) => {
 }
 onMounted(async () => {
   await getItems()
-  await getCartId(token)
+  await getCartId()
 })
 const showBottom = ref(false)
 const buttons = ref([
-  { name: '促销', focus: false, imageUrl: 'tag.png' },
-  { name: '素类', focus: false, imageUrl: 'vegetable.png' },
-  { name: '荤类', focus: false, imageUrl: 'meat.png' },
-  { name: '主食', focus: false, imageUrl: 'meat.png' },
-  { name: '汤类', focus: false, imageUrl: 'hot-soup.png' },
-  { name: '饮料', focus: false, imageUrl: 'drink.png' }
+  { name: '促销', focus: false, category: '6' },
+  { name: '素类', focus: false, category: '1' },
+  { name: '荤类', focus: false, category: '2' },
+  { name: '主食', focus: false, category: '3' },
+  { name: '汤类', focus: false, category: '4' },
+  { name: '饮料', focus: false, category: '5' }
 ])
 const onClickIcon = async () => {
   if (menu.totalNum == 0) {
     showToast('购物车为空，请先选购！')
   } else {
     try {
-      cartItems.value = await getCartItem()
+      const cartId = localStorage.getItem('cartId')
+      cartItems.value = await getCartItem(cartId)
       showBottom.value = true
     } catch (error) {
       console.error('获取购物车菜品失败:', error)
@@ -150,6 +206,7 @@ const onClickIcon = async () => {
 const onClickMenuButton = (name) => {
   buttons.value.forEach((button) => {
     if (button.name === name) {
+      console.log(button.name)
       if (button.focus === true) {
         button.focus = false
       } else button.focus = true
@@ -164,7 +221,7 @@ const filteredItems = computed(() => {
   // 筛选按类别
   let filteredByCategory = activeButton
     ? items.value.filter(
-        (item) => item.category === activeButton.name || activeButton.name === '促销'
+        (item) => item.category === activeButton.category || activeButton.name === '促销'
       )
     : items.value
 
@@ -185,23 +242,36 @@ const filteredItems = computed(() => {
 })
 const increaseQuantity = async (index) => {
   const item = cartItems.value[index]
-  item.quantity++
-  menu.addItem(item)
-  await updateCartItem(cartId, item.dishId, 1)
+  const cartId = localStorage.getItem('cartId')
+  const res = await updateCartItem(cartId, item.dishId, item.quantity + 1)
+  if (res.success === true) {
+    menu.addItem(item)
+    item.quantity++
+  } else {
+    showToast('菜品已卖完')
+  }
 }
 const decreaseQuantity = async (index) => {
   const item = cartItems.value[index]
   item.quantity--
-  if (item.quantity === 0) cartItems.value.splice(index, 1)
-  menu.minusItem(item)
-  await updateCartItem(cartId, item.dishId, -1)
+  if (item.quantity === 0) {
+    cartItems.value.splice(index, 1)
+    const cartId = localStorage.getItem('cartId')
+    menu.minusItem(item)
+    await deleteCartItem(cartId, item.dishId)
+  } else {
+    menu.minusItem(item)
+    const cartId = localStorage.getItem('cartId')
+    await updateCartItem(cartId, item.dishId, item.quantity)
+  }
 }
 const handleCheckout = () => {
   router.push('/ShoppingCart')
 }
 const clearCartItem = async () => {
   try {
-    await clearCart()
+    const cartId = localStorage.getItem('cartId')
+    await clearCart(cartId)
     cartItems.value = [] // 清空本地购物车数据
     menu.clear()
   } catch (error) {
@@ -211,27 +281,23 @@ const clearCartItem = async () => {
 }
 </script>
 <style scoped>
-.header {
-  height: 23vh;
-}
-.nav {
-  margin-bottom: 1vh;
-}
 .search-line-icon {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .slogan {
   width: 100%;
+  height: 20vh;
 }
 
 .container {
-  margin-top: 5px;
   display: flex;
-  height: 77vh;
+  height: 75vh;
 }
 .button-list {
+  padding-top: 1vh;
   width: 20%; /* 根据需要调整宽度 */
   background-color: #f0f0f0; /* 更柔和的背景色 */
   z-index: 1;
@@ -268,38 +334,30 @@ const clearCartItem = async () => {
 }
 .item-list {
   max-height: 70vh;
-  width: 80%;
+  width: 82%;
   overflow-y: auto;
   flex-wrap: wrap;
 }
 .dish-item {
-  width: 90%;
+  width: 94%;
   box-sizing: border-box;
 }
 .cart {
   margin-right: 5%;
   margin-left: 5%;
 }
-.text {
-  font-size: medium;
-  font-weight: bold;
-  background-color: #ffb94a;
-  text-align: center;
-  padding: 2vh;
-  width: 100%;
-  border-top-right-radius: 50px;
-  border-bottom-right-radius: 50px;
-  display: flex;
-}
+
 .text span {
-  margin-left: 15vw;
+  font-size: large;
+  margin-top: 1vh;
+  margin-left: 18vw;
 }
 .num {
   font-size: large;
   font-weight: bold;
 }
 .blank {
-  height: 50px; /* 设置行的高度 */
+  height: 6vh; /* 设置行的高度 */
   width: 100%; /* 宽度占满父容器 */
   background-color: transparent; /* 背景色透明 */
 }
@@ -425,24 +483,7 @@ const clearCartItem = async () => {
   color: red;
   font-weight: bold;
 }
-.floating-cart-bar {
-  position: fixed;
-  top: 90vh; /* 距离顶部的距离，可以根据需要调整 */
-  width: 90vw;
-  margin-left: 5vw;
-  margin-right: 5vw;
-  border-radius: 50px; /* 椭圆形状 */
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
-  z-index: 1000; /* 确保悬浮栏在最上层 */
-}
-.cart-icon {
-  padding: 10px 20px;
-  background-color: white;
-  border-top-left-radius: 50px;
-  border-bottom-left-radius: 50px;
-}
+
 .floating-cart-text {
   color: white;
   font-size: 16px;
@@ -452,5 +493,40 @@ const clearCartItem = async () => {
 .floating-cart-button {
   background-color: white;
   color: #ffb94a;
+}
+.price {
+  font-size: medium;
+}
+.floating-cart-bar {
+  position: fixed;
+  bottom: 5%; /* 距离底部20%的位置 */
+  left: 0; /* 确保悬浮栏从屏幕左侧开始 */
+  width: 100%; /* 宽度适应屏幕 */
+  margin: 0; /* 去掉边距 */
+  border-radius: 50px; /* 保持圆角效果 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 添加空间分隔 */
+  padding: 0 10px; /* 添加左右内边距 */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  background-color: white; /* 背景色设置为白色 */
+  z-index: 1000; /* 确保悬浮栏在最上层 */
+}
+
+.cart-icon {
+  padding: 10px; /* 内边距调整 */
+}
+
+.text {
+  font-size: 14px; /* 字体大小适配手机屏幕 */
+  font-weight: bold;
+  background-color: #ffb94a;
+  text-align: center;
+  height: auto; /* 高度自适应内容 */
+  flex: 1; /* 使其填满剩余空间 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px; /* 保持圆角效果 */
 }
 </style>
