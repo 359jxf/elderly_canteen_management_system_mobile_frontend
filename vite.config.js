@@ -13,6 +13,7 @@ import {
 } from 'unplugin-vue-components/resolvers'
 
 export default defineConfig({
+  base: './',
   plugins: [
     vue(),
     vueDevTools(),
@@ -40,6 +41,5 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  },
-  base: './'
+  }
 })

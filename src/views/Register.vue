@@ -6,6 +6,30 @@
       <div class="row">
         <span class="label">手机号码</span> <input class="inputBox" v-model="phoneNum" />
       </div>
+      <div class="row">
+        <span class="label">账户名称</span> <input class="inputBox" v-model="userName" />
+      </div>
+      <div class="row">
+        <span class="label">账户密码</span> <input class="inputBox" v-model="password" />
+      </div>
+      <div class="row">
+        <span class="label">性别</span>
+        <select v-model="gender" class="inputBox">
+          <option value="">选择性别</option>
+          <option value="male">男</option>
+          <option value="female">女</option>
+        </select>
+      </div>
+      <div class="row">
+        <span class="label">验证码</span>
+        <input class="inputBox half" v-model="verificationCode" /><button
+          class="verifyBtn"
+          @click="getCredit"
+        >
+          发送
+        </button>
+      </div>
+      <button class="getIn" @click="getIn">注册</button>
     </div>
   </div>
 </template>
@@ -93,7 +117,8 @@ const getCredit = async () => {
 .background {
   display: flex;
   position: relative;
-  flex-direction: column; /* 使子元素按列布局 */
+  flex-direction: column;
+  /* 使子元素按列布局 */
   top: 0;
 
   height: 100vh;
@@ -112,7 +137,8 @@ const getCredit = async () => {
   border-radius: 20px;
 
   z-index: 1;
-  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2);
+  /* 阴影效果 */
 }
 
 .headerBox {
@@ -128,7 +154,8 @@ const getCredit = async () => {
   border-radius: 10px;
 
   z-index: 3;
-  box-shadow: 0 -7px 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  box-shadow: 0 -7px 10px rgba(0, 0, 0, 0.2);
+  /* 阴影效果 */
 }
 
 .row {
@@ -154,6 +181,7 @@ const getCredit = async () => {
   height: 50%;
   border-radius: 1vh;
   font-size: 0.4rem;
+  border: 2px solid #000;
 }
 
 .half {

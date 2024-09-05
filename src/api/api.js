@@ -15,28 +15,46 @@ export const getOrders = async () => {
 
 // 查询可接订单
 export const getAcceptableOrder = async () => {
+  console.log('开始getAcceptableOrder')
   const token = localStorage.getItem('token')
-  const res = await ins.get('/api/volServe/getAcceptableOrder', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    }
-  })
-  console.log(res.data.response)
-  return res.data.response
+  try {
+    const res = await ins.get('/api/volServe/getAcceptableOrder', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    console.log('getAcceptableOrder成功', res.data.response)
+    return res.data
+  } catch (error) {
+    console.error('getAcceptableOrder失败 message:', error)
+    throw error
+  }
+
 }
 
 //查询志愿者当前订单
 export const getAcceptedOrder = async () => {
+  console.log('开始getAcceptedOrder');
   const token = localStorage.getItem('token')
+  const tmp=ref({});
   const res = await ins.get('/api/volServe/getAcceptedOrder', {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
     }
   })
-  console.log(res.data.response)
-  return res.data.response
+  console.log('getAcceptedOrder输出结果：', res.data.response)
+  if(res.data.response.length){
+    tmp.value=res.data.response[0]
+    console.log('111')
+    return tmp;
+  }else{
+    console.log('222')
+    return tmp;
+  }
+  
+
 }
 
 //查询志愿者已送订单
@@ -55,10 +73,11 @@ export const getFinishedOrder = async () => {
 //接收配送订单
 export const postAccpetOrder = async (orderId) => {
   const token = localStorage.getItem('token')
+  console.log('进入确认接单api。订单id', orderId)
   try {
     const response = await ins.post(
       '/api/volServe/postAcceptOrder',
-      { ORDER_ID: orderId },
+      { orderId: orderId },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -66,9 +85,10 @@ export const postAccpetOrder = async (orderId) => {
         }
       }
     )
-    return response.status
+    return response.data
   } catch (error) {
-    return error.response
+    console.error('Error postAccpetOrder message:', error)
+    throw error
   }
 }
 
@@ -87,6 +107,7 @@ export const getPorTrait = async () => {
 
 //查询订单信息
 export const getOrderMsg = async (orderId) => {
+  console.log('开始getOrderMsg：')
   const token = localStorage.getItem('token')
   try {
     const res = await ins.get('/api/order/getOrderMsg', {
@@ -110,7 +131,7 @@ export const getOrderDeliverMsg = async (orderId) => {
   const token = localStorage.getItem('token')
   try {
     const res = await ins.get('/api/order/getOrderDeliverMsg', {
-      params: { OrderId: orderId },
+      params: { orderId: orderId },
 
       headers: {
         Authorization: `Bearer ${token}`,
@@ -127,11 +148,12 @@ export const getOrderDeliverMsg = async (orderId) => {
 
 //确认取餐
 export const postConfirmOrder = async (orderId) => {
+  console.log('发送确认取餐请求')
   const token = localStorage.getItem('token')
   try {
     const res = await ins.post(
       '/api/order/postConfirmOrder',
-      { OrderId: orderId },
+      { orderId: orderId },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -139,7 +161,7 @@ export const postConfirmOrder = async (orderId) => {
         }
       }
     )
-    console.log('postConfirmOrder success:', res.data.success)
+    console.log('确认取餐 success:', res.data.success)
     return res.status
   } catch (error) {
     return error.response
@@ -160,8 +182,8 @@ export const postConfirmDelivered = async (orderId) => {
         }
       }
     )
-    console.log('postConfirmDelivered success:', res.data.success)
-    return res.status
+    console.log('postConfirmDelivered响应:', res.data)
+    return res.data.success
   } catch (error) {
     return error.response
   }
@@ -193,7 +215,7 @@ export const postDiningComment = async (orderId, falvorRate, flavorComment) => {
       '菜品评价',
       flavorComment
     )
-    return res.status
+    return res.data.success
   } catch (error) {
     return error.response
   }
@@ -209,14 +231,16 @@ export const postDeliverComment = async (
 ) => {
   const token = localStorage.getItem('token')
   try {
+    console.log('orderId:',orderId,'deliverRate:',deliverRate,'deliverComment',deliverComment,
+      'falvorRate',falvorRate,'flavorComment',flavorComment)
     const res = await ins.post(
       '/api/order/postDeliverComment',
       {
-        OrderId: orderId,
-        CStars: falvorRate,
-        CReviewText: flavorComment,
-        DStars: deliverRate,
-        DReviewText: deliverComment
+        orderId: orderId,
+        cStars: falvorRate,
+        cReviewText: flavorComment,
+        dStars: deliverRate,
+        dReviewText: deliverComment
       },
       {
         headers: {
@@ -237,14 +261,16 @@ export const postDeliverComment = async (
       '配送评价',
       deliverComment
     )
-    return res.status
+    return res.data.success
   } catch (error) {
+    console.log(error)
     return error.response
   }
 }
 
 //查看订单评价（外送）
 export const getDeliverComment = async (orderId) => {
+  console.log('开始getDeliverComment')
   const token = localStorage.getItem('token')
   try {
     const res = await ins.get('/api/order/getDeliverComment', {
@@ -254,9 +280,10 @@ export const getDeliverComment = async (orderId) => {
         'Content-Type': 'application/json'
       }
     })
-    console.log(res.data.response)
-    return res.data.response
+    console.log(res.data.response[0])
+    return res.data.response[0]
   } catch (error) {
+
     console.error('Error fetching DeliverComment message:', error)
     throw error
   }
@@ -264,6 +291,7 @@ export const getDeliverComment = async (orderId) => {
 
 //查看订单评价（堂食）
 export const getDiningComment = async (orderId) => {
+  console.log('开始getDiningComment')
   const token = localStorage.getItem('token')
   try {
     const res = await ins.get('/api/order/getDiningComment', {
@@ -273,10 +301,32 @@ export const getDiningComment = async (orderId) => {
         'Content-Type': 'application/json'
       }
     })
-    console.log(res.data.response)
-    return res.data.response
+    console.log(res.data.response[0])
+    return res.data.response[0]
   } catch (error) {
     console.error('Error fetching DiningComment message:', error)
+    throw error
+  }
+}
+
+//查询当前用户在指定订单中身份
+export const getIdentityInOrder = async (orderId) => {
+  console.log('开始getIdentityInOrder')
+  const token = localStorage.getItem('token')
+  try {
+    const res = await ins.get('/api/order/getIdentityInOrder', {
+      params: { orderId: orderId },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    console.log('11111')
+    console.log(res.data.response)
+    return res.data
+  } catch (error) {
+
+    console.error('Error fetching IdentityInOrder message:', error)
     throw error
   }
 }

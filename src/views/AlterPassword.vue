@@ -60,19 +60,20 @@ const Ensure = async () => {
     )
     console.log('Response:', response)
     if (response.data.success) {
+      showToast('修改成功')
       router.push({ name: 'User' })
     } else {
-      showToast('更新失败: ' + response.data.message)
+      showToast('修改失败: ' + response.data.message)
     }
   } catch (error) {
-    showToast('更新失败，请稍后重试', error)
+    showToast('修改失败，请稍后重试', error)
   }
 }
 
 const getCredit = async () => {
   const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value)
   if (!isValidPhoneNumber) {
-    alert('手机号无效。必须是11位数字。')
+    showToast('手机号无效。必须是11位数字。')
     return
   }
   try {
@@ -99,7 +100,7 @@ const getCredit = async () => {
 }
 </script>
 
-<style>
+<style scoped>
 .background {
   position: relative;
   top: 0;

@@ -7,19 +7,15 @@
     <!-- 志愿者信息与订单内容 -->
     <div class="order_content">
       <!-- 配送地址 -->
-      <div v-if="orderDetail.DELIVER_OR_DINING === true">
-        <SimpleAddressCard :order_address="orderDetail.CUS_ADDRESS" />
+      <div v-if="orderDetail.deliverOrDining === true">
+        <SimpleAddressCard :order_address="orderDetail.cusAddress" />
       </div>
 
       <!-- 志愿者信息 -->
       <div>
-        <VolunteerCard
-          :orderId="orderDetail.ORDER_ID"
-          :orderStatus="orderDetail.STATUS"
-          :deliverOrDining="orderDetail.DELIVER_OR_DINING"
-          :deliverStatus="orderDetail.DELIVER_STATUS"
-          ref="volunteerCard"
-        />
+        <VolunteerCard :orderId="orderDetail.orderId" :orderStatus="orderDetail.status"
+          :deliverOrDining="orderDetail.deliverOrDining" :deliverStatus="orderDetail.deliverStatus"
+          ref="volunteerCard" />
       </div>
 
       <!-- 订单信息 -->
@@ -33,15 +29,7 @@
           <span style="font-weight: bold">用户备注</span>
         </div>
         <div class="remarkContent">
-          {{ orderDetail.REMARK }}
-          <div class="test">
-            以下为长文本测试 111111111111111111111111111111111111111111111111111111111111111111111
-            111111111111111111111111111111111111111111111111111111111111111111111
-            111111111111111111111111111111111111111111111111111111111111111111111
-            111111111111111111111111111111111111111111111111111111111111111111111
-            111111111111111111111111111111111111111111111111111111111111111111111
-            111111111111111111111111111111111111111111111111111111111111111111111
-          </div>
+          {{ orderDetail.remark }}
         </div>
       </div>
     </div>
@@ -56,21 +44,11 @@
       </div>
       <hr class="hr-solid" />
       <div class="buttonpt">
-        <van-button
-          :style="buttonStyle"
-          class="button"
-          @click="buttonEvent"
-          :disabled="canClick === false"
-        >
-          {{ buttonText }}</van-button
-        >
+        <van-button :style="buttonStyle" class="button" @click="buttonEvent" :disabled="canClick === false">
+          {{ buttonText }}</van-button>
 
         <!-- ref="commentDialog"：获取子组件的引用。在 setup 中，可以使用commentDialog.value.showDialog();来访问子组件 -->
-        <CommentDialog
-          @exit="handleCommentExit"
-          ref="commentDialog"
-          :deliverOrDining="orderDetail.DELIVER_OR_DINING"
-        />
+        <CommentDialog @exit="handleCommentExit" ref="commentDialog" :deliverOrDining="orderDetail.deliverOrDining" :orderId="orderDetail.orderId"/>
       </div>
     </div>
   </div>
@@ -81,100 +59,174 @@
 // 按钮的逻辑同样无法彻底实现
 
 import { onMounted } from 'vue'
-import { postAccpetOrder } from '../api/api'
+import { postAccpetOrder, getAcceptedOrder, getIdentityInOrder } from '../api/api'
 
-const route = useRoute()
-const orderDetail = computed(() => {
-  return route.query.detail ? JSON.parse(route.query.detail) : {}
-})
+const isAccepted = ref(false);//false表示当前没接单
+
+
+const isDeliver = ref();
+const isOwner = ref();
+const isIdentityReady = ref(false);
+const getIdentity = async () => {
+  if (identity == 'volunteer') {
+    const response2 = await getAcceptedOrder();//当前订单
+    console.log("获得当前订单", response2.value);
+    isAccepted.value = (Object.keys(response2.value).length !== 0);
+    console.log("isAccepted", isAccepted.value);
+  }
+  const response = await getIdentityInOrder(orderDetail.value.orderId);
+  switch (response.success) {
+    case true:
+      isDeliver.value = response.response.isDeliver;
+      isOwner.value = response.response.isOwner;
+      console.log('查询当前身份成功！', response.msg)
+      isIdentityReady.value = true;
+      showButton();
+      break;
+    case false:
+      showFailToast({
+        message: '查询当前身份失败！',
+        onClose: () => {
+          console.log('foast消失')
+          onRefresh()
+        }
+      })
+  }
+
+
+
+}
+
 
 const identity = localStorage.getItem('identity')
-const buttonText = ref('请刷新')
+const buttonText = ref('加载中')
 const canClick = ref()
 
 // 确定buttonText和canClick
 const showButton = () => {
-  // 用户-堂食-待确认-可点的确认取餐
-  // 用户-外送-待确认、已送达-可点的确认取餐
-  if (
-    (identity == 'user' &&
-      orderDetail.DELIVER_OR_DINING == false &&
-      orderDetail.STATUS == '待确认') ||
-    (identity == 'user' &&
-      orderDetail.DELIVER_OR_DINING == true &&
-      (orderDetail.DELIVER_STATUS == '已送达' || orderDetail.STATUS == '待确认'))
-  ) {
-    buttonText.value = '确认取餐'
-    canClick.value = true
-  }
+  console.log('显示按钮内容 identity:', identity, ' deliverOrDining:', orderDetail.value.deliverOrDining,
+    ' status', orderDetail.value.status, ' deliverStatus:', orderDetail.value.deliverStatus
 
-  //用户-外送-待确认、待接单、已接单-不可点的确认取餐
-  else if (
-    identity == 'user' &&
-    orderDetail.DELIVER_OR_DINING == true &&
-    orderDetail.STATUS == '待确认' &&
-    (orderDetail.DELIVER_STATUS == '待接单' || orderDetail.DELIVER_STATUS == '已接单')
-  ) {
-    buttonText.value = '确认取餐'
-    canClick.value = false
-  }
+  )
+  console.log(' isOwner:', isOwner.value, ' isDeliver:', isDeliver.value)
 
-  // 用户-堂食、外送-已确认-可点的去评价
-  else if (identity == 'user' && orderDetail.STATUS == '已确认') {
-    buttonText.value = '去评价'
-    canClick.value = true
-  }
 
-  // 用户-堂食、外送-已评价-可点的查看评价
-  else if (identity == 'user' && orderDetail.STATUS == '已评价') {
-    buttonText.value = '查看评价'
-    canClick.value = true
-  }
-
-  // 志愿者-外送-待接单-可点的确认接单
-  else if (
-    identity == 'volunteer' &&
-    orderDetail.DELIVER_OR_DINING == true &&
-    orderDetail.DELIVER_STATUS == '待接单'
-  ) {
+  if  (isAccepted.value == true && !isOwner.value && !isDeliver.value){
     buttonText.value = '确认接单'
-    canClick.value = true
-  }
-  // 志愿者-外送-已接单-可点的确认送达
-  else if (
-    identity == 'volunteer' &&
-    orderDetail.DELIVER_OR_DINING == true &&
-    orderDetail.DELIVER_STATUS == '已接单'
-  ) {
-    buttonText.value = '确认送达'
-    canClick.value = true
-  }
-  // 志愿者-外送-已送达，待评价-不可点的查看评价
-  else if (
-    identity == 'volunteer' &&
-    orderDetail.DELIVER_OR_DINING == true &&
-    orderDetail.DELIVER_STATUS == '已送达' &&
-    orderDetail.STATUS == '待评价'
-  ) {
-    buttonText.value = '查看评价'
     canClick.value = false
+    showFailToast({
+        message: '请完成已接订单',
+        onClose: () => {
+          console.log('foast消失')
+        }
+      })
   }
-  // 志愿者-外送-已评价-可点的查看评价
-  else if (
-    identity == 'volunteer' &&
-    orderDetail.DELIVER_OR_DINING == true &&
-    orderDetail.DELIVER_STATUS == '已送达' &&
-    orderDetail.STATUS == '已评价'
-  ) {
-    buttonText.value = '查看评价'
-    canClick.value = true
+  else if(orderDetail.value.deliverStatus!='待接单'&&!isOwner.value && !isDeliver.value) {
+    buttonText.value = '确认接单'
+    canClick.value = false
+    showFailToast({
+        message: '该订单已被接收！',
+        onClose: () => {
+          console.log('foast消失')
+        }
+      })
+  }
+  else if (isOwner.value) {
+    // 当前用户是下单者--堂食-待确认-可点的确认取餐
+    // 当前用户是下单者--外送-待确认且已送达-可点的确认取餐
+    if (
+      (orderDetail.value.deliverOrDining == false &&
+        orderDetail.value.status == '待确认') ||
+      (orderDetail.value.deliverOrDining == true &&
+        (orderDetail.value.deliverStatus == '已送达' && orderDetail.value.status == '待确认'))
+    ) {
+      buttonText.value = '确认取餐'
+      canClick.value = true
+    }
+    //当前用户是下单者-外送-待确认且已接单-
+    //是配送-可点的确认送达
+    //不是-不可点的确认取餐
+    else if (
+      orderDetail.value.deliverOrDining == true &&
+      orderDetail.value.status == '待确认' && orderDetail.value.deliverStatus == '已接单') {
+      if (isDeliver.value == true) {
+        buttonText.value = '确认送达'
+        canClick.value = true
+      }
+      else {
+        buttonText.value = '确认取餐'
+        canClick.value = false
+      }
+
+    }
+    //当前用户是下单者-外送-待确认且待接单
+    //是志愿者且未接单（可点的确认接单）
+    //是用户（不可点的确认取餐）
+    else if (orderDetail.value.deliverOrDining == true && orderDetail.value.status == '待确认' &&
+      orderDetail.value.deliverStatus == '待接单') {
+      if (identity == 'volunteer' && isAccepted.value == false) {
+        buttonText.value = '确认接单'
+        canClick.value = true
+      }
+      else {
+        buttonText.value = '确认取餐'
+        canClick.value = false
+      }
+    }
+    // 当前用户是下单者-堂食、外送-已确认-可点的去评价
+    else if (orderDetail.value.status == '已确认') {
+      buttonText.value = '去评价'
+      canClick.value = true
+    }
+
+    // 当前用户是下单者-堂食、外送-已评价-可点的查看评价
+    else if (orderDetail.value.status == '已评价') {
+      buttonText.value = '查看评价'
+      canClick.value = true
+    }
+
+  }
+  else {
+    // 志愿者-外送-未接单-可点的确认接单
+    if (
+      orderDetail.value.deliverOrDining == true &&
+      orderDetail.value.deliverStatus == '待接单'
+    ) {
+      buttonText.value = '确认接单'
+      canClick.value = true
+    }
+    // 志愿者-外送-已接单-可点的确认送达
+    else if (
+      orderDetail.value.deliverOrDining == true &&
+      orderDetail.value.deliverStatus == '已接单'
+    ) {
+      buttonText.value = '确认送达'
+      canClick.value = true
+    }
+    // 志愿者-外送-已送达，待评价/待确认-不可点的查看评价
+    else if (
+      orderDetail.value.deliverOrDining == true &&
+      orderDetail.value.deliverStatus == '已送达' &&
+      orderDetail.value.status == '待评价' || orderDetail.value.status == '待确认'
+    ) {
+      buttonText.value = '查看评价'
+      canClick.value = false
+    }
+    // 志愿者-外送-已评价-可点的查看评价
+    else if (
+      orderDetail.value.deliverOrDining == true &&
+      orderDetail.value.deliverStatus == '已送达' &&
+      orderDetail.value.status == '已评价'
+    ) {
+      buttonText.value = '查看评价'
+      canClick.value = true
+    }
+
   }
 
-  // 按钮的测试示例
-  buttonText.value = '去评价'
-  canClick.value = true
+
 }
-onMounted(showButton)
+// onMounted(showButton)
 
 // 确定按钮颜色
 import { computed } from 'vue'
@@ -198,11 +250,11 @@ import { postConfirmOrder, getOrderMsg, postConfirmDelivered } from '../api/api'
 // 确认接单
 // #region
 const accpetOrder = async () => {
-  console.log('接单')
-  const status = await postAccpetOrder(orderDetail.value.ORDER_ID)
+  console.log('点击确认接单')
+  const status = await postAccpetOrder(orderDetail.value.orderId)
   console.log('status:', status)
-  switch (status) {
-    case 200:
+  switch (status.success) {
+    case true:
       showSuccessToast({
         message: '接单成功！',
         onClose: () => {
@@ -211,7 +263,7 @@ const accpetOrder = async () => {
         }
       })
       break
-    case 400:
+    case false:
       showFailToast({
         message: '接单失败，请重试',
         onClose: () => {
@@ -236,25 +288,44 @@ const handleCommentExit = () => {
 
 // #endregion
 
-// 目前的刷新无效，等待设定完善
-const onRefresh = () => {
-  console.log('刷新页面')
-  showButton()
-}
+
+
+
+const route = useRoute()
+// const orderId = computed(() => {
+//   return route.query.detail ? JSON.parse(route.query.detail) : {}
+// })
+
+const orderDetail = ref({
+  orderId: '',
+  status: '',
+  deliverOrDining: '',
+  deliverStatus: ''
+});
+
+//从父组件获取订单详情
+const volunteerCard = ref(null);
+onMounted(() => {
+  if (route.query.detail) {
+    orderDetail.value = JSON.parse(route.query.detail);
+    console.log('父子组件传递orderDetail', orderDetail.value);
+  }
+});
+
 
 //实际的刷新逻辑
-
-// const onRefresh = async() => {
-//   console.log("刷新页面");
-//   orderDetail.value=await getOrderMsg(orderDetail.value.ORDER_ID);
-//   volunteerCard.value.fetchVolunteerMsg();
-//   showButton();
-// };
+const onRefresh = async () => {
+  console.log("刷新页面");
+  orderDetail.value = await getOrderMsg(orderDetail.value.orderId);
+  await getIdentity();
+  volunteerCard.value.fetchVolunteerMsg();
+};
+onMounted(onRefresh);
 
 // 确认取餐
 // #region
 const confirmOrder = async () => {
-  const status = await postConfirmOrder(orderDetail.ORDER_ID)
+  const status = await postConfirmOrder(orderDetail.value.orderId)
   console.log('status:', status)
   switch (status) {
     case 200:
@@ -282,10 +353,10 @@ const confirmOrder = async () => {
 import { showLoadingToast, showSuccessToast, showFailToast } from 'vant'
 // 确认送达
 const confirmDelivered = async () => {
-  const status = await postConfirmDelivered(orderDetail.ORDER_ID)
-  console.log('status:', status)
-  switch (status) {
-    case 200:
+  const res = await postConfirmDelivered(orderDetail.value.orderId)
+  console.log('确认送达 success:', res)
+  switch (res) {
+    case true:
       showSuccessToast({
         message: '确认成功！',
         onClose: () => {
@@ -294,7 +365,7 @@ const confirmDelivered = async () => {
         }
       })
       break
-    case 400:
+    case false:
       showFailToast({
         message: '确认失败，请重试',
         onClose: () => {
@@ -319,6 +390,9 @@ const buttonEvent = () => {
     accpetOrder()
   } else if (buttonText.value == '确认送达') {
     confirmDelivered()
+  }
+  else {
+    onRefresh();
   }
 }
 </script>

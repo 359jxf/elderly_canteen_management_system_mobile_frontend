@@ -4,14 +4,14 @@
     <div class="headerBox">修改信息</div>
     <div class="registerBox">
       <div class="row">
-        <span class="label">账户名称</span> <input class="inputbox" v-model="accountName" />
+        <span class="label">账户名称</span> <input class="inputBox" v-model="accountName" />
       </div>
       <div class="row">
-        <span class="label">地址</span> <input class="inputbox" v-model="address" />
+        <span class="label">地址</span> <input class="inputBox" v-model="address" />
       </div>
       <div class="row">
         <span class="label">性别</span>
-        <select v-model="gender" class="inputbox">
+        <select v-model="gender" class="inputBox">
           <option value="">选择性别</option>
           <option value="male">男</option>
           <option value="female">女</option>
@@ -19,13 +19,29 @@
       </div>
       <div class="row">
         <span class="label">出生日期</span>
-        <input class="inputbox" type="date" v-model="birthDate" :readonly="isNameNotEmpty" />
+        <input class="inputBox" type="date" v-model="birthDate" :readonly="isNameNotEmpty" />
       </div>
       <div class="row">
-        <span class="label">选择图片</span>
-        <input class="inputbox no-border" type="file" accept="image/*" @change="onImageSelected" />
+        <span class="label">更改头像</span>
+        <input
+          type="file"
+          accept="image/*"
+          @change="onImageSelected"
+          style="display: none"
+          ref="fileInput"
+        />
+        <van-image
+          :src="imageUrl || previousImg"
+          class="image-picker"
+          round
+          fit="cover"
+          @click="triggerFileInput"
+        >
+          <template v-slot:loading>
+            <van-loading type="spinner" size="20" />
+          </template>
+        </van-image>
       </div>
-      <div v-if="imageUrl"><img :src="imageUrl" alt="Selected Image" class="preview" /></div>
       <button class="getIn" @click="Ensure">确认修改</button>
       <div class="actions">
         <span @click="changePassword">修改密码</span>
@@ -48,10 +64,18 @@ const accountName = ref('')
 const address = ref('')
 const gender = ref('')
 const birthDate = ref('')
+const previousImg = ref('')
+
 const selectedImage = ref(null) // 初始化为null而不是空字符串
 const imageUrl = ref('')
 const isNameNotEmpty = ref(false)
 fetchData()
+
+const triggerFileInput = () => {
+  fileInput.value.click() // 触发文件选择
+}
+
+const fileInput = ref(null)
 
 async function fetchData() {
   try {
@@ -72,6 +96,7 @@ async function fetchData() {
       address.value = response.data.response.address
       gender.value = response.data.response.gender
       birthDate.value = response.data.response.birthDate
+      previousImg.value = response.data.response.portrait
 
       if (response.data.response.name !== null) {
         isNameNotEmpty.value = true
@@ -105,16 +130,15 @@ const Ensure = async () => {
       if (accountName.value !== '') {
         localStorage.setItem('accountName', accountName.value)
       }
-
+      showToast('修改成功')
       console.log(selectedImage.value) // 调试用
       localStorage.removeItem('portrait')
       router.push({ name: 'User' })
     } else {
-      alert('更新失败: ' + response.data.msg)
+      showToast('修改失败: ' + response.data.msg)
     }
   } catch (error) {
-    console.error('Error updating account:', error)
-    alert('更新失败，请稍后重试')
+    showToast('修改失败：', error)
   }
 }
 
@@ -136,6 +160,13 @@ const rebindPhone = () => {
 </script>
 
 <style scoped>
+.image-picker {
+  width: 10vh;
+  height: 10vh;
+  cursor: pointer;
+  object-fit: cover;
+}
+
 .background {
   position: relative;
   top: 0;
@@ -156,7 +187,8 @@ const rebindPhone = () => {
   border-radius: 20px;
 
   z-index: 1;
-  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2);
+  /* 阴影效果 */
 }
 
 .headerBox {
@@ -173,7 +205,8 @@ const rebindPhone = () => {
   border-radius: 10px;
 
   z-index: 3;
-  box-shadow: 0 -7px 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  box-shadow: 0 -7px 10px rgba(0, 0, 0, 0.2);
+  /* 阴影效果 */
 }
 
 .row {
@@ -181,27 +214,16 @@ const rebindPhone = () => {
   left: 10%;
   position: relative;
   display: flex;
-  width: 100%;
+  width: 90%;
   height: 12%;
 }
 
 .label {
   width: 20%;
   font-weight: bold;
-  font-size: 60%;
+  font-size: 50%;
   min-width: 25%;
   align-content: center;
-}
-
-.inputbox {
-  position: relative;
-  width: 50%;
-  height: 60%;
-  border-radius: 10px;
-  font-size: 60%;
-  padding-left: 5px;
-  border: 2px solid #000;
-  align-self: center;
 }
 
 .inputBox {
@@ -212,6 +234,7 @@ const rebindPhone = () => {
   font-size: 60%;
   padding-left: 5px;
   align-self: center;
+  border: 2px solid #000;
 }
 
 .no-border {
@@ -260,18 +283,20 @@ const rebindPhone = () => {
 
 .actions {
   position: absolute;
-  top: 90%;
+  top: 85%;
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
+
+  width: 100%;
+
+  padding: 0 10vw;
 }
 
 .actions span {
   cursor: pointer;
   color: #007bff;
   text-decoration: underline;
-  font-size: 60%;
-  margin-left: 10vw; /* 设置左边距 */
-  margin-right: 14vw; /* 设置右边距 */
+  font-size: 50%;
 }
 </style>

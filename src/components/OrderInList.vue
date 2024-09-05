@@ -6,6 +6,7 @@ const props = defineProps({
 
 const router = useRouter();
 const toDetail=()=>{
+    console.log('进入订单详情',props.order_detail);
     router.push({ path: '/OrderDetail', query: { detail:JSON.stringify(props.order_detail)} });
 }
 
@@ -18,23 +19,23 @@ const limitedDishes = computed(() => {
 <template>
     <div class="order-cell" @click="toDetail">
         <div class="part1">
-            <img :src="order_detail.DELIVER_OR_DINING ?
+            <img :src="order_detail.deliverOrDining ?
                 'https://z4a.net/images/2024/07/22/waimai.png'
                 : 'https://z4a.net/images/2024/07/22/tangshi.png'" />
-            <p class="order-number">{{ order_detail.ORDER_ID }}</p>
+            <p class="order-number">{{ order_detail.orderId }}</p>
             <van-icon name="arrow" size="4vw"></van-icon>
         </div>
 
 
-        <div class="order-date">{{ order_detail.UPDATED_TIME }}</div>
+        <div class="order-date">{{ order_detail.updatedTime }}</div>
 
         <div class="part3">
             <div class="food-imgs">
                 <div v-for="(dish, index) in limitedDishes" :key="index" class="food-imgs">
-                    <img :src="dish.PICTURE" :alt="dish.DISH_NAME">
+                    <img :src="dish.picture" :alt="dish.dishName">
                 </div>
             </div>
-            <div class="price">¥{{ order_detail.MONEY }}</div>
+            <div class="price">¥{{ order_detail.money }}</div>
         </div>
 
     </div>

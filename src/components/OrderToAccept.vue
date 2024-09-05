@@ -21,19 +21,19 @@ const clickAccept=()=>{
     <div v-if="Object.keys(order_detail).length!==0">
         <div class="order-cell" @click="toDetail">
         <div class="part1">
-            <img :src="order_detail.DELIVER_OR_DINING ?
+            <img :src="order_detail.deliverOrDining ?
                 'https://z4a.net/images/2024/07/22/waimai.png'
                 : 'https://z4a.net/images/2024/07/22/tangshi.png'" />
-            <p class="order-number">{{ order_detail.ORDER_ID }}</p>
+            <p class="order-number">{{ order_detail.orderId }}</p>
             <van-icon name="arrow" size="4vw"></van-icon>
         </div>
 
 
-        <div class="order-date">{{ order_detail.UPDATED_TIME }}</div>
+        <div class="order-date">{{ order_detail.updatedTime }}</div>
 
      
         <div class="part3">
-            <div class="address">地址：{{ order_detail. CUS_ADDRESS}}</div>
+            <div class="address">地址：{{ order_detail. cusAddress}}</div>
             <!-- .stop阻止事件继续向上冒泡,使点击触发的是按钮事件而非卡片事件 -->
             <van-button @click.stop="clickAccept" 
             :disabled="isAccepted===true" 

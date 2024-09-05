@@ -1,41 +1,43 @@
 <template>
-  <div class="backgroundC">
-    <div class="colorPiece"></div>
-    <img src="../assets/newSlogan.jpg" alt="背景图" class="slogan" />
-    <div class="imageContainer">
-      <div class="imageWrapper" @click="resturant">
-        <div>
-          <img src="../assets/resturant.png" alt="图片1" class="image" />
+  <van-pull-refresh v-model="loading" success-text="刷新成功" @refresh="onRefresh">
+    <div class="backgroundC">
+      <div class="colorPiece"></div>
+      <img src="../assets/newSlogan.jpg" alt="背景图" class="slogan" />
+      <div class="imageContainer">
+        <div class="imageWrapper" @click="resturant">
+          <div>
+            <img src="../assets/resturant.png" alt="图片1" class="image" />
+          </div>
+          <p class="imageText">食堂就餐</p>
         </div>
-        <p class="imageText">食堂就餐</p>
+        <div class="imageWrapper" @click="deliver">
+          <div>
+            <img src="../assets/deliver.png" alt="图片2" class="image" />
+          </div>
+          <p class="imageText">爱心外卖</p>
+        </div>
       </div>
-      <div class="imageWrapper" @click="deliver">
-        <div>
-          <img src="../assets/deliver.png" alt="图片2" class="image" />
+      <TheWelcome />
+      <div class="informationContainer">
+        <div class="tip">⬆</div>
+        <div class="tip">请选择就餐方式</div>
+        <div class="titleLine" v-if="identity === 'volunteer' || identity === 'admin'">
+          志愿者服务
         </div>
-        <p class="imageText">爱心外卖</p>
+        <div class="buttonContainer" v-if="identity === 'volunteer' || identity === 'admin'">
+          <div class="button button1" @click="getVolunteerOrder">志愿接单</div>
+          <div class="button button2" @click="getVolunteerInfor">志愿信息</div>
+        </div>
+        <div class="titleLine line2">食堂信息</div>
+        <div class="informationBox">
+          名称：老人食堂<br />
+          地址：上海市嘉定区曹安公路xxx号y栋<br />
+          联系电话：123-4567-8910
+        </div>
       </div>
     </div>
-    <TheWelcome />
-    <div class="informationContainer">
-      <div class="tip">⬆</div>
-      <div class="tip">请选择就餐方式</div>
-      <div class="titleLine" v-if="identity === 'volunteer' || identity === 'admin'">
-        志愿者服务
-      </div>
-      <div class="buttonContainer" v-if="identity === 'volunteer' || identity === 'admin'">
-        <div class="button button1" @click="getVolunteerOrder">志愿接单</div>
-        <div class="button button2" @click="getVolunteerInfor">志愿信息</div>
-      </div>
-      <div class="titleLine line2">食堂信息</div>
-      <div class="informationBox">
-        名称：老人食堂<br />
-        地址：上海市嘉定区曹安公路xxx号y栋<br />
-        联系电话：123-4567-8910
-      </div>
-    </div>
-    <BottomTabbar nowView="home" />
-  </div>
+  </van-pull-refresh>
+  <BottomTabbar nowView="home" />
 </template>
 
 <script setup>
@@ -48,7 +50,13 @@ import { showToast } from 'vant'
 import defaultPic from '@/assets/testpic.jpg'
 
 const ava = ref('')
-
+const loading = ref(false)
+const onRefresh = () => {
+  setTimeout(() => {
+    window.location.reload()
+    loading.value = false
+  }, 1000)
+}
 onMounted(() => {
   fetchData()
 })
@@ -78,6 +86,7 @@ const fetchData = async () => {
 }
 const deliver_or_dining = ref('true')
 const identity = localStorage.getItem('identity')
+
 const router = useRouter()
 
 const getVolunteerOrder = () => {
@@ -89,14 +98,14 @@ const getVolunteerInfor = () => {
 }
 
 const resturant = () => {
+  localStorage.setItem('deliver_or_dining', deliver_or_dining.value)
   router.push({ name: 'OrderPage' })
-  localStorage.setItem('deliver_or_dining', deliver_or_dining)
 }
 
 const deliver = () => {
-  router.push({ name: 'OrderPage' })
   deliver_or_dining.value = false
-  localStorage.setItem('deliver_or_dining', deliver_or_dining)
+  localStorage.setItem('deliver_or_dining', deliver_or_dining.value)
+  router.push({ name: 'OrderPage' })
 }
 </script>
 

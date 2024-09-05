@@ -50,7 +50,8 @@ const handlePay = async () => {
   console.log(userRemark)
   const setDefault = user.setDefault
   const deliver_or_dining = localStorage.getItem('deliver_or_dining')
-  await ensureCart(cartId, deliver_or_dining, setDefault, newAddr, userRemark)
+  if (deliver_or_dining === 'true') await ensureCart(cartId, true, setDefault, newAddr, userRemark)
+  else await ensureCart(cartId, false, setDefault, newAddr, userRemark)
   menu.clear()
   router.push({ path: '/OrderDetail' })
   remark.clear()

@@ -42,8 +42,8 @@ const fetchVolunteerMsg = async () => {
   if (props.deliverOrDining == true && props.deliverStatus != '待接单') {
     try {
       const response = await getOrderDeliverMsg(props.orderId)
-      volunteerId.value = response.VolunteerId
-      volunteerName.value = response.VolunteerName
+      volunteerId.value = response.volunteerId
+      volunteerName.value = response.volunteerName
       console.log(
         'success fetching VolunteerMsg。id:',
         volunteerId.value,
@@ -57,6 +57,9 @@ const fetchVolunteerMsg = async () => {
 }
 onMounted(fetchVolunteerMsg)
 //#endregion
+defineExpose({
+  fetchVolunteerMsg,
+});
 </script>
 
 <style scoped>
@@ -86,7 +89,7 @@ onMounted(fetchVolunteerMsg)
 }
 
 .num {
-  font-size: 50px;
+  font-size: large;
   color: grey;
   font-weight: bold;
   letter-spacing: 2px;
