@@ -13,31 +13,72 @@ const listReady = ref(false); // 添加一个布尔变量以确保数据准备�
 const orderList = ref([]);
 const acceptedOrder = ref({});
 const isAccepted = ref();//false表示当前没接单
+// const fetchOrders = async () => {
+
+//   try {
+
+//     console.log('fetchOrders尝试执行')
+//     const response2 = await getAcceptedOrder();//当前订单
+//     acceptedOrder.value = response2;
+//     console.log("获得当前订单", acceptedOrder.value);
+//     isAccepted.value = (Object.keys(acceptedOrder.value).length !== 0);
+//     console.log("isAccepted", isAccepted.value);
+
+//     console.log('fetchOrders尝试执行')
+//     const response = await getAcceptableOrder();//待送订单
+//     console.log(response);
+//     orderList.value = response;
+//     console.log('获得待送订单：',orderList.value)
+
+
+//     //订单按新到旧排序
+//     orderList.value.sort((a, b) => {
+//       // 如果 updatedTime 是时间字符串（例如 '2023-08-15T10:00:00Z'），可以直接比较它们
+//       return new Date(b.updatedTime) - new Date(a.updatedTime);
+//     });
+
+//     listReady.value = true; // 数据准备好
+//     onLoad();
+//   } catch (error) {
+//     console.error('Error fetching orderList:', error);
+//     console.error()
+//   } finally {
+//     refreshing.value = false; // 确保在数据获取后重置 refreshing
+//   }
+// };
+
+
 const fetchOrders = async () => {
-  try {
-    console.log('fetchOrders尝试执行')
-    const response = await getAcceptableOrder();//待送订单
-    orderList.value = response;
-    const response2 = await getAcceptedOrder();//当前订单
-    acceptedOrder.value = response2;
-    console.log("acceptedOrder", acceptedOrder.value);
+  console.log('fetchOrders尝试执行')
+  const response2 = await getAcceptedOrder();//当前订单
+  acceptedOrder.value = response2.value;
+  console.log("获得当前订单", acceptedOrder.value);
+  isAccepted.value = (Object.keys(response2.value).length !== 0);
+  console.log("isAccepted", isAccepted.value);
 
-    isAccepted.value = (Object.keys(acceptedOrder.value).length !== 0);
-    console.log("isAccepted", isAccepted.value);
 
-    //订单按新到旧排序
-    orderList.value.sort((a, b) => {
-      // 如果 UPDATED_TIME 是时间字符串（例如 '2023-08-15T10:00:00Z'），可以直接比较它们
-      return new Date(b.UPDATED_TIME) - new Date(a.UPDATED_TIME);
-    });
-
-    listReady.value = true; // 数据准备好
-    onLoad();
-  } catch (error) {
-    console.error('Error fetching orderList:', error);
-  } finally {
-    refreshing.value = false; // 确保在数据获取后重置 refreshing
+  const response = await getAcceptableOrder();//待送订单
+  switch (response.success) {
+    case true:
+      console.log(response);
+      orderList.value = response.response;
+      console.log('获得待送订单：', orderList.value)
+      break;
+    case false:
+      console.log(response.msg);
   }
+
+
+
+  //订单按新到旧排序
+  orderList.value.sort((a, b) => {
+    // 如果 updatedTime 是时间字符串（例如 '2023-08-15T10:00:00Z'），可以直接比较它们
+    return new Date(b.updatedTime) - new Date(a.updatedTime);
+  });
+
+  listReady.value = true; // 数据准备好
+  onLoad();
+  refreshing.value = false; // 确保在数据获取后重置 refreshing
 };
 onMounted(fetchOrders);
 
@@ -158,10 +199,10 @@ watch(active, (newActive) => {
 import { showLoadingToast, showSuccessToast, showFailToast } from 'vant';
 const accpetOrder = async (accpeted_order) => {
   console.log("接单");
-  const status = await postAccpetOrder(accpeted_order.ORDER_ID);
-  console.log('status:', status);
-  switch (status) {
-    case 200:
+  const isSuccess = await postAccpetOrder(accpeted_order.orderId);
+  console.log('postAccpetOrder返回:', isSuccess);
+  switch (isSuccess.success) {
+    case true:
       showSuccessToast({
         message: '接单成功！',
         onClose: () => {
@@ -170,7 +211,7 @@ const accpetOrder = async (accpeted_order) => {
         }
       })
       break;
-    case 400:
+    case false:
       showFailToast({
         message: '接单失败，请重试',
         onClose: () => {
@@ -205,35 +246,40 @@ const accpetOrder = async (accpeted_order) => {
 
     <div class="pageContent">
       <div class="acceptable" v-if="active === '待送订单'">
-        <van-pull-refresh v-model="refreshing" @refresh="onRefresh" v-if="active === '待送订单'">
-          <div class="current-order">
-            <div class="current-title">当前订单</div>
 
-            <OrderToAccept :order_detail="acceptedOrder" :isAccepted="isAccepted" />
-          </div>
+        <div class="current-order">
+          <div class="current-title">当前订单</div>
+
+          <OrderToAccept :order_detail="acceptedOrder" :isAccepted="isAccepted" />
+        </div>
 
 
-          <div class="orders">
-            <div class="order-title">可接订单</div>
-            <div class="scroll">
+        <div class="orders">
+          <div class="order-title">可接订单</div>
+          <div class="scroll">
+            <van-pull-refresh v-model="refreshing" @refresh="onRefresh" v-if="active === '待送订单'">
               <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-                <OrderToAccept v-for="item in list" :key="item.ORDER_ID" :order_detail="item" :isAccepted="isAccepted"
+                <OrderToAccept v-for="item in list" :key="item.orderId" :order_detail="item" :isAccepted="isAccepted"
                   @clickAccept="accpetOrder"></OrderToAccept>
 
               </van-list>
-            </div>
+            </van-pull-refresh>
           </div>
-        </van-pull-refresh>
+
+        </div>
+
 
       </div>
       <div v-else class="finishedOrders">
-        <van-pull-refresh v-model="refreshingFinished" @refresh="onRefreshFinished">
-          <div class="finishedScroll">
+
+        <div class="finishedScroll">
+          <van-pull-refresh v-model="refreshingFinished" @refresh="onRefreshFinished">
             <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-              <OrderInList v-for="item in list2" :key="item.ORDER_ID" :order_detail="item"></OrderInList>
+              <OrderInList v-for="item in list2" :key="item.orderId" :order_detail="item"></OrderInList>
             </van-list>
-          </div>
-        </van-pull-refresh>
+          </van-pull-refresh>
+        </div>
+
       </div>
     </div>
 

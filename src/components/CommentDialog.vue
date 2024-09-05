@@ -14,8 +14,12 @@
                 <van-rate :readonly="writeOrView === 'view'" v-model="falvorRate" :size="30" color="#ffd21e"
                     void-icon="star" void-color="#eeeeee" />
             </div>
-            <textarea :readonly="writeOrView === 'view'" v-model="flavorComment" placeholder="可在此处输入评价"
-                class="flavor-textarea" maxlength="50"></textarea>
+
+            <textarea :readonly="writeOrView === 'view'" v-model="flavorComment" 
+            :placeholder="writeOrView === 'view' ? (flavorComment=='' ? flavorComment : '无评价'):'可在此处输入评价' "
+                class="flavor-textarea" maxlength="50">
+            </textarea>
+
             <p class="textPrompt">{{ flavorComment.length }}/50</p>
         </div>
 
@@ -26,7 +30,8 @@
                 <van-rate :readonly="writeOrView === 'view'" v-model="deliverRate" :size="30" color="#ffd21e"
                     void-icon="star" void-color="#eeeeee" />
             </div>
-            <textarea :readonly="writeOrView === 'view'" v-model="deliverComment" placeholder="可在此处输入评价"
+            <textarea :readonly="writeOrView === 'view'" v-model="deliverComment" 
+            :placeholder="writeOrView === 'view' ? (deliverComment=='' ? deliverComment : '无评价'):'可在此处输入评价' "
                 class="deliver-textarea" maxlength="50"></textarea>
             <p class="textPrompt">{{ deliverComment.length }}/50</p>
         </div>
@@ -78,7 +83,7 @@ const onConfirm = async () => {
             flavorComment.value): await postDiningComment(props.orderId, falvorRate.value,
             flavorComment.value);
         switch (status) {
-            case 200:
+            case true:
                 showSuccessToast({
                     message: '评价成功',
                     duration: 1000,
@@ -90,7 +95,7 @@ const onConfirm = async () => {
                     }
                 })
                 break;
-            case 400:
+            case false:
                 showFailToast('评价失败，请重试');
                 break;
         }
@@ -114,13 +119,14 @@ function writeComment() {
 
 const fetchComment = async () => {
     try {
+        console.log(props.orderId)
         const response = props.deliverOrDining==true?
         await getDeliverComment(props.orderId):await getDiningComment(props.orderId);
         
-        deliverRate.value = response.DStars;
-        falvorRate.value = response.CStars;
-        flavorComment.value = response.CReviewText;
-        deliverComment.value = response.DReviewText;
+        deliverRate.value = response.dStars?response.dStars:0;
+        falvorRate.value = response.cStars?response.cStars:0;
+        flavorComment.value = response.cReviewText?response.cReviewText:'';
+        deliverComment.value = response.dReviewText?response.dReviewText:'';
         console.log('获取评价： 配送得分', deliverRate.value, '配送评价',
             deliverComment.value, '口味得分', falvorRate.value, '口味评价', flavorComment.value)
     } catch (error) {
@@ -128,12 +134,11 @@ const fetchComment = async () => {
     }
 }
 
-function viewComment() {
+const viewComment = async () => {
     writeOrView.value = 'view';
-    show.value = true;
     console.log('查看评论');
-    fetchComment();
-
+    await fetchComment();
+    show.value = true;
 }
 
 // 使用 defineExpose 暴露方法

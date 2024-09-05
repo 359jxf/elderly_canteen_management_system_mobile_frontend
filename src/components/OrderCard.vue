@@ -7,10 +7,10 @@
       <div class="info">
         <van-row :gutter="[0, 10]">
           <van-col span="12">订单号</van-col>
-          <van-col span="12" style="text-align: right">{{ props.order_detail.ORDER_ID }}</van-col>
+          <van-col span="12" style="text-align: right">{{ props.order_detail.orderId }}</van-col>
           <van-col span="12">就餐方式</van-col>
           <van-col span="12" style="text-align: right">
-            {{ props.order_detail.DELIVER_OR_DINING ? '外送' : '堂食' }}
+            {{ props.order_detail.deliverOrDining ? '外送' : '堂食' }}
           </van-col>
           <van-col span="12">补贴消耗</van-col>
           <van-col span="12" style="text-align: right">{{ props.order_detail.subsidy }}</van-col>
@@ -28,9 +28,9 @@
         <ul>
           <li v-for="(item, index) in order_detail.orderDishes" :key="index" class="item">
             <van-row>
-              <van-col span="12">{{ item.DISH_NAME }}</van-col>
-              <van-col span="6">x{{ item.QUANTITY }}</van-col>
-              <van-col span="6">￥{{ item.PRICE }}</van-col>
+              <van-col span="12">{{ item.dishName }}</van-col>
+              <van-col span="6">x{{ item.quantity }}</van-col>
+              <van-col span="6" style="text-align: right;">￥{{ item.price }}</van-col>
             </van-row>
           </li>
         </ul>
@@ -45,7 +45,7 @@
         <span class="text"> 总计</span>
       </div>
       <div class="right">
-        <span class="text"> ￥{{ order_detail.MONEY }}</span>
+        <span class="text"> ￥{{ order_detail.money }}</span>
       </div>
     </div>
   </div>
@@ -94,7 +94,7 @@ const props = defineProps({
 
 
 .card-mid .text {
-  margin-bottom: 5%;
+  margin-bottom: 2%;
 }
 
 
