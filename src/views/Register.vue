@@ -6,14 +6,38 @@
       <div class="row">
         <span class="label">手机号码</span> <input class="inputBox" v-model="phoneNum" />
       </div>
+      <div class="row">
+        <span class="label">账户名称</span> <input class="inputBox" v-model="userName" />
+      </div>
+      <div class="row">
+        <span class="label">账户密码</span> <input class="inputBox" v-model="password" />
+      </div>
+      <div class="row">
+        <span class="label">性别</span>
+        <select v-model="gender" class="inputBox">
+          <option value="">选择性别</option>
+          <option value="male">男</option>
+          <option value="female">女</option>
+        </select>
+      </div>
+      <div class="row">
+        <span class="label">验证码</span>
+        <input class="inputBox half" v-model="verificationCode" /><button
+          class="verifyBtn"
+          @click="getCredit"
+        >
+          发送
+        </button>
+      </div>
+      <button class="getIn" @click="getIn">注册</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import axios from 'axios';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
 import 'vant/es/toast/style'
 import { showToast } from 'vant'
 
@@ -27,30 +51,26 @@ const verificationCode = ref('')
 
 const getIn = async () => {
   try {
-    const formData = new FormData();
-    formData.append('userName', userName.value);
-    formData.append('gender', gender.value);
-    formData.append('verificationCode', verificationCode.value);
-    formData.append('phoneNum', phoneNum.value);
-    formData.append('password', password.value);
-    const response = await axios.post(
-      'http://8.136.125.61/api/account/register',
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+    const formData = new FormData()
+    formData.append('userName', userName.value)
+    formData.append('gender', gender.value)
+    formData.append('verificationCode', verificationCode.value)
+    formData.append('phoneNum', phoneNum.value)
+    formData.append('password', password.value)
+    const response = await axios.post('http://8.136.125.61/api/account/register', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
       }
-    );
+    })
 
     if (response.data.registerSuccess) {
       if (userName.value !== '') {
-        localStorage.setItem('accountName', userName.value);
+        localStorage.setItem('accountName', userName.value)
       }
-      const { token, identity, accountName } = response.data.response;
-      localStorage.setItem('token', token);
-      localStorage.setItem('identity', identity);
-      localStorage.setItem('accountName', accountName);
+      const { token, identity, accountName } = response.data.response
+      localStorage.setItem('token', token)
+      localStorage.setItem('identity', identity)
+      localStorage.setItem('accountName', accountName)
 
       router.push({ name: 'Home' })
     } else {
@@ -62,31 +82,35 @@ const getIn = async () => {
 }
 
 const getCredit = async () => {
-  const phoneNumber = String(phoneNum.value).trim(); // 确保是字符串并去除前后空格
-  const isValidPhoneNumber = /^\d{11}$/.test(phoneNumber);
+  const phoneNumber = String(phoneNum.value).trim() // 确保是字符串并去除前后空格
+  const isValidPhoneNumber = /^\d{11}$/.test(phoneNumber)
 
   if (!isValidPhoneNumber) {
-    alert('手机号无效。必须是11位数字。');
-    return;
+    alert('手机号无效。必须是11位数字。')
+    return
   }
   try {
-    const response = await axios.post('http://8.136.125.61/api/Account/sendOTP', {
-      phoneNum: phoneNum.value,
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
+    const response = await axios.post(
+      'http://8.136.125.61/api/Account/sendOTP',
+      {
+        phoneNum: phoneNum.value
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }
-    });
+    )
 
     if (response.value.success) {
-      showToast('发送成功');
+      showToast('发送成功')
     } else {
-      showToast('发送失败');
+      showToast('发送失败')
     }
   } catch (error) {
-    showToast('发送失败');
+    showToast('发送失败')
   }
-};
+}
 </script>
 
 <style scoped>
@@ -157,6 +181,7 @@ const getCredit = async () => {
   height: 50%;
   border-radius: 1vh;
   font-size: 0.4rem;
+  border: 2px solid #000;
 }
 
 .half {

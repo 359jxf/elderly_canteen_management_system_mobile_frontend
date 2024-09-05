@@ -49,12 +49,13 @@ const Ensure = async () => {
     })
     console.log('Response:', response)
     if (response.data.success) {
+      showToast('修改成功')
       router.push({ name: 'User' })
     } else {
-      showToast('更新失败: ' + response.data.message)
+      showToast('修改失败: ' + response.data.message)
     }
   } catch (error) {
-    showToast('更新失败，请稍后重试', error)
+    showToast('修改失败，请稍后重试', error)
   }
 }
 

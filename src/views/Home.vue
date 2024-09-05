@@ -1,83 +1,92 @@
 <template>
-  <div class="backgroundC">
-    <div class="colorPiece"></div>
-    <img src="../assets/newSlogan.jpg" alt="背景图" class="slogan" />
-    <div class="imageContainer">
-      <div class="imageWrapper" @click="resturant">
-        <div>
-          <img src="../assets/resturant.png" alt="图片1" class="image" />
+  <van-pull-refresh v-model="loading" success-text="刷新成功" @refresh="onRefresh">
+    <div class="backgroundC">
+      <div class="colorPiece"></div>
+      <img src="../assets/newSlogan.jpg" alt="背景图" class="slogan" />
+      <div class="imageContainer">
+        <div class="imageWrapper" @click="resturant">
+          <div>
+            <img src="../assets/resturant.png" alt="图片1" class="image" />
+          </div>
+          <p class="imageText">食堂就餐</p>
         </div>
-        <p class="imageText">食堂就餐</p>
+        <div class="imageWrapper" @click="deliver">
+          <div>
+            <img src="../assets/deliver.png" alt="图片2" class="image" />
+          </div>
+          <p class="imageText">爱心外卖</p>
+        </div>
       </div>
-      <div class="imageWrapper" @click="deliver">
-        <div>
-          <img src="../assets/deliver.png" alt="图片2" class="image" />
+      <TheWelcome />
+      <div class="informationContainer">
+        <div class="tip">⬆</div>
+        <div class="tip">请选择就餐方式</div>
+        <div class="titleLine" v-if="identity === 'volunteer' || identity === 'admin'">
+          志愿者服务
         </div>
-        <p class="imageText">爱心外卖</p>
+        <div class="buttonContainer" v-if="identity === 'volunteer' || identity === 'admin'">
+          <div class="button button1" @click="getVolunteerOrder">志愿接单</div>
+          <div class="button button2" @click="getVolunteerInfor">志愿信息</div>
+        </div>
+        <div class="titleLine line2">食堂信息</div>
+        <div class="informationBox">
+          名称：老人食堂<br />
+          地址：上海市嘉定区曹安公路xxx号y栋<br />
+          联系电话：123-4567-8910
+        </div>
       </div>
     </div>
-    <TheWelcome />
-    <div class="informationContainer">
-      <div class="tip">⬆</div>
-      <div class="tip">请选择就餐方式</div>
-      <div class="titleLine" v-if="identity === 'volunteer' || identity === 'admin'">
-        志愿者服务
-      </div>
-      <div class="buttonContainer" v-if="identity === 'volunteer' || identity === 'admin'">
-        <div class="button button1" @click="getVolunteerOrder">志愿接单</div>
-        <div class="button button2" @click="getVolunteerInfor">志愿信息</div>
-      </div>
-      <div class="titleLine line2">食堂信息</div>
-      <div class="informationBox">
-        名称：老人食堂<br />
-        地址：上海市嘉定区曹安公路xxx号y栋<br />
-        联系电话：123-4567-8910
-      </div>
-    </div>
-    <BottomTabbar nowView="home" />
-  </div>
+  </van-pull-refresh>
+  <BottomTabbar nowView="home" />
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
 import 'vant/es/toast/style'
 import { showToast } from 'vant'
 
-import defaultPic from '@/assets/testpic.jpg';
+import defaultPic from '@/assets/testpic.jpg'
 
-const ava=ref('')
-
+const ava = ref('')
+const loading = ref(false)
+const onRefresh = () => {
+  setTimeout(() => {
+    window.location.reload()
+    loading.value = false
+  }, 1000)
+}
 onMounted(() => {
-  fetchData();
-});
+  fetchData()
+})
 
 const fetchData = async () => {
-try {
-  // 从 localStorage 中获取保存的 Token
-  const token = localStorage.getItem('token');
+  try {
+    // 从 localStorage 中获取保存的 Token
+    const token = localStorage.getItem('token')
 
-  // 使用 axios 发起 GET 请求，附带 Authorization 头
-  const response = await axios.get('http://8.136.125.61/api/account/getPersonInfo', {
-    headers: {
-      Authorization: `Bearer ${token}`  // 将 Token 添加到 Authorization 头中
+    // 使用 axios 发起 GET 请求，附带 Authorization 头
+    const response = await axios.get('http://8.136.125.61/api/account/getPersonInfo', {
+      headers: {
+        Authorization: `Bearer ${token}` // 将 Token 添加到 Authorization 头中
+      }
+    })
+
+    if (response.data.getSuccess === true) {
+      console.log(response.data.response) // 调试用
+      ava.value = response.data.response.portrait ? response.data.response.portrait : defaultPic
+      localStorage.setItem('portrait', ava.value)
+    } else {
+      showToast('获取信息失败')
     }
-  });
-
-  if (response.data.getSuccess === true) {
-    console.log(response.data.response); // 调试用
-    ava.value = response.data.response.portrait ? response.data.response.portrait : defaultPic;
-    localStorage.setItem('portrait', ava.value);
-  } else {
+  } catch (error) {
     showToast('获取信息失败')
   }
-} catch (error) {
-  showToast('获取信息失败')
 }
-};
 
 const identity = localStorage.getItem('identity')
+
 const router = useRouter()
 
 const getVolunteerOrder = () => {
@@ -85,8 +94,8 @@ const getVolunteerOrder = () => {
 }
 
 const getVolunteerInfor = () => {
-router.push({ name: 'VolunteerInfor' });
-};
+  router.push({ name: 'VolunteerInfor' })
+}
 
 const resturant = () => {
   router.push({ name: 'OrderPage' })
