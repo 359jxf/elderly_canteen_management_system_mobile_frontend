@@ -3,12 +3,7 @@
     <!-- 顶部导航栏 -->
     <div class="head">
       <Nav nav_text="我的订单" />
-      <van-tabs
-        v-model:active="active"
-        swipeable
-        title-active-color="rgb(249, 184, 62)"
-        @change="onRefresh"
-      >
+      <van-tabs v-model:active="active" swipeable title-active-color="rgb(249, 184, 62)" @change="onRefresh">
         <van-tab title="全部" name="all"></van-tab>
         <van-tab title="外送" name="deliver"></van-tab>
         <van-tab title="堂食" name="dining"></van-tab>
@@ -17,19 +12,16 @@
 
     <!-- 订单列表 -->
     <div class="orders">
-      <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-        <div class="scroll">
-          <van-list
-            v-model:loading="loading"
-            :finished="finished"
-            finished-text="没有更多了"
-            @load="onLoad"
-          >
-            <OrderInList v-for="item in filteredList" :key="item.ORDER_ID" :order_detail="item">
+
+      <div class="scroll">
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+          <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+            <OrderInList v-for="item in filteredList" :key="item.orderId" :order_detail="item">
             </OrderInList>
           </van-list>
-        </div>
-      </van-pull-refresh>
+        </van-pull-refresh>
+      </div>
+
     </div>
 
     <!-- 底部导航栏 -->
@@ -49,8 +41,8 @@ const fetchOrders = async () => {
     orderList.value = response
     //在筛选前，先对订单时间降序排序，新的在前
     orderList.value.sort((a, b) => {
-      // 如果 UPDATED_TIME 是时间字符串（例如 '2023-08-15T10:00:00Z'），可以直接比较它们
-      return new Date(b.UPDATED_TIME) - new Date(a.UPDATED_TIME)
+      // 如果 updatedTime 是时间字符串（例如 '2023-08-15T10:00:00Z'），可以直接比较它们
+      return new Date(b.updatedTime) - new Date(a.updatedTime)
     })
     listReady.value = true // 数据准备好
     onLoad()
@@ -72,9 +64,9 @@ const filteredList = computed(() => {
   if (active.value === 'all') {
     return list.value
   } else if (active.value === 'deliver') {
-    return list.value.filter((item) => item.DELIVER_OR_DINING === true) // 外送
+    return list.value.filter((item) => item.deliverOrDining === true) // 外送
   } else if (active.value === 'dining') {
-    return list.value.filter((item) => item.DELIVER_OR_DINING === false) // 堂食
+    return list.value.filter((item) => item.deliverOrDining === false) // 堂食
   }
   return list.value
 })
@@ -145,8 +137,7 @@ const router = useRouter()
   flex-grow: 1;
   padding: 20px;
   background-color: rgba(244, 244, 244);
-  margin-top: calc(
-    5vh + 5vh
-  ); /*使用 position: fixed 的head被从文档流中移除了，导致 orders 容器向上移动 */
+  margin-top: calc(5vh + 5vh);
+  /*使用 position: fixed 的head被从文档流中移除了，导致 orders 容器向上移动 */
 }
 </style>
