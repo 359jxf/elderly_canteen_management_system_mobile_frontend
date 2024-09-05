@@ -25,8 +25,8 @@ const selfStatement = ref('')
 
 const sendApplication = async () => {
   const token = localStorage.getItem('token')
-  if (selfStatement.value === '') {
-    showToast('请输入申请内容')
+  if (selfStatement.value.trim().length < 5) {
+    showToast('请输入至少 5 个字的申请内容')
     return
   }
   try {

@@ -100,6 +100,11 @@ const fetchData = async () => {
       getSuccess.value = true
       userData.value = response.data.response
       preview.value = userData.value.portrait ? userData.value.portrait : defaultPic
+      if (userData.value.gender === 'male') {
+        userData.value.gender = '男'
+      } else {
+        userData.value.gender = '女'
+      }
 
       localStorage.setItem('portrait', preview.value)
       localStorage.setItem('name', userData.value.name)
@@ -114,8 +119,9 @@ const fetchData = async () => {
 
 const ensurePrepaid = async () => {
   const token = localStorage.getItem('token')
-  if (prePaidMoney.value === '') {
-    showToast('请输入充值金额')
+
+  if (prePaidMoney.value <= 0 || prePaidMoney.value > 1000) {
+    showToast('请输入 0 到 1000 之间的充值金额')
     return
   }
   try {
