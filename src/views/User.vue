@@ -313,7 +313,7 @@ const exitEnsure = () => {
   width: 20vw;
 
   top: 4vh;
-  font-size: 60%;
+  font-size: 2vh;
 
   color: #007bff;
   text-decoration: underline;

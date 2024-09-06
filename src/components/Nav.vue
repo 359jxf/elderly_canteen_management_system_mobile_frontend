@@ -2,7 +2,11 @@
   <div class="top">
     <van-icon name="arrow-left" @click="onClickLeft" />
     <p>{{ props.nav_text }}</p>
-    <img :src="portrait" @click="clickPortrait" class="roundImg" />
+    <van-image :src="portrait" round fit="cover" @click="clickPortrait" class="roundImg">
+      <template v-slot:loading>
+        <van-loading type="spinner" size="20" />
+      </template>
+    </van-image>
   </div>
 </template>
 <script setup>
@@ -32,7 +36,8 @@ const clickPortrait = () => {
 
 <style scoped>
 .roundImg {
-  border-radius: 50%;
+  height: 10vw;
+  width: 10vw;
 }
 
 .top p {

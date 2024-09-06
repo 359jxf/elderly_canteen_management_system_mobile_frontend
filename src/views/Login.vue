@@ -23,11 +23,11 @@
       <p class="forgetPassword" @click="forgetPassword">忘记密码？</p>
       <div class="icon-container">
         <div class="left-box">
-          <van-icon name="add-o" class="symbol" size="5vh" color="#ffa822" @click="register" />
+          <van-icon name="add-o" class="symbol" size="10vw" color="#ffa822" @click="register" />
           <span class="text">注册</span>
         </div>
         <div class="right-box">
-          <van-icon name="close" class="symbol" size="5vh" color="#ffa822" />
+          <van-icon name="close" class="symbol" size="10vw" color="#ffa822" />
           <span class="text">退出</span>
         </div>
       </div>
@@ -40,11 +40,11 @@
       <p class="forgetPassword" @click="forgetPassword">忘记密码？</p>
       <div class="icon-container">
         <div class="left-box">
-          <van-icon name="add-o" class="symbol" size="5vh" color="#ffa822" @click="register" />
+          <van-icon name="add-o" class="symbol" size="10vw" color="#ffa822" @click="register" />
           <span class="text">注册</span>
         </div>
         <div class="right-box">
-          <van-icon name="close" class="symbol" size="5vh" color="#ffa822" @click="quitApp" />
+          <van-icon name="close" class="symbol" size="10vw" color="#ffa822" />
           <span class="text">退出</span>
         </div>
       </div>
@@ -201,66 +201,8 @@ const register = () => {
 </script>
 
 <style scoped>
-.whiteBox {
-  position: absolute;
-  top: 24.5%;
-
-  height: 7%;
-  width: 80vw;
-  left: 10vw;
-
-  text-align: center;
-  font-weight: bold;
-  font-size: 60%;
-  background-color: white;
-  border-radius: 10px;
-  z-index: 10;
-}
-
-.icon-container {
-  position: relative;
-  display: flex;
-  justify-content: space-between; /* 左右分布 */
-  top: 4vh;
-}
-
-.left-box,
-.right-box {
-  display: flex;
-  justify-content: center;
-  width: 50%;
-}
-
-.text {
-  position: relative;
-  height: 10vh;
-  font-size: 0.4rem;
-  color: #ffa822;
-  top: 15vh;
-  left: -5.5vw;
-}
-
-.symbol {
-  top: 10vh;
-  left: 4vw;
-  z-index: 10;
-}
-
-.heading {
-  position: relative;
-
-  z-index: 10;
-
-  top: 10%;
-
-  text-align: center; /* 水平居中 */
-  font-weight: bold; /* 字体加粗 */
-
-  color: #ffa822;
-}
-
 .background {
-  height: 100vh;
+  height: 220vw;
   width: 100vw;
 
   position: relative;
@@ -285,13 +227,75 @@ const register = () => {
   pointer-events: none;
 }
 
+.whiteBox {
+  position: absolute;
+  top: 24.5%;
+
+  height: 11vw;
+  width: 80vw;
+  left: 10vw;
+
+  text-align: center;
+  font-weight: bold;
+  font-size: 60%;
+  background-color: white;
+  border-radius: 10px;
+  z-index: 10;
+}
+
+.icon-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between; /* 左右分布 */
+  top: 4vw;
+
+  height: 40%;
+}
+
+.left-box,
+.right-box {
+  display: flex;
+  justify-content: center;
+  width: 50%;
+}
+
+.text {
+  position: relative;
+  height: 20vw;
+  font-size: 4vw;
+  color: #ffa822;
+  top: 30vw;
+  left: -5vw;
+}
+
+.symbol {
+  top: 20vw;
+  left: 4vw;
+  z-index: 10;
+  height: 18vw;
+}
+
+.heading {
+  position: relative;
+
+  z-index: 10;
+
+  top: 10%;
+
+  text-align: center; /* 水平居中 */
+  font-weight: bold; /* 字体加粗 */
+
+  color: #ffa822;
+}
+
 .loginBox {
   position: absolute;
+
   top: 25%;
   left: 10%;
 
-  height: 55%;
-  width: 80%;
+  height: 100vw;
+  width: 80vw;
 
   background-color: white;
 
@@ -307,8 +311,8 @@ const register = () => {
   position: absolute;
   top: 20.5%;
 
-  height: 6%;
-  width: 30%;
+  height: 10vw;
+  width: 30vw;
 
   text-align: center;
   font-weight: bold;
