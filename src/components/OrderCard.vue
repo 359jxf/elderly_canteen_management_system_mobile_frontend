@@ -19,7 +19,6 @@
     </div>
     <hr class="hr-solid" />
 
-
     <div class="card-mid">
       <div class="text">
         <span class="title">菜品价格明细</span>
@@ -30,13 +29,12 @@
             <van-row>
               <van-col span="12">{{ item.dishName }}</van-col>
               <van-col span="6">x{{ item.quantity }}</van-col>
-              <van-col span="6" style="text-align: right;">￥{{ item.price }}</van-col>
+              <van-col span="6" style="text-align: right">￥{{ item.price }}</van-col>
             </van-row>
           </li>
         </ul>
       </div>
     </div>
-
 
     <hr class="hr-solid" />
     <div class="card-footer">
@@ -65,11 +63,9 @@ const props = defineProps({
   padding: 3% 6%;
 }
 
-
 .card-header .text {
   margin-bottom: 5%;
 }
-
 
 .card-header .text .title {
   font-weight: bold;
@@ -77,13 +73,11 @@ const props = defineProps({
   letter-spacing: 3px;
 }
 
-
 .card-header .info {
   font-size: small;
   margin-left: 8px;
   margin-left: 8px;
 }
-
 
 .hr-solid {
   border: 0;
@@ -92,22 +86,18 @@ const props = defineProps({
   margin-bottom: 10px;
 }
 
-
 .card-mid .text {
   margin-bottom: 2%;
 }
-
 
 .card-mid .text .title {
   font-weight: bold;
   font-size: small;
 }
 
-
 .card-mid .info {
   font-size: small;
 }
-
 
 .card-footer {
   display: flex;
@@ -115,12 +105,10 @@ const props = defineProps({
   align-items: center;
 }
 
-
 .card-footer .left {
   display: flex;
   align-items: center;
 }
-
 
 .card-footer .left .text {
   font-weight: bold;
@@ -128,12 +116,10 @@ const props = defineProps({
   margin-left: 6px;
 }
 
-
 .card-footer .right .text {
   color: red;
   font-size: medium;
 }
-
 
 ul {
   list-style-type: none;
@@ -142,7 +128,7 @@ ul {
   margin: 0;
 }
 
-li{
+li {
   padding-bottom: 8px;
   padding-left: 6px;
 }

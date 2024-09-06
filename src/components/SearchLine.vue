@@ -2,7 +2,7 @@
   <div class="top">
     <van-icon name="arrow-left" @click="onClickLeft" />
     <van-search v-model="searchValue" placeholder="请输入搜索关键词" class="fixed-width-search" />
-    <img :src="portrait" @click="clickPortrait" />
+    <img :src="portrait" @click="clickPortrait" class="roundImg" />
   </div>
 </template>
 <script setup>
@@ -36,6 +36,9 @@ const clickPortrait = () => {
 </script>
 
 <style scoped>
+.roundImg {
+  border-radius: 50%;
+}
 .top img {
   max-width: 100%;
   max-height: 100%;
@@ -51,7 +54,11 @@ const clickPortrait = () => {
   height: 5vh;
   width: 100%;
   align-items: center;
+  justify-content: space-between;
   display: flex;
+  font-size: large;
+  font-weight: bold;
+  /* position: relative; */
 }
 .fixed-width-search {
   width: 80vw; /* 或其他固定宽度值 */

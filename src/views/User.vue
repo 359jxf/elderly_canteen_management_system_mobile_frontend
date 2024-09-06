@@ -20,6 +20,9 @@
         <div class="row">
           <span class="label">出生日期:</span> <span class="value">{{ userData.birthDate }}</span>
         </div>
+        <div class="row" v-if="userData.identity === 'senior'">
+          <span class="label">补贴:</span> <span class="value">{{ userData.subsidy }}</span>
+        </div>
         <div class="row">
           <span class="label">账户余额</span> <span class="value">{{ userData.money }}</span
           ><van-icon name="gold-coin-o" class="prePaid" size="7vw" @click="prePaid" />
@@ -84,7 +87,8 @@ const userData = ref({
   address: '',
   name: '',
   money: '',
-  IDCard: ''
+  IDCard: '',
+  subsidy: ''
 })
 const loading = ref(false)
 const onRefresh = () => {
@@ -231,7 +235,7 @@ const exitEnsure = () => {
 }
 
 .space {
-  height: 8%;
+  height: 6%;
 }
 
 .row {
@@ -268,7 +272,7 @@ const exitEnsure = () => {
 .errorContainer,
 .textContainer {
   position: relative;
-  top: 10%;
+  top: 8%;
   height: 60%;
   font-size: 0.4rem;
   padding-left: 15%; /* 调整左侧距离 */
@@ -290,9 +294,9 @@ const exitEnsure = () => {
   color: white;
   position: relative;
   font-size: 0.5rem;
-  top: 4vh;
+  top: 5vh;
 
-  height: 8vh;
+  height: 7vh;
   width: 35vw;
 
   background-color: #ffa822;
@@ -308,7 +312,7 @@ const exitEnsure = () => {
   left: 40vw;
   width: 20vw;
 
-  top: 5vh;
+  top: 4vh;
   font-size: 60%;
 
   color: #007bff;
