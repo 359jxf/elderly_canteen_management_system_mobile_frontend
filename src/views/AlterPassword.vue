@@ -108,10 +108,13 @@ const getCredit = async () => {
   height: 100vh;
   width: 100vw;
 
-  background-color: wheat;
+  background-image: url('@/assets/loginBack.jpg'); /* 使用本地图片作为背景 */
+
+  background-size: cover; /* 确保背景图片覆盖整个容器 */
 }
 
 .registerBox {
+  opacity: 0.98;
   position: relative;
   height: 70%;
   top: 14%;
@@ -125,6 +128,7 @@ const getCredit = async () => {
 }
 
 .headerBox {
+  opacity: 0.98;
   position: relative;
   height: 5%;
   top: 15%;

@@ -1,5 +1,5 @@
 <template>
-  <div class="back" @click="handleClick">&lt;</div>
+  <van-icon name="arrow-left" @click="handleClick" class="back" />
 </template>
 
 <script setup>
@@ -21,18 +21,27 @@ const handleClick = () => {
 
 <style scoped>
 .back {
+  display: flex;
+  align-items: center; /* 垂直居中 */
+
+  opacity: 0.98;
   position: fixed;
 
   top: 5%;
   left: 5%;
 
   height: 5vh;
-  width: 5vh;
+  width: 12vw;
 
   padding-left: 1vh;
 
   z-index: 1000;
   font-size: 100%;
-  background-color: wheat;
+
+  border-radius: 10px;
+
+  color: black;
+
+  background-color: white;
 }
 </style>

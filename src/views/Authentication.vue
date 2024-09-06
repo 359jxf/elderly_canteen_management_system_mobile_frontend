@@ -99,7 +99,7 @@ const sendApplication = async () => {
 .header {
   position: relative;
   font-weight: bold;
-  font-size: 80%;
+  font-size: 5vw;
   text-align: center;
   top: 10%;
 }
@@ -125,7 +125,7 @@ const sendApplication = async () => {
 }
 
 .label {
-  font-size: 0.4rem;
+  font-size: 4vw;
   font-weight: bold;
   width: 30%;
   height: 10%;
@@ -134,7 +134,7 @@ const sendApplication = async () => {
 .input {
   width: 70%;
   height: 50%;
-  font-size: 60%;
+  font-size: 4vw;
 
   border-radius: 10px;
 
@@ -145,7 +145,7 @@ const sendApplication = async () => {
 
 .send {
   position: relative;
-  font-size: 80%;
+  font-size: 5vw;
   color: white;
   font-weight: bold;
 
@@ -172,7 +172,7 @@ const sendApplication = async () => {
 
   font-weight: bold;
 
-  font-size: 50%;
+  font-size: 3.5vw;
   color: red;
 
   text-align: center; /* 文本居中 */

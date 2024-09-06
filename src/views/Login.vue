@@ -211,18 +211,6 @@ const register = () => {
   background-color: white;
 }
 
-.background::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(183, 169, 169, 0.5); /* 调整背景透明度 */
-  z-index: 0;
-  pointer-events: none;
-}
-
 .whiteBox {
   position: absolute;
   top: 24.5%;
