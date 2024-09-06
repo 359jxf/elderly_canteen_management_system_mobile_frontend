@@ -54,7 +54,7 @@
           @click="onClickMenuButton('主食')"
           :class="{ focus: buttons[3].focus }"
         >
-          <img src="/src/assets/image/meat.png" height="25px" width="25px" />
+          <img src="/src/assets/image/rice.png" height="25px" width="25px" />
           <br />
           主食
         </button>

@@ -43,7 +43,7 @@
         <span class="text"> 总计</span>
       </div>
       <div class="right">
-        <span class="text"> ￥{{ order_detail.money - order_detail.subsidy }}</span>
+        <span class="text"> ￥{{ order_detail.money.toFixed(2) }}</span>
       </div>
     </div>
   </div>

@@ -13,12 +13,12 @@
         <span v-if="props.discountPrice !== 0" class="discount-price">
           ￥{{ props.discountPrice.toFixed(2) }}
         </span>
-        <span v-else> ￥{{ props.dishPrice.toFixed(2) }} </span>
+        <span v-else class="price"> ￥{{ props.dishPrice.toFixed(2) }} </span>
       </div>
       <div class="bottom">
         <div class="sale">
           <span>销量：{{ props.sales }}</span>
-          <span>库存： {{ props.stock }}</span>
+          <span>&nbsp;库存：{{ props.stock }}</span>
         </div>
         <button class="plus-button" @click="addItem">＋</button>
       </div>
@@ -110,7 +110,7 @@ const addItem = async () => {
 }
 
 .name {
-  margin-top: 1vh;
+  margin-top: 2vh;
   font-size: medium; /* 字体大小使用视口宽度的2% */
   font-weight: bold;
   display: block;
@@ -133,7 +133,7 @@ const addItem = async () => {
 }
 
 .sale span {
-  font-size: 2vw; /* 字体大小使用视口宽度的2% */
+  font-size: 3vw; /* 字体大小使用视口宽度的2% */
   display: block;
 }
 
@@ -157,13 +157,16 @@ const addItem = async () => {
 
 .original-price {
   text-decoration: line-through;
-  font-size: 4vw;
+  font-size: 5vw;
   color: gray;
 }
 
 .discount-price {
   color: red;
-  font-size: 4vw;
+  font-size: 5vw;
   font-weight: bold;
+}
+.text .price {
+  font-size: 5vw;
 }
 </style>
