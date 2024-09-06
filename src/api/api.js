@@ -30,14 +30,13 @@ export const getAcceptableOrder = async () => {
     console.error('getAcceptableOrder失败 message:', error)
     throw error
   }
-
 }
 
 //查询志愿者当前订单
 export const getAcceptedOrder = async () => {
-  console.log('开始getAcceptedOrder');
+  console.log('开始getAcceptedOrder')
   const token = localStorage.getItem('token')
-  const tmp=ref({});
+  const tmp = ref({})
   const res = await ins.get('/api/volServe/getAcceptedOrder', {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -45,16 +44,14 @@ export const getAcceptedOrder = async () => {
     }
   })
   console.log('getAcceptedOrder输出结果：', res.data.response)
-  if(res.data.response.length){
-    tmp.value=res.data.response[0]
+  if (res.data.response.length) {
+    tmp.value = res.data.response[0]
     console.log('111')
-    return tmp;
-  }else{
+    return tmp
+  } else {
     console.log('222')
-    return tmp;
+    return tmp
   }
-  
-
 }
 
 //查询志愿者已送订单
@@ -131,7 +128,7 @@ export const getOrderDeliverMsg = async (orderId) => {
   const token = localStorage.getItem('token')
   try {
     const res = await ins.get('/api/order/getOrderDeliverMsg', {
-      params: { orderId: orderId },
+      params: { OrderId: orderId },
 
       headers: {
         Authorization: `Bearer ${token}`,
@@ -231,8 +228,18 @@ export const postDeliverComment = async (
 ) => {
   const token = localStorage.getItem('token')
   try {
-    console.log('orderId:',orderId,'deliverRate:',deliverRate,'deliverComment',deliverComment,
-      'falvorRate',falvorRate,'flavorComment',flavorComment)
+    console.log(
+      'orderId:',
+      orderId,
+      'deliverRate:',
+      deliverRate,
+      'deliverComment',
+      deliverComment,
+      'falvorRate',
+      falvorRate,
+      'flavorComment',
+      flavorComment
+    )
     const res = await ins.post(
       '/api/order/postDeliverComment',
       {
@@ -283,7 +290,6 @@ export const getDeliverComment = async (orderId) => {
     console.log(res.data.response[0])
     return res.data.response[0]
   } catch (error) {
-
     console.error('Error fetching DeliverComment message:', error)
     throw error
   }
@@ -325,7 +331,6 @@ export const getIdentityInOrder = async (orderId) => {
     console.log(res.data.response)
     return res.data
   } catch (error) {
-
     console.error('Error fetching IdentityInOrder message:', error)
     throw error
   }
