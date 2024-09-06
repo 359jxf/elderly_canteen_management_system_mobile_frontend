@@ -161,8 +161,8 @@ const rebindPhone = () => {
 
 <style scoped>
 .image-picker {
-  width: 10vh;
-  height: 10vh;
+  width: 20vw;
+  height: 20vw;
   cursor: pointer;
   object-fit: cover;
   left: 5vw;
@@ -172,10 +172,8 @@ const rebindPhone = () => {
   position: relative;
   top: 0;
 
-  height: 100vh;
+  height: 210vw;
   width: 100vw;
-
-  background-color: wheat;
 
   background-image: url('@/assets/loginBack.jpg'); /* 使用本地图片作为背景 */
 
@@ -185,24 +183,22 @@ const rebindPhone = () => {
 .registerBox {
   opacity: 0.98;
   position: relative;
-  height: 70%;
-  top: 14%;
+  height: 140vw;
+  top: 24vw;
   width: 80%;
   left: 10%;
   background-color: white;
   border-radius: 20px;
 
   z-index: 1;
-  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2);
-  /* 阴影效果 */
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
 }
-
 .headerBox {
   opacity: 0.98;
   position: relative;
-  height: 5%;
-  top: 15%;
-  width: 60%;
+  height: 11vw;
+  top: 26vw;
+  width: 60vw;
   left: 20%;
   background-color: white;
 
@@ -212,8 +208,7 @@ const rebindPhone = () => {
   border-radius: 10px;
 
   z-index: 3;
-  box-shadow: 0 -7px 10px rgba(0, 0, 0, 0.2);
-  /* 阴影效果 */
+  box-shadow: 0 -7px 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
 }
 
 .row {

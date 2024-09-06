@@ -52,18 +52,18 @@ const Ensure = async () => {
   position: relative;
   top: 0;
 
-  height: 100vh;
+  height: 210vw;
   width: 100vw;
+
   background-image: url('@/assets/loginBack.jpg'); /* 使用本地图片作为背景 */
 
   background-size: cover; /* 确保背景图片覆盖整个容器 */
 }
-
 .registerBox {
   opacity: 0.98;
   position: relative;
-  height: 70%;
-  top: 14%;
+  height: 140vw;
+  top: 24vw;
   width: 80%;
   left: 10%;
   background-color: white;
@@ -72,13 +72,12 @@ const Ensure = async () => {
   z-index: 1;
   box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
 }
-
 .headerBox {
   opacity: 0.98;
   position: relative;
-  height: 5%;
-  top: 15%;
-  width: 60%;
+  height: 11vw;
+  top: 26vw;
+  width: 60vw;
   left: 20%;
   background-color: white;
 

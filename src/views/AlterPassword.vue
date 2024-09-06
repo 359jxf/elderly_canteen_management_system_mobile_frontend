@@ -7,18 +7,16 @@
         <span class="label">手机号码</span> <input class="inputBox" v-model="phoneNum" />
       </div>
       <div class="row">
-        <span class="label">新密码</span> <input class="inputBox" v-model="numPassword" />
+        <span class="label">新密码</span> <input class="inputBox" v-model="newPassword" />
       </div>
       <div class="row">
         <span class="label">重新输入</span> <input class="inputBox" v-model="rePassword" />
       </div>
       <div class="row">
         <span class="label">验证码</span>
-        <input class="inputBox half" v-model="verificationCode" /><button
-          class="verifyBtn"
-          @click="getCredit"
-        >
-          发送
+        <input class="inputBox half" v-model="verificationCode" />
+        <button class="getBtn" @click="getCredit" :disabled="isCountingDown">
+          {{ buttonText }}
         </button>
       </div>
       <button class="getIn" @click="Ensure">确认修改</button>
@@ -37,27 +35,31 @@ const router = useRouter()
 const phoneNum = ref('')
 const newPassword = ref('')
 const rePassword = ref('')
+const verificationCode = ref('')
+const isCountingDown = ref(false) // 是否在倒计时
+const buttonText = ref('获取') // 按钮显示文字
+const countDownTime = ref(60) // 倒计时时间（秒）
+let timer = null // 计时器
 
 const Ensure = async () => {
   const token = localStorage.getItem('token')
+
   if (newPassword.value !== rePassword.value) {
+    showToast('两次密码不同')
     return
   }
   try {
     const data = {
-      newPassword: newPassword.value
+      newPassword: newPassword.value,
+      phoneNum: phoneNum.value,
+      code: verificationCode.value
     }
 
-    const response = await axios.post(
-      `http://8.136.125.61/api/Account/changePassword?pswd=${this.newPassword}`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+    const response = await axios.post(`http://8.136.125.61/api/Account/changePassword`, data, {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    )
+    })
     console.log('Response:', response)
     if (response.data.success) {
       showToast('修改成功')
@@ -71,32 +73,50 @@ const Ensure = async () => {
 }
 
 const getCredit = async () => {
+  if (isCountingDown.value) return
   const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value)
   if (!isValidPhoneNumber) {
-    showToast('手机号无效。必须是11位数字。')
+    showToast('手机号无效，必须是11位数字。')
     return
   }
   try {
-    const response = await axios.post(
-      'http://8.136.125.61/api/Account/sendOTP',
-      {
-        PhoneNum: phoneNum.value
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    )
-
+    const response = await axios.post('http://8.136.125.61/api/Account/sendOTP', {
+      phoneNum: phoneNum.value
+    })
+    console.log(response)
+    console.log(response.data.success)
     if (response.data.success) {
       showToast('发送成功')
+      startCountDown()
     } else {
       showToast('发送失败')
     }
   } catch (error) {
-    showToast('请求失败:', error)
+    showToast('发送失败')
   }
+}
+
+// 开始倒计时
+const startCountDown = () => {
+  isCountingDown.value = true
+  buttonText.value = `${countDownTime.value} 秒`
+
+  timer = setInterval(() => {
+    countDownTime.value--
+    buttonText.value = `${countDownTime.value} 秒`
+
+    if (countDownTime.value <= 0) {
+      clearInterval(timer)
+      resetButton()
+    }
+  }, 1000)
+}
+
+// 重置按钮状态
+const resetButton = () => {
+  isCountingDown.value = false
+  countDownTime.value = 60
+  buttonText.value = '获取'
 }
 </script>
 
@@ -105,19 +125,18 @@ const getCredit = async () => {
   position: relative;
   top: 0;
 
-  height: 100vh;
+  height: 210vw;
   width: 100vw;
 
   background-image: url('@/assets/loginBack.jpg'); /* 使用本地图片作为背景 */
 
   background-size: cover; /* 确保背景图片覆盖整个容器 */
 }
-
 .registerBox {
   opacity: 0.98;
   position: relative;
-  height: 70%;
-  top: 14%;
+  height: 140vw;
+  top: 24vw;
   width: 80%;
   left: 10%;
   background-color: white;
@@ -126,13 +145,12 @@ const getCredit = async () => {
   z-index: 1;
   box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
 }
-
 .headerBox {
   opacity: 0.98;
   position: relative;
-  height: 5%;
-  top: 15%;
-  width: 60%;
+  height: 11vw;
+  top: 26vw;
+  width: 60vw;
   left: 20%;
   background-color: white;
 
@@ -152,6 +170,17 @@ const getCredit = async () => {
   display: flex;
   width: 100%;
   height: 12%;
+}
+
+.getBtn {
+  position: relative;
+  top: 0;
+  height: 9vw;
+  width: 15vw;
+  border-radius: 10px;
+  margin-left: 5vw;
+  background-color: white;
+  font-size: 3vw;
 }
 
 .label {

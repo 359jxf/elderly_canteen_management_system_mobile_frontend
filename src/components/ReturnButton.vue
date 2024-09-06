@@ -27,13 +27,13 @@ const handleClick = () => {
   opacity: 0.98;
   position: fixed;
 
-  top: 5%;
-  left: 5%;
+  top: 10vw;
+  left: 5vw;
 
-  height: 5vh;
+  height: 12vw;
   width: 12vw;
 
-  padding-left: 1vh;
+  padding-left: 2vw;
 
   z-index: 1000;
   font-size: 100%;

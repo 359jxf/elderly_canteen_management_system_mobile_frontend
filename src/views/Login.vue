@@ -35,7 +35,7 @@
     <div class="loginBox" v-else>
       <input class="input-item" v-model="phoneNum" placeholder="输入手机号" />
       <input class="input-item half" v-model="verifyCode" placeholder="输入验证码" />
-      <button class="getBtn" @click="getCredit">获取验证码</button>
+      <button class="getBtn" @click="getCredit" :disabled="isCountingDown">{{ buttonText }}</button>
       <button class="loginBtn" @click="loginWithCredit">登 录</button>
       <p class="forgetPassword" @click="forgetPassword">忘记密码？</p>
       <div class="icon-container">
@@ -61,6 +61,11 @@ import { showToast } from 'vant'
 
 const router = useRouter()
 const isPassword = ref(true)
+
+const isCountingDown = ref(false) // 是否在倒计时
+const buttonText = ref('获取验证码') // 按钮显示文字
+const countDownTime = ref(60) // 倒计时时间（秒）
+let timer = null // 计时器
 
 const phoneNum = ref('')
 const password = ref('')
@@ -90,9 +95,9 @@ const loginWithPassword = async () => {
       phoneNum: phoneNum.value,
       password: password.value
     })
-    console.log('1', response.data)
     if (response.data.loginSuccess) {
       const { token, identity, accountName } = response.data.response
+
       localStorage.setItem('token', token)
       localStorage.setItem('identity', identity)
       localStorage.setItem('accountName', accountName)
@@ -127,10 +132,10 @@ const loginWithCredit = async () => {
   }
   try {
     const response = await axios.post('http://8.136.125.61/api/Account/verifiationCodeLogin', {
-      phoneNum: phoneNum.value,
-      verifyCode: verifyCode.value
+      PhoneNum: phoneNum.value,
+      Code: verifyCode.value
     })
-    if (response.data.loginSuccess) {
+    if (response.data.success) {
       const { token, identity, accountName } = response.data.response
       localStorage.setItem('token', token)
       localStorage.setItem('identity', identity)
@@ -144,7 +149,7 @@ const loginWithCredit = async () => {
     if (error.response) {
       const statusCode = error.response.status
       if (statusCode === 400) {
-        showToast(`登录失败，密码错误`)
+        showToast(`登录失败，验证码错误`)
       }
       if (statusCode === 404) {
         showToast(`登录失败，用户名未找到`)
@@ -159,32 +164,50 @@ const loginWithCredit = async () => {
 }
 
 const getCredit = async () => {
+  if (isCountingDown.value) return
   const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value)
   if (!isValidPhoneNumber) {
     showToast('手机号无效，必须是11位数字。')
     return
   }
   try {
-    const response = await axios.post(
-      'http://8.136.125.61/api/Account/sendOTP',
-      {
-        phone: phoneNum.value
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    )
-
-    if (response.value.success) {
+    const response = await axios.post('http://8.136.125.61/api/Account/sendOTP', {
+      phoneNum: phoneNum.value
+    })
+    console.log(response)
+    console.log(response.data.success)
+    if (response.data.success) {
       showToast('发送成功')
+      startCountDown()
     } else {
       showToast('发送失败')
     }
   } catch (error) {
-    showToast('发送成功')
+    showToast('发送失败')
   }
+}
+
+// 开始倒计时
+const startCountDown = () => {
+  isCountingDown.value = true
+  buttonText.value = `${countDownTime.value} 秒`
+
+  timer = setInterval(() => {
+    countDownTime.value--
+    buttonText.value = `${countDownTime.value} 秒`
+
+    if (countDownTime.value <= 0) {
+      clearInterval(timer)
+      resetButton()
+    }
+  }, 1000)
+}
+
+// 重置按钮状态
+const resetButton = () => {
+  isCountingDown.value = false
+  countDownTime.value = 60
+  buttonText.value = '获取验证码'
 }
 
 const forgetPassword = () => {
@@ -198,7 +221,7 @@ const register = () => {
 
 <style scoped>
 .background {
-  height: 220vw;
+  height: 210vw;
   width: 100vw;
 
   position: relative;
