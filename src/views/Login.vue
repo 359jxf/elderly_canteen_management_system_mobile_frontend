@@ -370,6 +370,7 @@ const register = () => {
   font-weight: bold;
   background-color: #ffa822;
   letter-spacing: 0.05rem;
+  z-index:1000;
 }
 
 .getBtn {
