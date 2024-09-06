@@ -105,6 +105,7 @@ const resturant = () => {
 }
 
 const deliver = () => {
+  user.deliver_or_dining = true
   router.push({ name: 'OrderPage' })
 }
 </script>
