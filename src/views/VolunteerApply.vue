@@ -48,7 +48,7 @@ const sendApplication = async () => {
       showToast('发送失败')
     }
   } catch (error) {
-    showToast('发送失败', error.response.msg)
+    showToast('发送失败')
   }
 }
 </script>

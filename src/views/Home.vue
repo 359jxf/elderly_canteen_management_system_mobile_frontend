@@ -28,6 +28,7 @@
           <div class="button button1" @click="getVolunteerOrder">志愿接单</div>
           <div class="button button2" @click="getVolunteerInfor">志愿信息</div>
         </div>
+
         <div class="titleLine line2">食堂信息</div>
         <div class="informationBox">
           名称：老人食堂<br />

@@ -12,7 +12,7 @@ export const getOrders = async () => {
     })
     console.log(res.data.response)
     return res.data.response
-  }catch (error) {
+  } catch (error) {
     console.error('getPastOrder失败 message:', error.response.data)
     throw error
   }
@@ -35,14 +35,13 @@ export const getAcceptableOrder = async () => {
     console.error('getAcceptableOrder失败 message:', error)
     throw error
   }
-
 }
 
 //查询志愿者当前订单
 export const getAcceptedOrder = async () => {
-  console.log('开始getAcceptedOrder');
+  console.log('开始getAcceptedOrder')
   const token = localStorage.getItem('token')
-  const tmp = ref({});
+  const tmp = ref({})
   const res = await ins.get('/api/volServe/getAcceptedOrder', {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -53,13 +52,11 @@ export const getAcceptedOrder = async () => {
   if (res.data.response.length) {
     tmp.value = res.data.response[0]
     console.log('111')
-    return tmp;
+    return tmp
   } else {
     console.log('222')
-    return tmp;
+    return tmp
   }
-
-
 }
 
 //查询志愿者已送订单
@@ -236,8 +233,18 @@ export const postDeliverComment = async (
 ) => {
   const token = localStorage.getItem('token')
   try {
-    console.log('orderId:', orderId, 'deliverRate:', deliverRate, 'deliverComment', deliverComment,
-      'falvorRate', falvorRate, 'flavorComment', flavorComment)
+    console.log(
+      'orderId:',
+      orderId,
+      'deliverRate:',
+      deliverRate,
+      'deliverComment',
+      deliverComment,
+      'falvorRate',
+      falvorRate,
+      'flavorComment',
+      flavorComment
+    )
     const res = await ins.post(
       '/api/order/postDeliverComment',
       {
@@ -330,7 +337,6 @@ export const getIdentityInOrder = async (orderId) => {
     console.log(res.data.response)
     return res.data
   } catch (error) {
-
     console.error('Error fetching IdentityInOrder message:', error)
     throw error
   }

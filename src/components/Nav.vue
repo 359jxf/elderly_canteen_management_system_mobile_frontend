@@ -2,7 +2,7 @@
   <div class="top">
     <van-icon name="arrow-left" @click="onClickLeft" />
     <p>{{ props.nav_text }}</p>
-    <img :src="portrait" @click="clickPortrait" />
+    <img :src="portrait" @click="clickPortrait" class="roundImg" />
   </div>
 </template>
 <script setup>
@@ -14,7 +14,7 @@ const props = defineProps({
 
 //头像加载（渲染阶段）、点击跳转用户页
 //#region
-const portrait = ref();
+const portrait = ref()
 const loadPortrait = async () => {
   const url = await getPorTrait()
   console.log('component:getportrait:url:', url)
@@ -31,6 +31,10 @@ const clickPortrait = () => {
 </script>
 
 <style scoped>
+.roundImg {
+  border-radius: 50%;
+}
+
 .top p {
   position: absolute;
   left: 50%;
