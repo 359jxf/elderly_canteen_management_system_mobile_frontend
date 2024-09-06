@@ -43,13 +43,11 @@ const jumpToPay = async () => {
 const router = useRouter()
 const handlePay = async () => {
   const cartId = localStorage.getItem('cartId')
-  const newAddr = user.addr
   remark.setMark()
   const userRemark = remark.remark
   console.log(userRemark)
-  const setDefault = user.setDefault
   const deliver_or_dining = user.deliver_or_dining
-  await ensureCart(cartId, deliver_or_dining, setDefault, newAddr, userRemark)
+  await ensureCart(cartId, deliver_or_dining, false, '堂食', userRemark)
   menu.clear()
   remark.clear()
   user.clear()

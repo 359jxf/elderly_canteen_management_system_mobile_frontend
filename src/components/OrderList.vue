@@ -28,7 +28,7 @@
         <DishCard v-bind="cartItems[0]" />
       </div>
       <hr class="hr-solid" />
-      <span class="text"> 合计￥{{ totalPrice }} </span>
+      <span class="text"> 合计￥{{ totalPrice.toFixed(2) }} </span>
     </div>
   </div>
 </template>
