@@ -60,37 +60,63 @@ const toggleShowMore = () => {
 .orderlist {
   border-radius: 15px;
   margin: 4%;
-  padding: 4%;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  padding: 20px; /* 增加内边距 */
+  background: #ffffff; /* 背景色 */
+  border: 2px solid #e0e0e0; /* 添加边框 */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* 改进阴影效果 */
+  transition:
+    box-shadow 0.3s ease-in-out,
+    border-color 0.3s ease-in-out; /* 添加过渡效果 */
 }
+
 .title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
+  color: #333; /* 更深的颜色 */
+  margin-bottom: 10px; /* 增加底部间距 */
 }
+
 .hr-solid {
-  margin-top: 10%;
+  margin: 20px 0; /* 增加上下间距 */
   border: 0;
   border-top: 1px solid #d0d0d5;
-  margin-bottom: 5%;
 }
+
 .text {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
+  color: #333; /* 更深的颜色 */
 }
+
 .empty-cart-message {
   text-align: center;
   font-size: 18px;
-  color: #999;
+  color: #888; /* 更柔和的颜色 */
+  margin-top: 20px; /* 增加顶部间距 */
 }
+
 .show-more {
   cursor: pointer;
   text-align: center;
-  color: #ffa500;
+  color: #ff9f00; /* 更亮的颜色 */
   font-weight: bold;
-  font-size: medium;
-  margin-top: 10px;
+  font-size: 16px;
+  margin-top: 15px; /* 增加顶部间距 */
+  padding: 10px; /* 增加内边距 */
+  border-radius: 5px; /* 添加圆角 */
+  background: #fff4e6; /* 背景渐变 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 添加阴影 */
+  transition:
+    background 0.3s ease,
+    color 0.3s ease; /* 添加过渡效果 */
 }
+
+.show-more:hover {
+  background: #ffe0b2; /* 悬停时背景颜色变化 */
+  color: #e68a00; /* 悬停时文字颜色变化 */
+}
+
 .more-items {
-  margin-top: 10px;
+  margin-top: 15px; /* 增加顶部间距 */
 }
 </style>

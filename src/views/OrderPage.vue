@@ -14,8 +14,7 @@
   </div>
 
   <div class="header">
-    <SearchLine v-model="searchTerm" class="nav" />
-    <img src="../assets/slogan.jpg" class="slogan" />
+    <SearchLine v-model="searchTerm" class="nav" /><img src="../assets/slogan.jpg" class="slogan" />
   </div>
   <div class="container">
     <div class="button-list">
@@ -126,7 +125,7 @@
       </div>
     </div>
     <div class="popup-footer">
-      <span class="total-price">总价：￥{{ totalPrice }}</span>
+      <span class="total-price">总价：￥{{ totalPrice.toFixed(2) }}</span>
       <van-button class="checkout-button" type="primary" @click="handleCheckout">去结算</van-button>
     </div>
   </van-popup>
@@ -148,6 +147,7 @@ import {
   deleteCartItem
 } from '@/api/api'
 import { onMounted } from 'vue'
+import { useUserStore } from '@/store/modules/user'
 const menu = useMenuStore()
 const cartItems = ref([])
 const items = ref([])
@@ -269,8 +269,10 @@ const decreaseQuantity = async (index) => {
     await updateCartItem(cartId, item.dishId, item.quantity)
   }
 }
+const user = useUserStore()
 const handleCheckout = () => {
-  router.push('/ShoppingCart')
+  if (user.deliver_or_dining) router.push('/ShoppingCart')
+  else router.push('/diningCart')
 }
 const clearCartItem = async () => {
   try {
@@ -293,12 +295,13 @@ const clearCartItem = async () => {
 
 .slogan {
   width: 100%;
-  height: 20vh;
+  margin: 0;
+  padding: 0;
+  display: block;
 }
 
 .container {
   display: flex;
-  height: 75vh;
 }
 .button-list {
   padding-top: 1vh;

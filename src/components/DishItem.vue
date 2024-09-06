@@ -6,26 +6,21 @@
     </div>
     <div class="right">
       <div class="text">
-        <div class="name">
-          <span>{{ props.dishName }}</span>
-        </div>
-        <div class="price">
-          <span v-if="props.discountPrice !== 0" class="original-price">
-            ￥{{ props.dishPrice.toFixed(2) }}
-          </span>
-          <span v-if="props.discountPrice !== 0" class="discount-price">
-            ￥{{ props.discountPrice.toFixed(2) }}
-          </span>
-          <span v-else> ￥{{ props.dishPrice.toFixed(2) }} </span>
-        </div>
+        <span class="name">{{ props.dishName }}</span>
+        <span v-if="props.discountPrice !== 0" class="original-price">
+          ￥{{ props.dishPrice.toFixed(2) }}
+        </span>
+        <span v-if="props.discountPrice !== 0" class="discount-price">
+          ￥{{ props.discountPrice.toFixed(2) }}
+        </span>
+        <span v-else> ￥{{ props.dishPrice.toFixed(2) }} </span>
       </div>
       <div class="bottom">
         <div class="sale">
           <span>销量：{{ props.sales }}</span>
+          <span>库存： {{ props.stock }}</span>
         </div>
-        <div class="button">
-          <button class="plus-button" @click="addItem">＋</button>
-        </div>
+        <button class="plus-button" @click="addItem">＋</button>
       </div>
     </div>
   </div>
@@ -47,7 +42,8 @@ const props = defineProps({
   dishPrice: Number,
   discountPrice: Number,
   category: String,
-  sales: Number
+  sales: Number,
+  stock: Number
 })
 const addItem = async () => {
   const item = {
@@ -109,18 +105,19 @@ const addItem = async () => {
 }
 
 .text {
-  margin-top: 2vh; /* 顶部边距使用视口高度的5% */
   width: 100%;
   margin-left: 4vw; /* 左边距使用视口宽度的4% */
 }
 
-.name span {
+.name {
+  margin-top: 1vh;
   font-size: medium; /* 字体大小使用视口宽度的2% */
   font-weight: bold;
+  display: block;
 }
 
 .price span {
-  font-size: medium; /* 字体大小使用视口宽度的2% */
+  font-size: 4vw; /* 字体大小使用视口宽度的2% */
   font-weight: bold;
 }
 
@@ -131,14 +128,17 @@ const addItem = async () => {
 }
 
 .sale {
-  margin-right: 14vw; /* 右边距使用视口宽度的5% */
+  /* 右边距使用视口宽度的5% */
+  margin-right: 14vw;
 }
 
 .sale span {
-  font-size: small; /* 字体大小使用视口宽度的2% */
+  font-size: 2vw; /* 字体大小使用视口宽度的2% */
+  display: block;
 }
 
 .plus-button {
+  margin-top: 1vh;
   background-color: orange;
   border: none;
   color: black;
@@ -157,11 +157,13 @@ const addItem = async () => {
 
 .original-price {
   text-decoration: line-through;
+  font-size: 4vw;
   color: gray;
 }
 
 .discount-price {
   color: red;
+  font-size: 4vw;
   font-weight: bold;
 }
 </style>
