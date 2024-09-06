@@ -238,6 +238,10 @@ const filteredItems = computed(() => {
     )
   }
 
+  if (filteredByCategory.length === 0 && items.value.length !== 0) {
+    showToast('没有匹配的菜品')
+  }
+
   return filteredByCategory
 })
 const increaseQuantity = async (index) => {
@@ -357,7 +361,7 @@ const clearCartItem = async () => {
   font-weight: bold;
 }
 .blank {
-  height: 6vh; /* 设置行的高度 */
+  height: 8vh; /* 设置行的高度 */
   width: 100%; /* 宽度占满父容器 */
   background-color: transparent; /* 背景色透明 */
 }
@@ -528,5 +532,8 @@ const clearCartItem = async () => {
   align-items: center;
   justify-content: center;
   border-radius: 50px; /* 保持圆角效果 */
+}
+.text span {
+  margin-right: 17%;
 }
 </style>

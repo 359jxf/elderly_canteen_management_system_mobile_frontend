@@ -3,14 +3,19 @@ import ins from '../utils/axiosInstance.js'
 //获取历史订单
 export const getOrders = async () => {
   const token = localStorage.getItem('token')
-  const res = await ins.get('/api/order/getPastOrder', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    }
-  })
-  console.log(res.data.response)
-  return res.data.response
+  try {
+    const res = await ins.get('/api/order/getPastOrder', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    console.log(res.data.response)
+    return res.data.response
+  } catch (error) {
+    console.error('getPastOrder失败 message:', error.response.data)
+    throw error
+  }
 }
 
 // 查询可接订单
@@ -128,7 +133,7 @@ export const getOrderDeliverMsg = async (orderId) => {
   const token = localStorage.getItem('token')
   try {
     const res = await ins.get('/api/order/getOrderDeliverMsg', {
-      params: { OrderId: orderId },
+      params: { orderId: orderId },
 
       headers: {
         Authorization: `Bearer ${token}`,

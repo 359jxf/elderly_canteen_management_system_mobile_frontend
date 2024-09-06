@@ -53,7 +53,7 @@ const handlePay = async () => {
   if (deliver_or_dining === 'true') await ensureCart(cartId, true, setDefault, newAddr, userRemark)
   else await ensureCart(cartId, false, setDefault, newAddr, userRemark)
   menu.clear()
-  router.push({ path: '/OrderDetail' })
+  router.push({ path: '/MyOrders' })
   remark.clear()
   user.clear()
 }
