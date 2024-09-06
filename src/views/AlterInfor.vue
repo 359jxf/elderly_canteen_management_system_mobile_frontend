@@ -201,7 +201,7 @@ const rebindPhone = () => {
   background-color: white;
 
   font-weight: bold;
-  font-size: 80%;
+  font-size: 5vw;
   text-align: center;
   border-radius: 10px;
 
@@ -222,7 +222,7 @@ const rebindPhone = () => {
 .label {
   width: 20%;
   font-weight: bold;
-  font-size: 50%;
+  font-size: 4vw;
   min-width: 25%;
   align-content: center;
 }
@@ -233,7 +233,7 @@ const rebindPhone = () => {
   width: 50%;
   height: 60%;
   border-radius: 10px;
-  font-size: 60%;
+  font-size: 3.5vw;
   padding-left: 1%;
   align-self: center;
   border: 2px solid #000;
@@ -264,7 +264,7 @@ const rebindPhone = () => {
   left: 30%;
   top: 12%;
   border-radius: 20px;
-  font-size: 60%;
+  font-size: 5vw;
   border: none;
   color: white;
   font-weight: bold;
@@ -299,6 +299,6 @@ const rebindPhone = () => {
   cursor: pointer;
   color: #007bff;
   text-decoration: underline;
-  font-size: 50%;
+  font-size: 3.5vw;
 }
 </style>

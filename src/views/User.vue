@@ -205,6 +205,7 @@ const apply = () => {
 }
 
 const exit = () => {
+  localStorage.clear()
   router.push({ name: 'Login' })
 }
 
@@ -234,7 +235,7 @@ const exitEnsure = () => {
 
 .head {
   font-weight: bold;
-  font-size: 120%;
+  font-size: 5vw;
 }
 
 .space {
@@ -254,12 +255,12 @@ const exitEnsure = () => {
   font-weight: bold;
   min-width: 30%;
   text-align: left;
-  font-size: 100%;
+  font-size: 4vw;
 }
 
 .value {
   text-align: left;
-  font-size: 100%;
+  font-size: 4vw;
   line-height: 1.3;
 }
 
@@ -277,7 +278,7 @@ const exitEnsure = () => {
   position: relative;
   top: 8%;
   height: 60%;
-  font-size: 0.4rem;
+  font-size: 4vw;
   padding-left: 15%; /* 调整左侧距离 */
 
   z-index: 10;
@@ -296,7 +297,7 @@ const exitEnsure = () => {
   font-weight: bold;
   color: white;
   position: relative;
-  font-size: 0.5rem;
+  font-size: 5.5vw;
   top: 5vh;
 
   height: 7vh;
@@ -316,7 +317,7 @@ const exitEnsure = () => {
   width: 20vw;
 
   top: 4vh;
-  font-size: 2vh;
+  font-size: 4vw;
 
   color: #007bff;
   text-decoration: underline;

@@ -97,7 +97,7 @@ const forget = () => {
   background-color: white;
 
   font-weight: bold;
-  font-size: 80%;
+  font-size: 5vw;
   text-align: center;
   border-radius: 10px;
 
@@ -117,7 +117,7 @@ const forget = () => {
 .label {
   width: 20%;
   font-weight: bold;
-  font-size: 60%;
+  font-size: 4vw;
   min-width: 25%;
 }
 
@@ -126,7 +126,7 @@ const forget = () => {
   width: 50%;
   height: 60%;
   border-radius: 10px;
-  font-size: 60%;
+  font-size: 4vw;
 }
 
 .half {
@@ -141,7 +141,7 @@ const forget = () => {
   left: 30%;
   top: 10%;
   border-radius: 20px;
-  font-size: 60%;
+  font-size: 5vw;
   border: none;
   color: white;
   font-weight: bold;
@@ -155,6 +155,6 @@ const forget = () => {
   position: relative;
   color: #007bff;
   text-decoration: underline;
-  font-size: 60%;
+  font-size: 4vw;
 }
 </style>

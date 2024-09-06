@@ -133,7 +133,7 @@ const getCredit = async () => {
   background-color: white;
 
   font-weight: bold;
-  font-size: 80%;
+  font-size: 5vw;
   text-align: center;
   border-radius: 10px;
 
@@ -153,7 +153,7 @@ const getCredit = async () => {
 .label {
   width: 20%;
   font-weight: bold;
-  font-size: 60%;
+  font-size: 4.5vw;
   min-width: 25%;
 }
 
@@ -162,7 +162,7 @@ const getCredit = async () => {
   width: 50%;
   height: 60%;
   border-radius: 10px;
-  font-size: 60%;
+  font-size: 4vw;
 }
 
 .half {
@@ -177,7 +177,7 @@ const getCredit = async () => {
   left: 30%;
   top: 10%;
   border-radius: 20px;
-  font-size: 60%;
+  font-size: 5vw;
   border: none;
   color: white;
   font-weight: bold;
@@ -190,6 +190,6 @@ const getCredit = async () => {
   height: 50%;
   left: 5%;
   border-radius: 5px;
-  font-size: 70%;
+  font-size: 3.5vw;
 }
 </style>

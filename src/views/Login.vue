@@ -233,7 +233,6 @@ const register = () => {
 
   text-align: center;
   font-weight: bold;
-  font-size: 60%;
   background-color: white;
   border-radius: 10px;
   z-index: 10;
@@ -312,7 +311,7 @@ const register = () => {
 
   text-align: center;
   font-weight: bold;
-  font-size: 55%;
+  font-size: 4.5vw;
   background-color: white;
   box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5); /* 阴影效果 */
   border-radius: 1vh;
@@ -344,7 +343,7 @@ const register = () => {
 
   margin-top: 5%;
   border-radius: 10px;
-  font-size: 60%;
+  font-size: 4vw;
 
   text-align: center;
 }
@@ -360,7 +359,7 @@ const register = () => {
   width: 60%;
   border-radius: 10px;
   background-color: rgb(232, 255, 195);
-  font-size: 70%;
+  font-size: 5vw;
   border: none;
   color: white;
   font-weight: bold;
@@ -377,29 +376,14 @@ const register = () => {
   border-radius: 10px;
   margin-left: 10%;
   background-color: white;
-  font-size: 50%;
-}
-
-.register {
-  position: relative;
-  top: 25%;
-  left: 0%;
-  width: 40%;
-  height: 15%;
-  border-radius: 20px;
-  font-size: 60%;
-  border: none;
-  color: white;
-  font-weight: bold;
-  background-color: #ffa822;
-  letter-spacing: 0.05rem;
+  font-size: 3vw;
 }
 
 .forgetPassword {
   position: relative;
   font-weight: bold;
   top: 20%;
-  font-size: 60%;
+  font-size: 4vw;
   z-index: 10;
 }
 </style>
