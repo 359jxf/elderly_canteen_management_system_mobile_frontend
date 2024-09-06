@@ -260,7 +260,7 @@ const rebindPhone = () => {
   width: 40%;
   height: 10%;
   left: 30%;
-  top: 10%;
+  top: 5%;
   border-radius: 20px;
   font-size: 60%;
   border: none;

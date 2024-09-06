@@ -1,7 +1,7 @@
 <template>
   <div class="dishcard">
     <div class="card-left">
-      <img :src="props.imageUrl" height="75px" />
+      <img :src="props.imageUrl" />
     </div>
     <div class="card-right">
       <div class="card-right-top">
@@ -10,11 +10,12 @@
       <div class="card-right-bottom">
         <div class="card-right-bottom-left">
           <div class="item-price-info">
-            <!-- 只有在打折前价格大于打折后价格时显示原价 -->
-            <span v-if="props.dishPrice > props.discountPrice" class="original-price">
+            <span v-if="props.discountPrice > 0" class="original-price">
               ￥{{ props.dishPrice }}
             </span>
-            <span class="discount-price">￥{{ props.discountPrice }}</span>
+            <span class="discount-price">
+              ￥{{ props.discountPrice > 0 ? props.discountPrice : props.dishPrice }}
+            </span>
           </div>
         </div>
         <div class="card-right-bottom-right">
@@ -43,6 +44,10 @@ const props = defineProps({
   border-radius: 15px;
   padding: 4%;
   display: flex;
+}
+img {
+  height: 10vh;
+  width: 25vw;
 }
 .card-left {
   width: 40%;

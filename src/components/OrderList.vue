@@ -5,15 +5,17 @@
     <div v-if="cartItems.length === 0" class="empty-cart-message">购物车为空</div>
     <!-- 否则，显示点餐列表 -->
     <div v-else>
-      <!-- 仅显示一盘菜 -->
-      <DishCard v-bind="cartItems[0]" v-if="!showMore" />
-      <!-- 如果菜品超过一盘，显示更多按钮 -->
+      <!-- 显示点餐列表 -->
       <div v-if="cartItems.length > 1">
+        <!-- 仅显示一盘菜 -->
+        <DishCard v-bind="cartItems[0]" v-if="!showMore" />
+
         <!-- 显示剩余菜品 -->
         <div v-show="showMore" class="more-items">
           <DishCard v-for="(item, index) in cartItems" :key="index" v-bind="item" />
         </div>
-        <!-- 下拉箭头 -->
+
+        <!-- 显示更多按钮 -->
         <div class="show-more" @click="toggleShowMore">
           <span v-if="!showMore">显示更多</span>
           <span v-if="showMore">收起</span>
@@ -21,8 +23,9 @@
           <van-icon name="arrow-up" v-if="showMore" />
         </div>
       </div>
+      <!-- 只有一盘菜时显示 -->
       <div v-else>
-        <DishCard v-bind="cartItems[0]" v-if="cartItems.length > 0" />
+        <DishCard v-bind="cartItems[0]" />
       </div>
       <hr class="hr-solid" />
       <span class="text"> 合计￥{{ totalPrice }} </span>
@@ -38,10 +41,14 @@ import { computed } from 'vue'
 import { ref } from 'vue'
 const cartItems = ref([])
 const totalPrice = computed(() => {
-  return cartItems.value.reduce((total, item) => total + item.discountPrice * item.quantity, 0)
+  return cartItems.value.reduce((total, item) => {
+    const price = item.discountPrice > 0 ? item.discountPrice : item.dishPrice
+    return total + price * item.quantity
+  }, 0)
 })
 onMounted(async () => {
-  cartItems.value = await getCartItem()
+  const cartId = localStorage.getItem('cartId')
+  cartItems.value = await getCartItem(cartId)
 })
 const showMore = ref(false)
 
@@ -80,6 +87,7 @@ const toggleShowMore = () => {
   text-align: center;
   color: #ffa500;
   font-weight: bold;
+  font-size: medium;
   margin-top: 10px;
 }
 .more-items {

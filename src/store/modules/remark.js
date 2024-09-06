@@ -4,11 +4,15 @@ import { ref } from 'vue'
 
 export const useRemarkstore = defineStore('remark', () => {
   const remark = ref('')
-  const setMark = (newRemark) => {
-    remark.value = newRemark
+  const setMark = () => {
+    if (remark.value === '') remark.value = '无'
+  }
+  const clear = () => {
+    remark.value = ''
   }
   return {
     remark,
-    setMark
+    setMark,
+    clear
   }
 })

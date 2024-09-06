@@ -338,53 +338,148 @@ export const getIdentityInOrder = async (orderId) => {
 
 export const createCart = async () => {
   // res
-  const res = await ins.post('/api/cart/createCart')
-  // cartId
-  const cartId = res.data.response.cartId
-  // log
-  console.log('api:CartId:', cartId)
-  return cartId
+  try {
+    const res = await ins.post('/api/cart/createCart')
+    // cartId
+    const cartId = res.data.response.cartId
+    // log
+    console.log('api:CartId:', cartId)
+    return cartId
+  } catch (error) {
+    console.error(error.response)
+  }
 }
 
 export const getMenuToday = async () => {
   const res = await ins.get('/api/order/getMenuToday')
-  // cartId
   const items = res.data.menu
-  // log
+  console.log('1', res.data.message)
   console.log('api:items:', items)
   return items
 }
 
-export const getCartItem = async () => {
-  const res = await ins.get('/api/cart/getCartItem')
-  // cartItems
-  const cartItems = res.data.menu
-  console.log('api:cartItems:', cartItems)
-  return cartItems
+export const getCartItem = async (cartId) => {
+  try {
+    const res = await ins.get(`/api/cart/getCartItem${cartId}`)
+    const cartItems = res.data.menu
+    console.log('api:cartItems:', cartItems)
+    return cartItems // 返回成功状态和数据
+  } catch (error) {
+    console.error('Error fetching cart items:', error.response)
+  }
 }
 
 export const updateCartItem = async (cartId, dishId, quantity) => {
   try {
+    // 发送请求
     const res = await ins.post('/api/cart/updateCartItem', {
-      CART_ID: cartId,
-      DISH_ID: dishId,
-      QUANTITY: quantity
+      cartId: cartId,
+      dishId: dishId,
+      quantity: quantity
     })
-    console.log(res.data.success)
-    return res.data.success
+
+    // 打印响应内容以便调试
+    console.log('Response:', res.data)
+
+    // 确保字段名称正确
+    const message = res.data.message
+
+    // 根据返回的消息判断操作是否成功
+    if (message === '超过库存，操作失败') {
+      return { success: false }
+    } else {
+      return { success: true }
+    }
   } catch (error) {
-    console.log(error)
+    // 处理请求或其他错误
+    console.error('Error updating cart item:', error)
+    return { success: false }
   }
 }
 
 export const clearCart = async (cartId) => {
   try {
     const res = await ins.post('/api/cart/clearCart', {
-      CART_ID: cartId
+      cartId: cartId
     })
     console.log(res.data.success)
     return res.data.success
   } catch (error) {
+    console.error(error.response.data)
     console.log(error)
   }
+}
+
+export const getBanlance = async () => {
+  const res = await ins.get('/api/account/getPersonInfo')
+  console.log(res.data.response.money)
+  return res.data.response.money
+}
+
+export const deleteCartItem = async (cartId, dishId) => {
+  const token = localStorage.getItem('token')
+  const res = await ins.delete('/api/cart/deleteCartItem', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    data: {
+      cartId: cartId,
+      dishId: dishId
+    }
+  })
+  console.log(res.message)
+}
+
+export const ensureCart = async (
+  carT_ID,
+  deliver_or_dining,
+  set_default_add,
+  newAddress,
+  remark
+) => {
+  try {
+    console.log('Sending request with:', {
+      carT_ID,
+      deliver_or_dining,
+      set_default_add,
+      newAddress,
+      remark
+    })
+
+    const res = await ins.post('/api/cart/ensureCart', {
+      carT_ID,
+      deliver_or_dining,
+      set_default_add,
+      newAddress,
+      remark
+    })
+
+    console.log('Response:', res.message) // 修改为res.data查看实际返回内容
+  } catch (error) {
+    if (error.response) {
+      // 请求已发出，服务器返回状态码不是2xx
+      console.error('Error Response:', error.response.data)
+      console.error('Error Status:', error.response.status)
+      console.error('Error Headers:', error.response.headers)
+    } else if (error.request) {
+      // 请求已发出，但没有收到响应
+      console.error('Error Request:', error.request)
+    } else {
+      // 其他错误
+      console.error('Error Message:', error.message)
+    }
+  }
+}
+
+export const getDefaultAddr = async () => {
+  const token = localStorage.getItem('token')
+  const res = await ins.get('/api/account/getPersonInfo', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  })
+  console.log(res.data.response.address)
+  return res.data.response.address
 }

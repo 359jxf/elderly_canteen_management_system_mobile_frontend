@@ -7,9 +7,6 @@
       <div class="address-input">
         <input v-model="user.addr" class="text-input" placeholder="请输入地址" />
       </div>
-      <div class="voice-icon">
-        <img src="../assets/voice.png" alt="语音输入" class="voice-pic" />
-      </div>
     </div>
     <hr class="divider" />
     <div class="footer">
@@ -20,8 +17,13 @@
   </div>
 </template>
 <script setup>
+import { getDefaultAddr } from '@/api/api'
 import { useUserStore } from '@/store/modules/user'
+import { onMounted } from 'vue'
 const user = useUserStore()
+onMounted(async () => {
+  user.addr = await getDefaultAddr()
+})
 </script>
 <style scoped>
 .address-card {

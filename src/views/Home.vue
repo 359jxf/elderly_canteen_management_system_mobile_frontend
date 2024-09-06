@@ -84,7 +84,7 @@ const fetchData = async () => {
     showToast('获取信息失败')
   }
 }
-
+const deliver_or_dining = ref('true')
 const identity = localStorage.getItem('identity')
 
 const router = useRouter()
@@ -98,10 +98,13 @@ const getVolunteerInfor = () => {
 }
 
 const resturant = () => {
+  localStorage.setItem('deliver_or_dining', deliver_or_dining.value)
   router.push({ name: 'OrderPage' })
 }
 
 const deliver = () => {
+  deliver_or_dining.value = false
+  localStorage.setItem('deliver_or_dining', deliver_or_dining.value)
   router.push({ name: 'OrderPage' })
 }
 </script>
