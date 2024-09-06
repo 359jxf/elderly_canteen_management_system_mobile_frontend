@@ -27,22 +27,42 @@
 </template>
 
 <script setup>
-import { ensureCart, getBanlance } from '@/api/api'
+import 'vant/es/toast/style'
+import { ensureCart, getBanlance, getCartItem } from '@/api/api'
 import { useUserStore } from '@/store/modules/user'
 import { useRemarkstore } from '@/store/modules/remark'
 import { useMenuStore } from '@/store/modules/menu'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
+import { showToast } from 'vant'
+import { computed } from 'vue'
+
 const show = ref(false)
 const user = useUserStore()
 const remark = useRemarkstore()
 const menu = useMenuStore()
+const cartItems = ref([])
 const jumpToPay = async () => {
   show.value = true
   balance.value = await getBanlance()
 }
+const totalPrice = computed(() => {
+  return cartItems.value.reduce((total, item) => {
+    const price = item.discountPrice > 0 ? item.discountPrice : item.dishPrice
+    return total + price * item.quantity
+  }, 0)
+})
+onMounted(async () => {
+  const cartId = localStorage.getItem('cartId')
+  cartItems.value = await getCartItem(cartId)
+})
 const router = useRouter()
 const handlePay = async () => {
+  if (balance.value < totalPrice.value) {
+    showToast('余额不足！')
+    return
+  }
   const cartId = localStorage.getItem('cartId')
   const newAddr = user.addr
   remark.setMark()
