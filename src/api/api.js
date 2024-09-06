@@ -298,7 +298,6 @@ export const getDeliverComment = async (orderId) => {
     console.log(res.data.response[0])
     return res.data.response[0]
   } catch (error) {
-
     console.error('Error fetching DeliverComment message:', error)
     throw error
   }

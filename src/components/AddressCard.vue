@@ -30,8 +30,9 @@ onMounted(async () => {
   margin: 4%;
   padding: 16px;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 保持原有阴影 */
   background-color: #fff;
+  border: 2px solid #e0e0e0; /* 添加边框 */
 }
 
 .header {

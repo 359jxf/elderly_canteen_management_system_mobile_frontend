@@ -2,7 +2,6 @@
   <div class="container">
     <Nav class="fixed-nav" nav_text="我的购物车" />
     <div class="content">
-      <AddressCard />
       <OrderList />
       <RemarkItem />
     </div>
