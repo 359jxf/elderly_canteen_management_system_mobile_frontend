@@ -42,6 +42,9 @@ const fetchVolunteerMsg = async () => {
   if (props.deliverOrDining == true && props.deliverStatus != '待接单') {
     try {
       const response = await getOrderDeliverMsg(props.orderId)
+      if(response==null){
+        throw new Error('deliverStatus与OrderDeliverMsg矛盾')
+      }
       volunteerId.value = response.volunteerId
       volunteerName.value = response.volunteerName
       console.log(
@@ -51,11 +54,12 @@ const fetchVolunteerMsg = async () => {
         volunteerName.value
       )
     } catch (error) {
-      console.error('Error fetching VolunteerMsg:', error)
+      console.error('Error fetching VolunteerMsg:', error.message?error.message:error.response.data.msg)
+      throw new Error('配送员信息异常')
     }
   }
 }
-onMounted(fetchVolunteerMsg)
+
 //#endregion
 defineExpose({
   fetchVolunteerMsg,

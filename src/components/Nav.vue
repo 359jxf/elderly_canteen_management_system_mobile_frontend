@@ -1,6 +1,9 @@
 <template>
   <div class="top">
-    <van-icon name="arrow-left" @click="onClickLeft" />
+    <div class="backIcon">
+      <van-icon name="arrow-left" @click="onClickLeft" v-show="nav_text !== '我的订单'"/>
+    </div>
+
     <p>{{ props.nav_text }}</p>
     <img :src="portrait" @click="clickPortrait" class="roundImg" />
   </div>
@@ -27,6 +30,9 @@ const router = useRouter()
 const clickPortrait = () => {
   router.push({ path: '/User' })
 }
+defineExpose({
+  onClickLeft,
+});
 //#endregion
 </script>
 
@@ -50,7 +56,7 @@ const clickPortrait = () => {
   margin-right: 10px;
 }
 
-.top .van-icon {
+.top .backIcon {
   margin-left: 10px;
 }
 
