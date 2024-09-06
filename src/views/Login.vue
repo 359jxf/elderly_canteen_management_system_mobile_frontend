@@ -73,10 +73,6 @@ const selectCredit = () => {
   isPassword.value = false
 }
 
-const quitApp = () => {
-  navigator.app.exitApp() // 退出应用
-}
-
 if (!sessionStorage.getItem('hasRefreshed')) {
   // 如果没有刷新过页面，则刷新页面
   sessionStorage.setItem('hasRefreshed', 'true')
@@ -370,6 +366,7 @@ const register = () => {
   font-weight: bold;
   background-color: #ffa822;
   letter-spacing: 0.05rem;
+  z-index: 100;
 }
 
 .getBtn {

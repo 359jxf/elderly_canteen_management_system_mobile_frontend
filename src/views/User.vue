@@ -189,7 +189,10 @@ const apply = () => {
     showToast('60岁以上老人无法注册志愿者')
     return
   }
-
+  if (identity === 'senior') {
+    showToast('老人无法注册志愿者')
+    return
+  }
   if (identity === 'volunteer') {
     showToast('该账户已是志愿者')
     return

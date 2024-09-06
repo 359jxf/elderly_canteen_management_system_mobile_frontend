@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="head">
-      <Nav nav_text="订单详情" />
+      <Nav nav_text="订单详情" ref="nav" />
     </div>
 
     <!-- 志愿者信息与订单内容 -->
@@ -48,7 +48,8 @@
           {{ buttonText }}</van-button>
 
         <!-- ref="commentDialog"：获取子组件的引用。在 setup 中，可以使用commentDialog.value.showDialog();来访问子组件 -->
-        <CommentDialog @exit="handleCommentExit" ref="commentDialog" :deliverOrDining="orderDetail.deliverOrDining" :orderId="orderDetail.orderId"/>
+        <CommentDialog @exit="handleCommentExit" ref="commentDialog" :deliverOrDining="orderDetail.deliverOrDining"
+          :orderId="orderDetail.orderId" />
       </div>
     </div>
   </div>
@@ -111,25 +112,25 @@ const showButton = () => {
   console.log(' isOwner:', isOwner.value, ' isDeliver:', isDeliver.value)
 
 
-  if  (isAccepted.value == true && !isOwner.value && !isDeliver.value){
+  if (isAccepted.value == true && !isOwner.value && !isDeliver.value) {
     buttonText.value = '确认接单'
     canClick.value = false
     showFailToast({
-        message: '请完成已接订单',
-        onClose: () => {
-          console.log('foast消失')
-        }
-      })
+      message: '请完成已接订单',
+      onClose: () => {
+        console.log('foast消失')
+      }
+    })
   }
-  else if(orderDetail.value.deliverStatus!='待接单'&&!isOwner.value && !isDeliver.value) {
+  else if (orderDetail.value.deliverStatus != '待接单' && !isOwner.value && !isDeliver.value) {
     buttonText.value = '确认接单'
     canClick.value = false
     showFailToast({
-        message: '该订单已被接收！',
-        onClose: () => {
-          console.log('foast消失')
-        }
-      })
+      message: '该订单已被接收！',
+      onClose: () => {
+        console.log('foast消失')
+      }
+    })
   }
   else if (isOwner.value) {
     // 当前用户是下单者--堂食-待确认-可点的确认取餐
@@ -312,13 +313,58 @@ onMounted(() => {
   }
 });
 
-
+const nav = ref(null);
 //实际的刷新逻辑
 const onRefresh = async () => {
   console.log("刷新页面");
-  orderDetail.value = await getOrderMsg(orderDetail.value.orderId);
-  await getIdentity();
-  volunteerCard.value.fetchVolunteerMsg();
+  try {
+    orderDetail.value = await getOrderMsg(orderDetail.value.orderId);
+  } catch (error) {
+    showFailToast({
+      message: `订单信息异常！\n${error.response.status}\n${error.response.data.msg}`,
+      onClose: () => {
+        console.log('foast消失')
+        if (nav.value) {
+          nav.value.onClickLeft();
+        }
+      }
+    })
+  }
+  try{
+    await getIdentity();
+  }catch(error){
+    showFailToast({
+      message: `获取用户身份失败！`,
+      onClose: () => {
+        console.log('foast消失')
+        if (nav.value) {
+          nav.value.onClickLeft();
+        }
+      }
+    })
+  }
+  
+  try {
+    await volunteerCard.value.fetchVolunteerMsg();
+  } catch (error) {
+    showFailToast({
+      message: `配送信息异常！`,
+      onClose: () => {
+        console.log('foast消失')
+        if (nav.value) {
+          nav.value.onClickLeft();
+        }
+      }
+    })
+  }
+
+
+
+
+
+
+
+
 };
 onMounted(onRefresh);
 

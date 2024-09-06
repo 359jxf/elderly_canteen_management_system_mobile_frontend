@@ -39,12 +39,14 @@ const props = defineProps({
 
 <style scoped>
 .dishcard {
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); /* 保持原有阴影 */
   margin-top: 4%;
   border-radius: 15px;
   padding: 4%;
   display: flex;
+  border: 2px solid #e0e0e0; /* 增加边框宽度和颜色 */
 }
+
 img {
   height: 10vh;
   width: 25vw;

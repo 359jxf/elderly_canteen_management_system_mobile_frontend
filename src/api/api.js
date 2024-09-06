@@ -123,13 +123,15 @@ export const getOrderMsg = async (orderId) => {
     console.log(res.data.response)
     return res.data.response
   } catch (error) {
-    console.error('Error fetching order message:', error)
+    console.log(error.response)
+    console.error('Error fetching order message:', error.response.data.msg)
     throw error
   }
 }
 
 //查询订单配送信息
 export const getOrderDeliverMsg = async (orderId) => {
+  console.log('开始getOrderDeliverMsg，orderId:', orderId)
   const token = localStorage.getItem('token')
   try {
     const res = await ins.get('/api/order/getOrderDeliverMsg', {
@@ -143,7 +145,8 @@ export const getOrderDeliverMsg = async (orderId) => {
     console.log(res.data.response)
     return res.data.response
   } catch (error) {
-    console.error('Error fetching delivery message:', error)
+    console.log(error.response)
+    console.error('Error fetching delivery message:', error.response.data.msg)
     throw error
   }
 }
@@ -459,7 +462,6 @@ export const ensureCart = async (
       newAddress,
       remark
     })
-
     console.log('Response:', res.message) // 修改为res.data查看实际返回内容
   } catch (error) {
     if (error.response) {
