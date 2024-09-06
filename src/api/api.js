@@ -3,14 +3,19 @@ import ins from '../utils/axiosInstance.js'
 //获取历史订单
 export const getOrders = async () => {
   const token = localStorage.getItem('token')
-  const res = await ins.get('/api/order/getPastOrder', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    }
-  })
-  console.log(res.data.response)
-  return res.data.response
+  try {
+    const res = await ins.get('/api/order/getPastOrder', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    console.log(res.data.response)
+    return res.data.response
+  }catch (error) {
+    console.error('getPastOrder失败 message:', error.response.data)
+    throw error
+  }
 }
 
 // 查询可接订单
@@ -37,7 +42,7 @@ export const getAcceptableOrder = async () => {
 export const getAcceptedOrder = async () => {
   console.log('开始getAcceptedOrder');
   const token = localStorage.getItem('token')
-  const tmp=ref({});
+  const tmp = ref({});
   const res = await ins.get('/api/volServe/getAcceptedOrder', {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -45,15 +50,15 @@ export const getAcceptedOrder = async () => {
     }
   })
   console.log('getAcceptedOrder输出结果：', res.data.response)
-  if(res.data.response.length){
-    tmp.value=res.data.response[0]
+  if (res.data.response.length) {
+    tmp.value = res.data.response[0]
     console.log('111')
     return tmp;
-  }else{
+  } else {
     console.log('222')
     return tmp;
   }
-  
+
 
 }
 
@@ -231,8 +236,8 @@ export const postDeliverComment = async (
 ) => {
   const token = localStorage.getItem('token')
   try {
-    console.log('orderId:',orderId,'deliverRate:',deliverRate,'deliverComment',deliverComment,
-      'falvorRate',falvorRate,'flavorComment',flavorComment)
+    console.log('orderId:', orderId, 'deliverRate:', deliverRate, 'deliverComment', deliverComment,
+      'falvorRate', falvorRate, 'flavorComment', flavorComment)
     const res = await ins.post(
       '/api/order/postDeliverComment',
       {
