@@ -13,9 +13,10 @@ const remark = useRemarkstore()
   margin: 20px;
   padding: 20px;
   background-color: #f9f9f9;
-  border: 1px solid #e0e0e0;
+  border: 2px solid #d0d0d0; /* 增加边框宽度并调整颜色 */
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 保持原有阴影 */
+  transition: border-color 0.3s ease-in-out; /* 边框颜色变化的过渡效果 */
 }
 
 .title {
