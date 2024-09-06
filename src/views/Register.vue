@@ -117,7 +117,8 @@ const getCredit = async () => {
 .background {
   display: flex;
   position: relative;
-  flex-direction: column; /* 使子元素按列布局 */
+  flex-direction: column;
+  /* 使子元素按列布局 */
   top: 0;
 
   height: 100vh;
@@ -136,7 +137,8 @@ const getCredit = async () => {
   border-radius: 20px;
 
   z-index: 1;
-  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2);
+  /* 阴影效果 */
 }
 
 .headerBox {
@@ -152,7 +154,8 @@ const getCredit = async () => {
   border-radius: 10px;
 
   z-index: 3;
-  box-shadow: 0 -7px 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  box-shadow: 0 -7px 10px rgba(0, 0, 0, 0.2);
+  /* 阴影效果 */
 }
 
 .row {

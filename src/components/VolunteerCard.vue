@@ -2,9 +2,7 @@
   <div class="volunteercard">
     <div class="card-left">
       <div class="volunteer" v-if="deliverOrDining === true">
-        <div v-if="deliverStatus === '待接单'" class="toAcceptedText">
-          待接单
-        </div>
+        <div v-if="deliverStatus === '待接单'" class="toAcceptedText">待接单</div>
         <div v-else>
           <div>
             <span class="num">{{ volunteerId }}</span>
@@ -13,7 +11,6 @@
             <span class="name">志愿者: {{ volunteerName }}</span>
           </div>
         </div>
-
       </div>
       <div v-else>
         <span class="diningText">堂食</span>
@@ -28,34 +25,41 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
-import {getOrderDeliverMsg} from '../api/api'
+import { onMounted } from 'vue'
+import { getOrderDeliverMsg } from '../api/api'
 const props = defineProps({
   orderStatus: String,
   deliverOrDining: Boolean,
   orderId: String,
-  deliverStatus: String,
+  deliverStatus: String
 })
 
 // 加载志愿者姓名，id
 //#region
-const volunteerName=ref('');
-const volunteerId=ref('');
-const fetchVolunteerMsg=async ()=>{
-  if(props.deliverOrDining==true&&props.deliverStatus!='待接单'){
-    try{
-      const response = await getOrderDeliverMsg(props.orderId);
-      volunteerId.value=response.VolunteerId;
-      volunteerName.value=response.VolunteerName;
-      console.log('success fetching VolunteerMsg。id:',volunteerId.value,'  name:',volunteerName.value)
-    }catch (error) {
-    console.error('Error fetching VolunteerMsg:', error);
-  } 
+const volunteerName = ref('')
+const volunteerId = ref('')
+const fetchVolunteerMsg = async () => {
+  if (props.deliverOrDining == true && props.deliverStatus != '待接单') {
+    try {
+      const response = await getOrderDeliverMsg(props.orderId)
+      volunteerId.value = response.volunteerId
+      volunteerName.value = response.volunteerName
+      console.log(
+        'success fetching VolunteerMsg。id:',
+        volunteerId.value,
+        '  name:',
+        volunteerName.value
+      )
+    } catch (error) {
+      console.error('Error fetching VolunteerMsg:', error)
+    }
   }
 }
-onMounted(fetchVolunteerMsg);
+onMounted(fetchVolunteerMsg)
 //#endregion
-
+defineExpose({
+  fetchVolunteerMsg,
+});
 </script>
 
 <style scoped>
@@ -85,7 +89,7 @@ onMounted(fetchVolunteerMsg);
 }
 
 .num {
-  font-size: 50px;
+  font-size: large;
   color: grey;
   font-weight: bold;
   letter-spacing: 2px;

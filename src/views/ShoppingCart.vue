@@ -18,32 +18,46 @@
     round
   >
     <div class="payment-container">
-      <h3 class="balance">账户余额: <span>88 元</span></h3>
-      <div class="payment-methods">
-        <van-radio-group v-model="selectedMethod">
-          <van-radio name="wechat" class="payment-option">
-            <span class="icon">微信</span>
-            <van-icon name="wechat-pay" class="icon-image" />
-          </van-radio>
-          <van-radio name="alipay" class="payment-option">
-            <span class="icon">支付宝</span>
-            <van-icon name="alipay" class="icon-image" />
-          </van-radio>
-        </van-radio-group>
-      </div>
-
+      <h3 class="balance">
+        账户余额: <span>{{ balance }} 元</span>
+      </h3>
       <van-button type="primary" class="pay-button" @click="handlePay">支付</van-button>
     </div>
   </van-popup>
 </template>
 
 <script setup>
+import { ensureCart, getBanlance } from '@/api/api'
+import { useUserStore } from '@/store/modules/user'
+import { useRemarkstore } from '@/store/modules/remark'
+import { useMenuStore } from '@/store/modules/menu'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 const show = ref(false)
-const selectedMethod = ref('wechat')
-const jumpToPay = () => {
+const user = useUserStore()
+const remark = useRemarkstore()
+const menu = useMenuStore()
+const jumpToPay = async () => {
   show.value = true
+  balance.value = await getBanlance()
 }
+const router = useRouter()
+const handlePay = async () => {
+  const cartId = localStorage.getItem('cartId')
+  const newAddr = user.addr
+  remark.setMark()
+  const userRemark = remark.remark
+  console.log(userRemark)
+  const setDefault = user.setDefault
+  const deliver_or_dining = localStorage.getItem('deliver_or_dining')
+  if (deliver_or_dining === 'true') await ensureCart(cartId, true, setDefault, newAddr, userRemark)
+  else await ensureCart(cartId, false, setDefault, newAddr, userRemark)
+  menu.clear()
+  router.push({ path: '/OrderDetail' })
+  remark.clear()
+  user.clear()
+}
+const balance = ref(0)
 </script>
 
 <style scoped>
@@ -79,31 +93,11 @@ const jumpToPay = () => {
 }
 
 .balance {
-  margin-top: 30px;
+  margin-top: 80px;
   font-size: 18px;
   margin-bottom: 16px;
+  margin-left: 50px;
   font-weight: bold;
-}
-
-.payment-methods {
-  margin-top: 16px;
-  flex: 1;
-}
-
-.payment-option {
-  display: flex;
-  align-items: center;
-  margin-bottom: 24px; /* 增加底部间距 */
-  font-size: 20px; /* 增加字体大小 */
-}
-
-.icon {
-  font-size: 20px; /* 增加图标字体大小 */
-  margin-right: 12px; /* 增加右侧间距 */
-}
-
-.icon-image {
-  font-size: 32px; /* 增加图标大小 */
 }
 
 .pay-button {

@@ -1,20 +1,17 @@
 <template>
   <div class="theHelloContainer">
-    <van-image :src="portrait" class="helloImage" round  fit="cover">
+    <van-image :src="portrait" class="helloImage" round fit="cover">
       <template v-slot:loading>
         <van-loading type="spinner" size="20" />
       </template>
     </van-image>
     <span class="greetingText">你好，{{ accountName }}</span>
-
   </div>
 </template>
 
 <script setup>
-
-const accountName = localStorage.getItem('accountName');
-const portrait = localStorage.getItem('portrait');
-
+const accountName = localStorage.getItem('accountName')
+const portrait = localStorage.getItem('portrait')
 </script>
 
 <style scoped>
@@ -34,8 +31,6 @@ const portrait = localStorage.getItem('portrait');
   left: 50%;
   transform: translate(-50%, -50%); /* 使容器在页面中居中 */
 
-
-
   background-color: white;
 }
 
@@ -46,7 +41,6 @@ const portrait = localStorage.getItem('portrait');
   width: 20vw;
   height: 20vw;
   border-radius: 50%; /* 将图片设置为圆形 */
-
 }
 
 .greetingText {

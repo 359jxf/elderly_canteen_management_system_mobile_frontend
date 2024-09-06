@@ -42,7 +42,7 @@
           </template>
         </van-image>
       </div>
-      <button class="getIn" @click="Ensure">确认修改</button>
+      <button class="ensureAlter" @click="Ensure">确认修改</button>
       <div class="actions">
         <span @click="changePassword">修改密码</span>
         <span @click="rebindPhone">改绑手机</span>
@@ -165,6 +165,7 @@ const rebindPhone = () => {
   height: 10vh;
   cursor: pointer;
   object-fit: cover;
+  left: 5vw;
 }
 
 .background {
@@ -187,7 +188,8 @@ const rebindPhone = () => {
   border-radius: 20px;
 
   z-index: 1;
-  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2);
+  /* 阴影效果 */
 }
 
 .headerBox {
@@ -204,7 +206,8 @@ const rebindPhone = () => {
   border-radius: 10px;
 
   z-index: 3;
-  box-shadow: 0 -7px 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+  box-shadow: 0 -7px 10px rgba(0, 0, 0, 0.2);
+  /* 阴影效果 */
 }
 
 .row {
@@ -226,11 +229,12 @@ const rebindPhone = () => {
 
 .inputBox {
   position: relative;
+  left: 5%;
   width: 50%;
   height: 60%;
   border-radius: 10px;
   font-size: 60%;
-  padding-left: 5px;
+  padding-left: 1%;
   align-self: center;
   border: 2px solid #000;
 }
@@ -253,12 +257,12 @@ const rebindPhone = () => {
   border-radius: 5px;
 }
 
-.getIn {
+.ensureAlter {
   position: relative;
   width: 40%;
   height: 10%;
   left: 30%;
-  top: 10%;
+  top: 12%;
   border-radius: 20px;
   font-size: 60%;
   border: none;

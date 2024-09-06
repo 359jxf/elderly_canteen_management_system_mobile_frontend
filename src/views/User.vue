@@ -21,11 +21,11 @@
           <span class="label">出生日期:</span> <span class="value">{{ userData.birthDate }}</span>
         </div>
         <div class="row">
-          <span class="label">地址:</span> <span class="value">{{ userData.address }}</span>
-        </div>
-        <div class="row">
           <span class="label">账户余额</span> <span class="value">{{ userData.money }}</span
           ><van-icon name="gold-coin-o" class="prePaid" size="7vw" @click="prePaid" />
+        </div>
+        <div class="row">
+          <span class="label">地址:</span> <span class="value">{{ userData.address }}</span>
         </div>
       </div>
       <div class="buttonContainer">
@@ -33,12 +33,24 @@
         <button class="buttonType" @click="apply">志愿者申请</button>
       </div>
       <div class="buttonExit" @click="exitEnsure">退出登录</div>
-      <van-dialog v-model:show="show" title="账户充值" show-cancel-button @confirm="ensurePrepaid">
+      <van-dialog
+        v-model:show="show"
+        title="账户充值"
+        show-cancel-button
+        @confirm="ensurePrepaid"
+        width="70vw"
+      >
         <div class="input-container">
           <input v-model="prePaidMoney" placeholder="输入充值金额" class="prePaidInput" />
         </div>
       </van-dialog>
-      <van-dialog v-model:show="showExit" title="确认登出" show-cancel-button @confirm="exit">
+      <van-dialog
+        v-model:show="showExit"
+        title="确认登出"
+        show-cancel-button
+        @confirm="exit"
+        width="70vw"
+      >
       </van-dialog>
     </PersonalBackground>
   </van-pull-refresh>
@@ -74,7 +86,6 @@ const userData = ref({
   money: '',
   IDCard: ''
 })
-
 const loading = ref(false)
 const onRefresh = () => {
   setTimeout(() => {
@@ -120,6 +131,7 @@ const fetchData = async () => {
 const ensurePrepaid = async () => {
   const token = localStorage.getItem('token')
 
+  console.log(prePaidMoney.value)
   if (prePaidMoney.value <= 0 || prePaidMoney.value > 1000) {
     showToast('请输入 0 到 1000 之间的充值金额')
     return
@@ -141,6 +153,7 @@ const ensurePrepaid = async () => {
       showToast('充值失败')
     }
   } catch (error) {
+    console.log(error)
     showToast('充值失败')
   }
 }
@@ -164,11 +177,20 @@ const prePaid = () => {
 const apply = () => {
   const name = localStorage.getItem('name')
   const identity = localStorage.getItem('identity')
+  const idCard = localStorage.getItem('IDCard')
+  const year = idCard.substring(6, 10)
+  const extractedYear = parseInt(year, 10)
+  console.log(extractedYear)
+  if (extractedYear <= 1964) {
+    showToast('60岁以上老人无法注册志愿者')
+    return
+  }
+
   if (identity === 'volunteer') {
     showToast('该账户已是志愿者')
     return
   }
-  if (name === null) {
+  if (name === 'null') {
     showToast('未实名用户不能进行志愿者申请')
     return
   }
@@ -188,6 +210,7 @@ const exitEnsure = () => {
 .prePaid {
   position: relative;
   left: 20vw;
+  top: -1vw;
 }
 
 .input-container {
@@ -198,6 +221,7 @@ const exitEnsure = () => {
 }
 
 .prePaidInput {
+  width: 50vw;
   height: 5vh;
 }
 
@@ -229,6 +253,7 @@ const exitEnsure = () => {
 .value {
   text-align: left;
   font-size: 100%;
+  line-height: 1.3;
 }
 
 .info-button {

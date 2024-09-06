@@ -39,12 +39,12 @@ onMounted(() => {
   const storedName = localStorage.getItem('name')
   const storedIDCard = localStorage.getItem('IDCard')
 
-  if (storedName) {
+  if (storedName !== 'null') {
     name.value = storedName
     isNameDisabled.value = true
   }
 
-  if (storedIDCard) {
+  if (storedIDCard !== 'null') {
     IDCard.value = storedIDCard
     isIDCardDisabled.value = true
   }

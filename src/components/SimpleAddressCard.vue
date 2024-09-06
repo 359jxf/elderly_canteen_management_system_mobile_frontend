@@ -22,10 +22,11 @@ const props = defineProps({
 .title {
   font-size: large;
   font-weight: bold;
-  margin-bottom: 5%;
+  margin-bottom: 4%;
 }
 .address {
   font-size: small;
   font-weight: bold;
+  margin-left: 1vw;
 }
 </style>
