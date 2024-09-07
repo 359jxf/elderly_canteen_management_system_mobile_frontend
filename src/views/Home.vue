@@ -17,7 +17,7 @@
           <p class="imageText">爱心外卖</p>
         </div>
       </div>
-      <TheWelcome />
+      <TheWelcome ref="theWelcome"/>
       <div class="informationContainer">
         <div class="tip">⬆</div>
         <div class="tip">请选择就餐方式</div>
@@ -50,7 +50,7 @@ import { showToast } from 'vant'
 
 import defaultPic from '@/assets/testpic.jpg'
 import { useUserStore } from '@/store/modules/user'
-
+const theWelcome=ref()
 const ava = ref('')
 const loading = ref(false)
 const user = useUserStore()
@@ -77,9 +77,11 @@ const fetchData = async () => {
     })
 
     if (response.data.getSuccess === true) {
-      console.log(response.data.response) // 调试用
+      console.log('1111',response.data.response) // 调试用
       ava.value = response.data.response.portrait ? response.data.response.portrait : defaultPic
       localStorage.setItem('portrait', ava.value)
+      theWelcome.value.loadPortrait()
+
     } else {
       showToast('获取信息失败')
     }

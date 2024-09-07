@@ -11,7 +11,13 @@
 
 <script setup>
 const accountName = localStorage.getItem('accountName')
-const portrait = localStorage.getItem('portrait')
+const portrait =ref()
+const loadPortrait=()=>{
+  portrait.value = localStorage.getItem('portrait')
+}
+defineExpose({
+    loadPortrait
+});
 </script>
 
 <style scoped>
