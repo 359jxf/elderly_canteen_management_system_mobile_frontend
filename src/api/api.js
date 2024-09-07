@@ -131,7 +131,7 @@ export const getOrderMsg = async (orderId) => {
 
 //查询订单配送信息
 export const getOrderDeliverMsg = async (orderId) => {
-  console.log('开始getOrderDeliverMsg，orderId:',orderId)
+  console.log('开始getOrderDeliverMsg，orderId:', orderId)
   const token = localStorage.getItem('token')
   try {
     const res = await ins.get('/api/order/getOrderDeliverMsg', {
@@ -462,7 +462,6 @@ export const ensureCart = async (
       newAddress,
       remark
     })
-
     console.log('Response:', res.message) // 修改为res.data查看实际返回内容
   } catch (error) {
     if (error.response) {
