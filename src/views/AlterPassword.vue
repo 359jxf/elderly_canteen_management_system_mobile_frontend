@@ -42,6 +42,45 @@ const countDownTime = ref(60) // 倒计时时间（秒）
 let timer = null // 计时器
 
 const Ensure = async () => {
+  const isValidPhoneNumber = /^\d{11}$/.test(phoneNum.value)
+  if (!isValidPhoneNumber) {
+    showToast('手机号无效，必须是11位数字。')
+    return
+  }
+  try {
+    const response = await axios.post('http://8.136.125.61/api/Account/verifiationCodeLogin', {
+      PhoneNum: phoneNum.value,
+      Code: verificationCode.value
+    })
+    if (response.data.success) {
+      const { token, identity, accountName } = response.data.response
+      localStorage.setItem('token', token)
+      localStorage.setItem('identity', identity)
+      localStorage.setItem('accountName', accountName)
+      Alter()
+      router.push({ name: 'Home' })
+    } else {
+      showToast(`登录失败`)
+    }
+  } catch (error) {
+    if (error.response) {
+      const statusCode = error.response.status
+      if (statusCode === 400) {
+        showToast(`登录失败，验证码错误`)
+      }
+      if (statusCode === 404) {
+        showToast(`登录失败，用户名未找到`)
+      }
+    } else if (error.request) {
+      showToast('登录失败，未收到响应')
+    } else {
+      // 其他错误
+      showToast('登录失败，发生错误', error)
+    }
+  }
+}
+
+const Alter = async () => {
   const token = localStorage.getItem('token')
 
   if (newPassword.value !== rePassword.value) {
@@ -50,14 +89,12 @@ const Ensure = async () => {
   }
   try {
     const data = {
-      newPassword: newPassword.value,
-      phoneNum: phoneNum.value,
-      code: verificationCode.value
+      pswd: newPassword.value
     }
 
     const response = await axios.post(`http://8.136.125.61/api/Account/changePassword`, data, {
       headers: {
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${token}` // 将 Token 添加到 Authorization 头中
       }
     })
     console.log('Response:', response)
@@ -132,6 +169,7 @@ const resetButton = () => {
 
   background-size: cover; /* 确保背景图片覆盖整个容器 */
 }
+
 .registerBox {
   opacity: 0.98;
   position: relative;
@@ -145,6 +183,7 @@ const resetButton = () => {
   z-index: 1;
   box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2); /* 阴影效果 */
 }
+
 .headerBox {
   opacity: 0.98;
   position: relative;
