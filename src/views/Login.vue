@@ -53,12 +53,24 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import 'vant/es/toast/style'
 import { showToast } from 'vant'
+import { useMenuStore } from '@/store/modules/menu'
+import { useUserStore } from '@/store/modules/user'
+import { useRemarkstore } from '@/store/modules/remark'
 
+onMounted(() => {
+  const menu = useMenuStore()
+  const user = useUserStore()
+  const remark = useRemarkstore()
+  menu.clear()
+  user.clear()
+  remark.clear()
+  localStorage.clear()
+})
 const router = useRouter()
 const isPassword = ref(true)
 

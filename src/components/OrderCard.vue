@@ -43,15 +43,20 @@
         <span class="text"> 总计</span>
       </div>
       <div class="right">
-        <span class="text"> ￥{{ order_detail.money.toFixed(2) }}</span>
+        <span class="text"> ￥{{ order_detail.money }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+
 const props = defineProps({
   order_detail: Object
+})
+onMounted(() => {
+  console.log(typeof props.order_detail.money)
 })
 </script>
 
